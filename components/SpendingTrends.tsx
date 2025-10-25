@@ -18,7 +18,7 @@ export default function SpendingTrends({ view, user, transactions }: SpendingTre
   ];
 
   // Get current user's data
-  const currentUser = students.find(s => s.name === user?.name);
+  const currentUser = students.find(s=> s.name === user?.name);
 
   if (!currentUser) {
     return (
@@ -65,15 +65,19 @@ export default function SpendingTrends({ view, user, transactions }: SpendingTre
 
   const total = data.reduce((sum, d) => sum + d.amount, 0).toFixed(2);
 
+  // Updated title based on view
+  const titleText =
+    view === 'daily'
+      ? 'Total Spent Daily'
+      : view === 'weekly'
+      ? 'Total Spent Weekly'
+      : 'Total Spent Monthly';
+
   return (
     <div>
       {/* Summary Info */}
       <div className="mb-6 p-4 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border border-purple-200">
-        <p className="text-sm text-gray-600 font-medium mb-1">
-          {view === 'daily' && 'Total Spent Today'}
-          {view === 'weekly' && 'Total Spent This Week'}
-          {view === 'monthly' && 'Total Spent This Month'}
-        </p>
+        <p className="text-sm text-gray-600 font-medium mb-1">{titleText}</p>
         <p className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-1">
           ${total}
         </p>
@@ -128,3 +132,4 @@ export default function SpendingTrends({ view, user, transactions }: SpendingTre
     </div>
   );
 }
+
