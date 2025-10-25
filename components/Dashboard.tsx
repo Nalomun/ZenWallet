@@ -8,12 +8,24 @@ import { DEMO_PROFILES } from '@/lib/demoProfiles';
 import StatCard from './StatCard';
 import SpendingChart from './SpendingChart';
 import WeeklyCuisineChart from './WeeklyCuisineChart';
+import SpendingProgress from './SpendingProgress'; // 👈 Import your new overspending chart
 
 export default function Dashboard() {
   const [userData, setUserData] = useState<any>(null);
   const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
+
+  // 👤 Mock user adjustment for Sarah Chen
+  const user = {
+    ...MOCK_USER,
+    name: 'Sarah Chen',
+    total_budget: 1000,
+    total_spent: 860,
+    swipes_remaining: 12,
+    flex_remaining: 140,
+    weeks_remaining: 10,
+  };
 
   useEffect(() => {
     async function loadData() {
@@ -76,6 +88,18 @@ export default function Dashboard() {
           <h1 className="text-4xl font-bold text-gray-900">Welcome back, {userData.name}</h1>
           <p className="text-gray-600 mt-2">Week {weeksIntoSemester} of 16</p>
         </div>
+    <div className="space-y-8">
+      {/* Greeting */}
+      <div>
+        <h1 className="text-4xl font-bold text-gray-900">Welcome back, {user.name} 👋</h1>
+        <p className="text-gray-600 mt-2">Week {weeksIntoSemester} of 16</p>
+      </div>
+
+      {/* Spending Progress (Overspending Visualization) */}
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <h2 className="text-2xl font-bold mb-4">Spending Overview</h2>
+        <SpendingProgress />
+      </div>
 
         {!loading && analysis?.main_insight && (
           <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg">
@@ -119,7 +143,7 @@ export default function Dashboard() {
         <h2 className="text-2xl font-bold mb-4">AI Insights</h2>
 
         {loading && (
-          <div className="bg-gray-100 p-4 rounded-lg">
+          <div className="bg-gray-100 p-4 rounded-lg animate-pulse">
             <div className="h-4 bg-gray-200 rounded w-3/4"></div>
           </div>
         )}
@@ -159,3 +183,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

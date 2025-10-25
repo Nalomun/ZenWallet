@@ -12,12 +12,13 @@ import {
   LabelList,
 } from 'recharts';
 
-// Mock data for 4 weeks
+// Expanded data (weeks 1–6)
+// Each cuisine’s “times” changes per week.
 const WEEKLY_DATA = [
-  { cuisine: 'American', week1: 5, week2: 2, week3: 3, week4: 1 },
-  { cuisine: 'Mexican', week1: 5, week2: 3, week3: 4, week4: 2 },
-  { cuisine: 'Thai', week1: 3, week2: 8, week3: 6, week4: 5 },
-  { cuisine: 'Korean', week1: 2, week2: 1, week3: 3, week4: 4 },
+  { cuisine: 'American', week1: 5, week2: 2, week3: 3, week4: 1, week5: 4, week6: 3 },
+  { cuisine: 'Mexican', week1: 5, week2: 3, week3: 4, week4: 2, week5: 5, week6: 4 },
+  { cuisine: 'Thai', week1: 3, week2: 8, week3: 6, week4: 5, week5: 2, week6: 1 }, // Thai low in week6
+  { cuisine: 'Korean', week1: 2, week2: 1, week3: 3, week4: 4, week5: 6, week6: 9 }, // Korean top in week6
 ];
 
 interface CuisineConfig {
@@ -35,7 +36,7 @@ export default function WeeklyCuisineChart() {
     { cuisine: 'Korean', emoji: '🍙', color: '#60A5FA' },
   ]);
 
-  // Compute sorted chart data for the selected week
+  // Combine emoji, color, and week data, and sort dynamically
   const chartData = WEEKLY_DATA.map((c) => {
     const cfg = cuisineConfig.find((x) => x.cuisine === c.cuisine)!;
     return {
@@ -45,15 +46,15 @@ export default function WeeklyCuisineChart() {
       label: `${cfg.emoji} ${c.cuisine}`,
       times: c[`week${week}` as keyof typeof c] as number,
     };
-  }).sort((a, b) => b.times - a.times); // Sort highest to lowest
+  }).sort((a, b) => b.times - a.times); // sort descending
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <h2 className="text-2xl font-bold mb-4">Weekly Cuisine Ranking</h2>
 
-      {/* Week Selector */}
-      <div className="flex gap-2 mb-6">
-        {[1, 2, 3, 4].map((w) => (
+      {/* Week Selector (now 6 weeks) */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {[1, 2, 3, 4, 5, 6].map((w) => (
           <button
             key={w}
             onClick={() => setWeek(w)}
@@ -71,7 +72,10 @@ export default function WeeklyCuisineChart() {
       {/* Emoji & Color Customization */}
       <div className="flex flex-wrap gap-4 mb-8">
         {cuisineConfig.map((cfg, idx) => (
-          <div key={cfg.cuisine} className="flex flex-col items-center bg-gray-50 p-3 rounded-lg shadow-sm">
+          <div
+            key={cfg.cuisine}
+            className="flex flex-col items-center bg-gray-50 p-3 rounded-lg shadow-sm"
+          >
             <span className="font-bold text-gray-800">{cfg.cuisine}</span>
             <input
               type="text"
@@ -98,7 +102,7 @@ export default function WeeklyCuisineChart() {
       </div>
 
       {/* Dynamic Bar Chart */}
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={320}>
         <BarChart
           layout="vertical"
           data={chartData}
@@ -108,7 +112,7 @@ export default function WeeklyCuisineChart() {
           <YAxis
             dataKey="label"
             type="category"
-            width={120}
+            width={130}
             tick={{ fontSize: 16, fontWeight: 'bold' }}
           />
           <Tooltip
