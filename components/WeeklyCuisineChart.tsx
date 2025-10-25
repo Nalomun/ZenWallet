@@ -1,103 +1,133 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
   Tooltip,
-  ResponsiveContainer,
   Cell,
+  ResponsiveContainer,
   LabelList,
 } from 'recharts';
 
-// Weekly cuisine counts example
+// Mock data for 4 weeks
 const WEEKLY_DATA = [
-  { cuisine: 'American', emoji: '🍔', week1: 5, week2: 2, week3: 3, week4: 4 },
-  { cuisine: 'Mexican', emoji: '🌮', week1: 5, week2: 3, week3: 2, week4: 1 },
-  { cuisine: 'Thai', emoji: '🍛', week1: 3, week2: 8, week3: 4, week4: 5 },
-  { cuisine: 'Korean', emoji: '🍙', week1: 2, week2: 1, week3: 3, week4: 2 },
+  { cuisine: 'American', week1: 5, week2: 2, week3: 3, week4: 1 },
+  { cuisine: 'Mexican', week1: 5, week2: 3, week3: 4, week4: 2 },
+  { cuisine: 'Thai', week1: 3, week2: 8, week3: 6, week4: 5 },
+  { cuisine: 'Korean', week1: 2, week2: 1, week3: 3, week4: 4 },
 ];
 
-// Color mapping
-const CUISINE_COLORS: Record<string, string> = {
-  American: '#F87171',
-  Mexican: '#FBBF24',
-  Thai: '#34D399',
-  Korean: '#60A5FA',
-};
-
-// Tooltip with cuisine name bolded
-const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-white p-3 rounded shadow-lg border border-gray-200">
-        <p className="font-bold text-gray-800">{payload[0].payload.cuisine}</p>
-        <p className="text-gray-600">Times: {payload[0].value}</p>
-      </div>
-    );
-  }
-  return null;
-};
+interface CuisineConfig {
+  cuisine: string;
+  emoji: string;
+  color: string;
+}
 
 export default function WeeklyCuisineChart() {
   const [week, setWeek] = useState(1);
+  const [cuisineConfig, setCuisineConfig] = useState<CuisineConfig[]>([
+    { cuisine: 'American', emoji: '🍔', color: '#F87171' },
+    { cuisine: 'Mexican', emoji: '🌮', color: '#FBBF24' },
+    { cuisine: 'Thai', emoji: '🍛', color: '#34D399' },
+    { cuisine: 'Korean', emoji: '🍙', color: '#60A5FA' },
+  ]);
 
-  // Cycle weeks every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setWeek((prev) => (prev < 4 ? prev + 1 : 1));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Map data for current week
-  const chartData = WEEKLY_DATA.map((cuisine) => ({
-    ...cuisine,
-    times: cuisine[`week${week}` as keyof typeof cuisine],
-  }));
+  // Compute sorted chart data for the selected week
+  const chartData = WEEKLY_DATA.map((c) => {
+    const cfg = cuisineConfig.find((x) => x.cuisine === c.cuisine)!;
+    return {
+      cuisine: c.cuisine,
+      emoji: cfg.emoji,
+      color: cfg.color,
+      label: `${cfg.emoji} ${c.cuisine}`,
+      times: c[`week${week}` as keyof typeof c] as number,
+    };
+  }).sort((a, b) => b.times - a.times); // Sort highest to lowest
 
   return (
-    <div style={{ width: '100%', height: 300 }}>
-      <ResponsiveContainer>
+    <div className="bg-white rounded-xl shadow-lg p-6">
+      <h2 className="text-2xl font-bold mb-4">Weekly Cuisine Ranking</h2>
+
+      {/* Week Selector */}
+      <div className="flex gap-2 mb-6">
+        {[1, 2, 3, 4].map((w) => (
+          <button
+            key={w}
+            onClick={() => setWeek(w)}
+            className={`px-3 py-1 rounded-lg font-semibold transition ${
+              week === w
+                ? 'bg-purple-600 text-white shadow-md'
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+            }`}
+          >
+            Week {w}
+          </button>
+        ))}
+      </div>
+
+      {/* Emoji & Color Customization */}
+      <div className="flex flex-wrap gap-4 mb-8">
+        {cuisineConfig.map((cfg, idx) => (
+          <div key={cfg.cuisine} className="flex flex-col items-center bg-gray-50 p-3 rounded-lg shadow-sm">
+            <span className="font-bold text-gray-800">{cfg.cuisine}</span>
+            <input
+              type="text"
+              value={cfg.emoji}
+              onChange={(e) => {
+                const newConfig = [...cuisineConfig];
+                newConfig[idx].emoji = e.target.value;
+                setCuisineConfig(newConfig);
+              }}
+              className="w-12 text-center text-2xl mt-1 border rounded"
+            />
+            <input
+              type="color"
+              value={cfg.color}
+              onChange={(e) => {
+                const newConfig = [...cuisineConfig];
+                newConfig[idx].color = e.target.value;
+                setCuisineConfig(newConfig);
+              }}
+              className="mt-2 w-10 h-6 border-none"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Dynamic Bar Chart */}
+      <ResponsiveContainer width="100%" height={300}>
         <BarChart
-          data={chartData}
           layout="vertical"
-          margin={{ top: 20, right: 20, left: 60, bottom: 20 }}
+          data={chartData}
+          margin={{ top: 20, right: 30, left: 30, bottom: 20 }}
         >
           <XAxis type="number" />
           <YAxis
-            dataKey="emoji"
+            dataKey="label"
             type="category"
-            width={50}
-            tick={{ fontSize: 24 }}
+            width={120}
+            tick={{ fontSize: 16, fontWeight: 'bold' }}
           />
-          <Tooltip content={<CustomTooltip />} />
-          <Bar
-            dataKey="times"
-            isAnimationActive={true}
-            animationDuration={800}
-          >
+          <Tooltip
+            formatter={(value: number) => [`${value} times`, 'Visited']}
+            cursor={{ fill: 'rgba(0,0,0,0.05)' }}
+          />
+          <Bar dataKey="times" radius={[8, 8, 8, 8]}>
             {chartData.map((entry) => (
-              <Cell
-                key={entry.cuisine}
-                fill={CUISINE_COLORS[entry.cuisine]}
-              />
+              <Cell key={entry.cuisine} fill={entry.color} />
             ))}
-            {/* Show cuisine names next to bars */}
             <LabelList
-              dataKey="cuisine"
+              dataKey="times"
               position="right"
-              offset={10}
               style={{ fontWeight: 'bold', fill: '#374151' }}
             />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <p className="mt-2 text-gray-600 text-sm">
-        Week {week} - Bars animate as counts change
-      </p>
     </div>
   );
 }
+
