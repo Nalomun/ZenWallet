@@ -5,6 +5,7 @@ import { analyzeSpending } from '@/lib/api';
 import { MOCK_USER, MOCK_TRANSACTIONS } from '@/lib/mockData';
 import StatCard from './StatCard';
 import SpendingChart from './SpendingChart';
+import WeeklyCuisineChart from './WeeklyCuisineChart';
 
 export default function Dashboard() {
   const [analysis, setAnalysis] = useState<any>(null);
@@ -25,30 +26,19 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
+      {/* Greeting */}
       <div>
         <h1 className="text-4xl font-bold text-gray-900">Welcome back, {MOCK_USER.name}</h1>
         <p className="text-gray-600 mt-2">Week {weeksIntoSemester} of 16</p>
       </div>
 
-      {loading && (
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
-        </div>
-      )}
-
-      {!loading && analysis?.main_insight && (
-        <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg">
-          <p className="text-lg font-bold text-red-900">{analysis.main_insight}</p>
-          <p className="text-red-700 text-xl">Wasting ${analysis.dollar_amount}</p>
-        </div>
-      )}
-
+      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCard
           title="Total Spent"
           value={`$${MOCK_USER.total_spent}`}
           subtitle={`${spentPercent}% of budget`}
-          trend="up"
+          trend={MOCK_USER.total_spent > MOCK_USER.total_budget ? 'up' : 'down'}
           icon="💰"
         />
         <StatCard
@@ -67,12 +57,26 @@ export default function Dashboard() {
         />
       </div>
 
+      {/* Weekly Cuisine Chart */}
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <h2 className="text-2xl font-bold mb-4">Weekly Cuisine Ranking</h2>
+        <WeeklyCuisineChart />
+      </div>
+
+      {/* AI Insights */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-4">AI Insights</h2>
-        
+
         {loading && (
           <div className="bg-gray-100 p-4 rounded-lg">
             <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          </div>
+        )}
+
+        {!loading && analysis?.main_insight && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg mb-4">
+            <p className="text-lg font-bold text-red-900">{analysis.main_insight}</p>
+            <p className="text-red-700 text-xl">Wasting ${analysis.dollar_amount}</p>
           </div>
         )}
 
@@ -95,6 +99,7 @@ export default function Dashboard() {
         )}
       </div>
 
+      {/* Spending Chart */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-4">Spending Chart</h2>
         <SpendingChart />
