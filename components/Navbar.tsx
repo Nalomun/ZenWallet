@@ -23,16 +23,16 @@ export default function Navbar() {
               🍽️ Feed
             </Link>
             <Link 
+              href="/forecast" 
+              className="text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 hover:bg-clip-text font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50"
+            >
+              📈 Forecast
+            </Link>
+            <Link 
               href="/preferences" 
               className="text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 hover:bg-clip-text font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50"
             >
               ⚙️ Preferences
-            </Link>
-            <Link 
-              href="/social" 
-              className="text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 hover:bg-clip-text font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50"
-            >
-              👥 Friends
             </Link>
           </div>
         </div>
