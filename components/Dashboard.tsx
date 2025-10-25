@@ -15,7 +15,7 @@ export default function Dashboard() {
   // 👤 Mock user adjustment for Sarah Chen
   const user = {
     ...MOCK_USER,
-    name: 'Sarah Chen',
+    name: 'Sarah Chen' ,
     total_budget: 1000,
     total_spent: 860,
     swipes_remaining: 12,

@@ -43,7 +43,7 @@ export default function SpendingProgress() {
     : `✅ Nice job, Sarah! $${(MOCK_USER.total_budget - totalSpent).toFixed(2)} remaining.`;
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
+    <div className ="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">💸 Spending Progress</h2>
 
       {/* Week selector */}
