@@ -38,13 +38,7 @@ export default function Navbar() {
               <span>⚙️</span>
               <span>Preferences</span>
             </Link>
-            <Link 
-              href="/social" 
-              className="text-gray-700 hover:text-purple-600 font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50 flex items-center gap-2"
-            >
-              <span>👥</span>
-              <span>Friends</span>
-            </Link>
+            
           </div>
         </div>
         <AuthButton />
