@@ -1,10 +1,12 @@
 import { FeedRecommendation } from '@/lib/types';
+import { useState } from 'react';
 
 interface FeedCardProps {
   recommendation: FeedRecommendation;
 }
 
 export default function FeedCard({ recommendation }: FeedCardProps) {
+  const [showModal, setShowModal] = useState(false);
   const urgencyColors = {
     high: "from-green-500 to-emerald-500",
     medium: "from-yellow-500 to-orange-500",
@@ -24,7 +26,11 @@ export default function FeedCard({ recommendation }: FeedCardProps) {
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 cursor-pointer group">
+    <>
+      <div 
+        onClick={() => setShowModal(true)}
+        className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 cursor-pointer group"
+      >
       {/* Header with urgency badge */}
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
@@ -69,5 +75,94 @@ export default function FeedCard({ recommendation }: FeedCardProps) {
         <p className="text-xs text-purple-600 font-semibold">Click for more details</p>
       </div>
     </div>
+
+    {/* Modal */}
+    {showModal && (
+      <div 
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+        onClick={() => setShowModal(false)}
+      >
+        <div 
+          className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 animate-slide-up"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex-1">
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                {recommendation.diningHall}
+              </h3>
+              <p className="text-xl text-purple-600 font-semibold">
+                {recommendation.dishRecommendation}
+              </p>
+            </div>
+            <button 
+              onClick={() => setShowModal(false)}
+              className="text-gray-400 hover:text-gray-600 text-3xl hover:rotate-90 transition-all duration-300 ml-4"
+            >
+              ×
+            </button>
+          </div>
+
+          {/* Details */}
+          <div className="space-y-4">
+            {/* Reasoning */}
+            <div className="bg-gradient-to-br from-purple-50 to-blue-50 p-4 rounded-xl">
+              <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                <span>💡</span> Why This Choice?
+              </h4>
+              <p className="text-gray-700 leading-relaxed">{recommendation.reasoning}</p>
+            </div>
+
+            {/* Payment Method */}
+            <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
+              <span className="font-semibold text-gray-700">Payment Method</span>
+              <span className={`px-4 py-2 rounded-full text-sm font-bold shadow-md ${
+                recommendation.paymentMethod === 'swipe'
+                  ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white'
+                  : recommendation.paymentMethod === 'flex'
+                  ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white'
+                  : 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
+              }`}>
+                {recommendation.paymentMethod === 'swipe' ? '🎫 Meal Swipe' : recommendation.paymentMethod === 'flex' ? '💳 Flex Dollars' : '💵 Cash'}
+              </span>
+            </div>
+
+            {/* Savings */}
+            <div className="flex justify-between items-center p-4 bg-green-50 rounded-xl">
+              <span className="font-semibold text-gray-700">You'll Save</span>
+              <span className="text-2xl font-bold text-green-600">
+                {recommendation.savingsImpact}
+              </span>
+            </div>
+
+            {/* Wait Time */}
+            <div className="flex justify-between items-center p-4 bg-blue-50 rounded-xl">
+              <span className="font-semibold text-gray-700">Estimated Wait</span>
+              <span className="text-lg font-bold text-blue-600">
+                ⏱️ {recommendation.estimatedWait}
+              </span>
+            </div>
+
+            {/* Match Score */}
+            <div className="flex justify-between items-center p-4 bg-purple-50 rounded-xl">
+              <span className="font-semibold text-gray-700">Match Score</span>
+              <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                {recommendation.matchScore}%
+              </span>
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <button
+            onClick={() => setShowModal(false)}
+            className="w-full mt-6 px-6 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold hover:from-purple-700 hover:to-blue-700 hover:scale-105 transition-all duration-300 shadow-lg"
+          >
+            Got it! 🍽️
+          </button>
+        </div>
+      </div>
+    )}
+  </>
   );
 }

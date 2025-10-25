@@ -2,57 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { analyzeSpending } from '@/lib/api';
-import { MOCK_USER, MOCK_DINING_HALLS } from '@/lib/mockData';
+import { MOCK_USER } from '@/lib/mockData';
 import { DEMO_PROFILES } from '@/lib/demoProfiles';
+import { getMockRecommendations } from '@/lib/mockApiResponses';
 import FeedCard from '@/components/FeedCard';
 import QueryBox from '@/components/QueryBox';
-
-// Generate mock recommendations
-function generateMockRecommendations(userData: any) {
-  return [
-    {
-      diningHall: "Central Dining",
-      dishRecommendation: "Pasta bar with marinara",
-      reasoning: `Use your meal swipe here - you have ${userData.swipes_remaining} expiring. Saves $12 vs going off-campus.`,
-      urgency: "high" as const,
-      paymentMethod: "swipe" as const,
-      savingsImpact: "Save $12",
-      estimatedWait: "5 min",
-      matchScore: 95
-    },
-    {
-      diningHall: "North Commons",
-      dishRecommendation: "Buddha bowl with tofu",
-      reasoning: "Matches your healthy priority and dietary preferences. Only 3 min wait.",
-      urgency: "high" as const,
-      paymentMethod: "swipe" as const,
-      savingsImpact: "Save $9",
-      estimatedWait: "3 min",
-      matchScore: 92
-    },
-    {
-      diningHall: "West Café",
-      dishRecommendation: "Breakfast burrito",
-      reasoning: "Quick breakfast option. Use a swipe instead of buying Starbucks.",
-      urgency: "medium" as const,
-      paymentMethod: "swipe" as const,
-      savingsImpact: "Save $8",
-      estimatedWait: "7 min",
-      matchScore: 88
-    },
-    {
-      diningHall: "East Market",
-      dishRecommendation: "Poke bowl",
-      reasoning: "Fresh option for lunch. Flex dollars accepted but swipes recommended.",
-      urgency: "medium" as const,
-      paymentMethod: "flex" as const,
-      savingsImpact: "Save $6",
-      estimatedWait: "10 min",
-      matchScore: 82
-    }
-  ];
-}
 
 export default function FeedPage() {
   const [recommendations, setRecommendations] = useState<any[]>([]);
@@ -65,6 +19,7 @@ export default function FeedPage() {
       const { data: { user } } = await supabase.auth.getUser();
       
       let data = MOCK_USER;
+      
       if (user) {
         const { data: profile } = await supabase
           .from('profiles')
@@ -77,9 +32,7 @@ export default function FeedPage() {
       }
       
       setUserData(data);
-      
-      // Generate mock recommendations based on user data
-      const mockRecs = generateMockRecommendations(data);
+      const mockRecs = getMockRecommendations(data);
       setRecommendations(mockRecs);
       setLoading(false);
     }
