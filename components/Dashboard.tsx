@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [trendView, setTrendView] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
+  const [showSavingsModal, setShowSavingsModal] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
