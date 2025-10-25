@@ -68,7 +68,7 @@ export default function WeeklyCuisineChart() {
     };
   }).sort((a, b) => b.times - a.times);
 
-  // Only show top 5 if not expanded
+  // Only show top 5 if not expandede
   const chartData = showAll ? sortedData : sortedData.slice(0, 5);
 
   return (
