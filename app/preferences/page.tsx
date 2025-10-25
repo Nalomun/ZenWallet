@@ -358,14 +358,105 @@ export default function PreferencesPage() {
           </div>
         </div>
 
+        {/* Live Preview - What This Means */}
+        <div className="bg-gradient-to-br from-purple-100 via-blue-100 to-purple-100 rounded-2xl shadow-xl p-8 border-2 border-purple-300">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-4xl">🎯</span>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              What This Means For You
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Speed Impact */}
+            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-3xl">⚡</span>
+                <h3 className="text-xl font-bold text-gray-800">Speed Priority</h3>
+              </div>
+              <p className="text-gray-700 mb-2">
+                {preferences.priorities.speed > 70 
+                  ? "🔥 HIGH - You'll only see options under 10 minutes wait time"
+                  : preferences.priorities.speed > 40
+                  ? "👌 MEDIUM - Balanced between speed and other factors"
+                  : "🐌 LOW - You don't mind waiting for the perfect meal"}
+              </p>
+            </div>
+
+            {/* Budget Impact */}
+            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-3xl">💰</span>
+                <h3 className="text-xl font-bold text-gray-800">Budget Priority</h3>
+              </div>
+              <p className="text-gray-700 mb-2">
+                {preferences.priorities.budget > 70 
+                  ? "🔥 HIGH - AI will heavily emphasize meal swipes and savings"
+                  : preferences.priorities.budget > 40
+                  ? "👌 MEDIUM - Balanced approach to spending"
+                  : "💎 LOW - You're willing to splurge for quality"}
+              </p>
+            </div>
+
+            {/* Health Impact */}
+            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-3xl">🥗</span>
+                <h3 className="text-xl font-bold text-gray-800">Health Priority</h3>
+              </div>
+              <p className="text-gray-700 mb-2">
+                {preferences.priorities.health > 70 
+                  ? "🔥 HIGH - Expect salads, grain bowls, and lean proteins"
+                  : preferences.priorities.health > 40
+                  ? "👌 MEDIUM - Mix of healthy and comfort food"
+                  : "🍕 LOW - Comfort food is totally fine!"}
+              </p>
+            </div>
+
+            {/* Cuisine Impact */}
+            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-3xl">🌮</span>
+                <h3 className="text-xl font-bold text-gray-800">Cuisine Preferences</h3>
+              </div>
+              <p className="text-gray-700 mb-2">
+                Top picks: {Object.entries(preferences.cuisine_ratings)
+                  .filter(([_, rating]) => rating >= 4)
+                  .map(([cuisine]) => cuisine)
+                  .join(', ') || 'None yet'}
+              </p>
+              <p className="text-gray-600 text-sm">
+                AI will prioritize your 4-5 star cuisines
+              </p>
+            </div>
+          </div>
+
+          {/* Dietary Summary */}
+          {preferences.dietary_restrictions.length > 0 && (
+            <div className="mt-6 p-6 bg-gradient-to-r from-green-100 to-emerald-100 rounded-xl border-2 border-green-300">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-2xl">🥗</span>
+                <h3 className="text-lg font-bold text-green-900">Dietary Restrictions Active</h3>
+              </div>
+              <p className="text-green-800">
+                AI will NEVER suggest: {preferences.dietary_restrictions.join(', ')} options
+              </p>
+            </div>
+          )}
+        </div>
+
         {/* Save Button */}
         <div className="flex gap-4">
           <button
-            onClick={savePreferences}
+            onClick={async () => {
+              await savePreferences();
+              // Redirect to feed to see results
+              setTimeout(() => router.push('/feed'), 1000);
+            }}
             disabled={saving}
             className="flex-1 px-8 py-5 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold text-lg hover:from-purple-700 hover:to-blue-700 hover:scale-105 transition-all duration-300 shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {saving ? '💾 Saving...' : saved ? '✅ Saved!' : '💾 Save Preferences'}
+            {saving ? '💾 Saving...' : saved ? '✅ Saved! Redirecting...' : '💾 Save & See My Recommendations'}
           </button>
           
           <button
@@ -377,10 +468,20 @@ export default function PreferencesPage() {
         </div>
 
         {saved && (
-          <div className="bg-green-100 border-l-4 border-green-500 p-6 rounded-xl animate-slide-up">
-            <p className="text-green-800 font-semibold">
-              ✅ Preferences saved! Your recommendations will now be personalized.
-            </p>
+          <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-[2px] rounded-xl shadow-xl animate-slide-up">
+            <div className="bg-white rounded-xl p-6">
+              <div className="flex items-start gap-4">
+                <span className="text-4xl">🎉</span>
+                <div className="flex-1">
+                  <p className="text-green-800 font-bold text-lg mb-2">
+                    ✅ Preferences saved successfully!
+                  </p>
+                  <p className="text-gray-700">
+                    Your personalized recommendations are being generated. Taking you to your feed now...
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
