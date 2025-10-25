@@ -1,9 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+<<<<<<< Updated upstream
 from pydantic import BaseModel
 from typing import List
 import os
 from dotenv import load_dotenv
+=======
+from typing import List, Any, Dict,Optional,Literal
+# Add these imports after your existing imports
+from typing import cast
+from src.prediction import (
+    forecast_from_json,
+    InputDataDict,
+    ResultDict,
+    ForecastMode,
+    FilterType
+)
+>>>>>>> Stashed changes
 
 # Import your AI agent functions
 from src.agent import analyze_spending, generate_recommendations, handle_query
@@ -57,9 +70,20 @@ async def root():
 async def health():
     lava_configured = bool(os.getenv("LAVA_FORWARD_TOKEN"))
     return {
+<<<<<<< Updated upstream
         "status": "healthy", 
         "version": "1.0.0",
         "lava_configured": lava_configured
+=======
+        "status": "healthy",
+        "lava_configured": lava_configured,
+        "endpoints": {
+            "analyze": "/api/analyze",
+            "recommendations": "/api/recommendations",
+            "query": "/api/query",
+            "forecast": "/api/spending-forecast"
+        }
+>>>>>>> Stashed changes
     }
 
 @app.post("/api/analyze")
@@ -172,10 +196,86 @@ async def query(request: QueryRequest):
         print(f"❌ Error in query: {e}")
         # Fallback to mock response if AI fails
         return {"response": FALLBACK_QUERY_RESPONSE}
+    
+@app.post("/api/spending-forecast")
+async def spending_forecast(request: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    ML-based spending forecast using Prophet
+    
+    Request body:
+    {
+        "UserData": {...},
+        "Transactions": [...],
+        "mode": "daily" | "weekly" | "monthly",
+        "filter_type": "category" | "location" | "type" (optional),
+        "filter_value": "coffee" (optional)
+    }
+    """
+    try:
+        print("\n" + "="*60)
+        print("📈 SPENDING FORECAST REQUEST")
+        print("="*60)
+        
+        # Extract and cast parameters
+        data: InputDataDict = cast(InputDataDict, {
+            'UserData': request.get('UserData', {}),
+            'Transactions': request.get('Transactions', []),
+            'DiningHalls': request.get('DiningHalls', [])
+        })
+        
+        mode: ForecastMode = cast(ForecastMode, request.get('mode', 'daily'))
+        filter_type: Optional[FilterType] = cast(Optional[FilterType], request.get('filter_type'))
+        filter_value: Optional[str] = request.get('filter_value')
+        
+        user_name: str = str(data.get('UserData', {}).get('name', 'User'))
+        transaction_count: int = len(data.get('Transactions', []))
+        
+        print(f"User: {user_name}")
+        print(f"Transactions: {transaction_count}")
+        print(f"Mode: {mode}")
+        if filter_type and filter_value:
+            print(f"Filter: {filter_type}={filter_value}")
+        
+        # Generate forecast
+        result: ResultDict = forecast_from_json(
+            data=data,
+            mode=mode,
+            filter_type=filter_type,
+            filter_value=filter_value
+        )
+        
+        summary: Any = result.get('summary', {})
+        total_forecasted: float = float(summary.get('total_forecasted', 0))
+        trend: str = str(summary.get('trend', 'unknown'))
+        
+        print(f"✅ Forecast complete: ${total_forecasted:.2f} ({trend} trend)")
+        
+        return result
+        
+    except Exception as e:
+        print(f"❌ Forecast failed: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
+<<<<<<< Updated upstream
     print("🚀 Starting ZenWallet API with Claude AI via Lava Payments...")
+=======
+    print("\n" + "="*60)
+    print("🚀 Starting ZenWallet AI Agent")
+    print("="*60)
+    print("\nEndpoints:")
+    print("  GET  /          - Health check")
+    print("  GET  /health    - Detailed status")
+    print("  POST /api/analyze - Spending analysis")
+    print("  POST /api/recommendations - Meal recommendations")
+    print("  POST /api/query - Natural language query")
+    print(" POST /api/spending-forecast - ML spending forecast")
+    print("\nDocs: http://localhost:8000/docs")
+    print("="*60 + "\n")
+>>>>>>> Stashed changes
     
     # Check if Lava is configured
     if os.getenv("LAVA_FORWARD_TOKEN"):
