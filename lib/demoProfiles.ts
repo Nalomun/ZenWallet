@@ -1,12 +1,12 @@
 export const DEMO_PROFILES = {
   swipe_ignorer: {
     id: 'swipe_ignorer',
-    name: 'Sarah Chen',
+    name: 'Quinn',
     description: 'Constantly buying food off-campus while meal swipes expire',
     emoji: '🛍️',
     problem: 'Wasting $672 in unused swipes',
     data: {
-      name: "Sarah Chen",
+      name: "Quinn",
       total_budget: 3175.0,
       total_spent: 4288.62,
       total_swipes: 161,
@@ -26,12 +26,12 @@ export const DEMO_PROFILES = {
   
   flex_abuser: {
     id: 'flex_abuser',
-    name: 'Marcus Johnson',
+    name: 'Nafis',
     description: 'Burns through flex dollars at campus cafes',
     emoji: '💳',
     problem: 'Overspending $800 on flex dollars',
     data: {
-      name: "Marcus Johnson",
+      name: "Nafis",
       total_budget: 3175.0,
       total_spent: 3980.0,
       total_swipes: 161,
@@ -51,12 +51,12 @@ export const DEMO_PROFILES = {
   
   balanced_saver: {
     id: 'balanced_saver',
-    name: 'Emma Rodriguez',
+    name: 'Hyacinth',
     description: 'Smart spender who uses the app well',
     emoji: '✨',
     problem: 'On track to save $450 this semester',
     data: {
-      name: "Emma Rodriguez",
+      name: "Hyacinth",
       total_budget: 3175.0,
       total_spent: 2100.0,
       total_swipes: 161,
@@ -76,12 +76,12 @@ export const DEMO_PROFILES = {
 
   social_spender: {
     id: 'social_spender',
-    name: 'Alex Kim',
+    name: 'THE BEAR',
     description: 'Always eating out with friends',
-    emoji: '👥',
+    emoji: '🐻',
     problem: 'Spending $900/month on social dining',
     data: {
-      name: "Alex Kim",
+      name: "THE BEAR",
       total_budget: 3175.0,
       total_spent: 4850.0,
       total_swipes: 161,
