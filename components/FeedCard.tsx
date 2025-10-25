@@ -79,11 +79,11 @@ export default function FeedCard({ recommendation }: FeedCardProps) {
     {/* Modal */}
     {showModal && (
       <div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in overflow-y-auto"
         onClick={() => setShowModal(false)}
       >
         <div 
-          className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 animate-slide-up"
+          className="bg-white rounded-2xl shadow-2xl max-w-lg w-full my-8 p-8 animate-slide-up max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}

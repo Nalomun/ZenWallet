@@ -72,6 +72,21 @@ select,
   cursor: pointer !important;
 }
 
+/* Prevent emojis from being affected by text gradients */
+.bg-clip-text {
+  /* Emojis should not inherit text clipping */
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Ensure emojis stay colorful */
+span:has(emoji),
+.emoji {
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: initial !important;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 10px;

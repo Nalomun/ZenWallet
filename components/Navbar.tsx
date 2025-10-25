@@ -12,28 +12,33 @@ export default function Navbar() {
           <div className="flex gap-6">
             <Link 
               href="/" 
-              className="text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 hover:bg-clip-text font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50"
+              className="text-gray-700 hover:text-purple-600 font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50 flex items-center gap-2"
             >
-              📊 Dashboard
+              <span>📊</span>
+              <span>Dashboard</span>
             </Link>
             <Link 
               href="/feed" 
-              className="text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 hover:bg-clip-text font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50"
+              className="text-gray-700 hover:text-purple-600 font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50 flex items-center gap-2"
             >
-              🍽️ Feed
+              <span>🍽️</span>
+              <span>Feed</span>
             </Link>
             <Link 
               href="/forecast" 
-              className="text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 hover:bg-clip-text font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50"
+              className="text-gray-700 hover:text-purple-600 font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50 flex items-center gap-2"
             >
-              📈 Forecast
+              <span>📈</span>
+              <span>Forecast</span>
             </Link>
             <Link 
               href="/preferences" 
-              className="text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 hover:bg-clip-text font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50"
+              className="text-gray-700 hover:text-purple-600 font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50 flex items-center gap-2"
             >
-              ⚙️ Preferences
+              <span>⚙️</span>
+              <span>Preferences</span>
             </Link>
+            
           </div>
         </div>
         <AuthButton />

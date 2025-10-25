@@ -86,10 +86,10 @@ export default function AuthButton() {
     const profile = DEMO_PROFILES[currentProfile as keyof typeof DEMO_PROFILES];
     
     return (
-      <div className="relative">
+      <div className="relative z-50">
         <button
           onClick={() => setShowDropdown(!showDropdown)}
-          className="flex items-center gap-4 bg-white/50 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/40 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+          className="flex items-center gap-4 bg-white/50 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/40 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 relative z-50"
         >
           {user.user_metadata?.avatar_url && (
             <img
