@@ -1,0 +1,339 @@
+{
+  "UserData": {
+    "id": "34bc8d93-bd4e-40f6-8c4a-70fa06d2b374",
+    "name": "User_42",
+    "user_type": "swipe_ignorer",
+    "totalPlan": 2496,
+    "totalSwipes": 125,
+    "currentSpent": 2910.29,
+    "currentSwipes": 87,
+    "flexDollars": 830,
+    "weeksIntoSemester": 8,
+    "preferences": {
+      "dietary": [
+        "vegetarian"
+      ],
+      "favorite_cuisines": [
+        "Asian",
+        "Italian"
+      ],
+      "priorities": [
+        "quick",
+        "social"
+      ]
+    }
+  },
+  "Transactions": [
+    {
+      "id": "630354d3-24a8-49e9-ae2b-9152a540de0a",
+      "date": "2025-10-19T08:47:22.409862Z",
+      "amount": 12.51,
+      "location": "Smoothie Shack",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "9ddd1774-5202-4074-855e-ad59e145771c",
+      "date": "2025-09-08T08:47:22.409862Z",
+      "amount": 8.12,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "dfafd642-5564-4ffb-bf25-8b4d3dfd3b8d",
+      "date": "2025-09-24T08:47:22.409862Z",
+      "amount": 7.5,
+      "location": "Off-Campus Grill",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "ea39a22b-ad89-490e-91ac-f10c27088309",
+      "date": "2025-09-24T08:47:22.409862Z",
+      "amount": 14.72,
+      "location": "Smoothie Shack",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "04bea85f-9786-45e6-a4be-0960d13ab6a0",
+      "date": "2025-10-23T08:47:22.409862Z",
+      "amount": 7.45,
+      "location": "Off-Campus Grill",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "fc286825-bc62-4640-a11b-b334819d09f6",
+      "date": "2025-09-30T08:47:22.409862Z",
+      "amount": 8.69,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "0ef53e37-5d00-473c-b69b-ebd656b8e217",
+      "date": "2025-09-12T08:47:22.409862Z",
+      "amount": 8.19,
+      "location": "Smoothie Shack",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "c438e485-1be2-4a19-b747-6474c935c442",
+      "date": "2025-10-23T08:47:22.409862Z",
+      "amount": 8.13,
+      "location": "Smoothie Shack",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "ba7d5cda-129a-47dc-a930-14c17eadd776",
+      "date": "2025-09-16T08:47:22.409862Z",
+      "amount": 8.94,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "0a973a8d-5148-4943-8144-e5f9dfd9cc3d",
+      "date": "2025-10-14T08:47:22.409862Z",
+      "amount": 7.4,
+      "location": "Smoothie Shack",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "5f559514-19c7-47a0-b689-38aff63f9808",
+      "date": "2025-09-26T08:47:22.409862Z",
+      "amount": 8.37,
+      "location": "Smoothie Shack",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "d606ae1a-2d84-4640-968a-7dc7df860690",
+      "date": "2025-10-18T08:47:22.409862Z",
+      "amount": 11.76,
+      "location": "Off-Campus Grill",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "406c84e0-1734-4ba1-8fce-aceab6ca54a7",
+      "date": "2025-10-13T08:47:22.409862Z",
+      "amount": 9.7,
+      "location": "Off-Campus Grill",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "5f3c972c-9b6a-4ed7-bcae-85aec3a39631",
+      "date": "2025-10-05T08:47:22.409862Z",
+      "amount": 14.81,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "37cca14e-a7eb-47af-97e0-ae5c38e84255",
+      "date": "2025-10-05T08:47:22.409862Z",
+      "amount": 13.11,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "63efda8c-038b-4195-b3dc-b803732b8fe1",
+      "date": "2025-10-21T08:47:22.409862Z",
+      "amount": 9.19,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "1bf2c02c-c1ba-4876-bfa9-7e2fa9650554",
+      "date": "2025-09-11T08:47:22.409862Z",
+      "amount": 11.43,
+      "location": "Off-Campus Grill",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "0b335abe-2df0-4b21-b4fd-05e289127af0",
+      "date": "2025-10-17T08:47:22.409862Z",
+      "amount": 13.33,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "4b683a8c-b670-4202-936f-710fa743230e",
+      "date": "2025-09-06T08:47:22.409862Z",
+      "amount": 7.13,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "33313fd2-8d79-4c01-a69e-17043992ef56",
+      "date": "2025-10-25T08:47:22.409862Z",
+      "amount": 14.41,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "fe14222d-ed09-4351-bbda-68a42a52d26a",
+      "date": "2025-09-29T08:47:22.409862Z",
+      "amount": 13.46,
+      "location": "Smoothie Shack",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "0e5ff17f-b538-402c-9ed6-baa8cf030e46",
+      "date": "2025-10-12T08:47:22.409862Z",
+      "amount": 12.12,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "a7cf4617-9bda-4e98-9649-9657ddc70f5a",
+      "date": "2025-10-10T08:47:22.409862Z",
+      "amount": 11.88,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "91d45d0c-6c01-45f9-94ff-2326980f290c",
+      "date": "2025-09-10T08:47:22.409862Z",
+      "amount": 11.9,
+      "location": "Off-Campus Grill",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "8304737c-a863-4ff6-ba36-c7797aa89412",
+      "date": "2025-10-03T08:47:22.409862Z",
+      "amount": 7.04,
+      "location": "Off-Campus Grill",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "b2705509-2abe-41a4-803e-389b378ca762",
+      "date": "2025-09-22T08:47:22.409862Z",
+      "amount": 11.95,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "2d29e721-3e3e-41e3-99be-fce8722a33fc",
+      "date": "2025-09-26T08:47:22.409862Z",
+      "amount": 12.27,
+      "location": "Smoothie Shack",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "3cdde07c-1cbb-4112-a2b2-b7202dd736ba",
+      "date": "2025-10-18T08:47:22.409862Z",
+      "amount": 12.48,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "533a6724-e0e8-4e1c-a995-93a8fae69b0b",
+      "date": "2025-09-24T08:47:22.409862Z",
+      "amount": 8.28,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "5984a2b6-aba5-4c6a-b4e9-7d7adbd8c949",
+      "date": "2025-09-14T08:47:22.409862Z",
+      "amount": 9.28,
+      "location": "Off-Campus Grill",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "3d7bce72-0116-4367-838f-2709ccb6f870",
+      "date": "2025-09-16T08:47:22.409862Z",
+      "amount": 7.35,
+      "location": "Off-Campus Grill",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "9359aed7-0cfa-48b6-a121-0d9cd70becb4",
+      "date": "2025-10-15T08:47:22.409862Z",
+      "amount": 10.88,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "lunch"
+    }
+  ],
+  "DiningHalls": [
+    {
+      "id": "3b4949e3-95b0-4b24-ba6e-5f5ffbd65f28",
+      "name": "Central Dining",
+      "hours": {
+        "breakfast": "7-10am",
+        "lunch": "11-2pm",
+        "dinner": "5-8pm"
+      },
+      "currentMenu": [
+        "Pasta bar",
+        "Salad bar",
+        "Pizza"
+      ],
+      "distance": "2 min walk",
+      "crowdLevel": "medium",
+      "acceptsSwipes": true,
+      "vibe": "Lively, social spot"
+    },
+    {
+      "id": "2364e657-a6b7-486e-9b00-1742a7fb70a0",
+      "name": "North Commons",
+      "hours": {
+        "breakfast": "7-9am",
+        "lunch": "11-1:30pm",
+        "dinner": "5-7:30pm"
+      },
+      "currentMenu": [
+        "Grain bowls",
+        "Smoothie station",
+        "Soup corner"
+      ],
+      "distance": "5 min walk",
+      "crowdLevel": "low",
+      "acceptsSwipes": true,
+      "vibe": "Healthy, relaxed environment"
+    },
+    {
+      "id": "96bdb7a7-a191-4748-bfc2-79f6f3884093",
+      "name": "Campus Caf\u00e9",
+      "hours": {
+        "breakfast": "8-11am",
+        "lunch": "11:30-3pm"
+      },
+      "currentMenu": [
+        "Coffee",
+        "Bagels",
+        "Wraps"
+      ],
+      "distance": "1 min walk",
+      "crowdLevel": "high",
+      "acceptsSwipes": false,
+      "vibe": "Grab-and-go hustle"
+    }
+  ]
+}

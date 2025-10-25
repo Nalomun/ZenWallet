@@ -1,0 +1,331 @@
+{
+  "UserData": {
+    "id": "2d436159-f4ef-4177-8ec0-03c814da66bc",
+    "name": "User_35",
+    "user_type": "underspender",
+    "totalPlan": 2239,
+    "totalSwipes": 174,
+    "currentSpent": 1999.16,
+    "currentSwipes": 139,
+    "flexDollars": 561,
+    "weeksIntoSemester": 5,
+    "preferences": {
+      "dietary": [
+        "none"
+      ],
+      "favorite_cuisines": [
+        "Italian",
+        "Asian"
+      ],
+      "priorities": [
+        "healthy",
+        "quick"
+      ]
+    }
+  },
+  "Transactions": [
+    {
+      "id": "35c6967e-37a7-4ff5-b3ff-46a015497dda",
+      "date": "2025-10-06T08:47:22.400287Z",
+      "amount": 9.12,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "5bed372a-aeb3-4e7e-91c6-1b4f77ca80d6",
+      "date": "2025-09-26T08:47:22.400287Z",
+      "amount": 13.49,
+      "location": "North Commons",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "ea31d93d-54ca-4b62-9896-e6613555a1b1",
+      "date": "2025-09-28T08:47:22.400287Z",
+      "amount": 12.79,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "b51d3617-beab-44b0-b5d5-3b7decde0fda",
+      "date": "2025-08-24T08:47:22.400287Z",
+      "amount": 11.76,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "d50474e0-5170-463a-9e32-fd629ab9b8d5",
+      "date": "2025-10-15T08:47:22.400287Z",
+      "amount": 14.37,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "51453ba4-13d0-4d1d-b7da-dbe6614d8094",
+      "date": "2025-09-02T08:47:22.400287Z",
+      "amount": 13.96,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "7c9938f4-bdbc-4dae-82f5-e209e9142fed",
+      "date": "2025-09-07T08:47:22.400287Z",
+      "amount": 9.44,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "5e5926c0-d55e-46b5-9a85-1ea45858f0db",
+      "date": "2025-09-14T08:47:22.400287Z",
+      "amount": 8.23,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "86f41d3a-8b76-4a82-b810-cab750d97bb2",
+      "date": "2025-08-29T08:47:22.400287Z",
+      "amount": 8.78,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "b2714d7d-5341-4cf1-8162-f9925b6a1163",
+      "date": "2025-10-07T08:47:22.400287Z",
+      "amount": 9.69,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "94912ddc-e882-43d1-8068-f927fc6dfc75",
+      "date": "2025-08-16T08:47:22.400287Z",
+      "amount": 9.1,
+      "location": "North Commons",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "acf632a6-81fd-4e34-8fce-705491723584",
+      "date": "2025-10-09T08:47:22.400287Z",
+      "amount": 10.85,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "354c5b59-f433-4f31-aa6b-d745daf40d00",
+      "date": "2025-09-30T08:47:22.400287Z",
+      "amount": 8.94,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "010be13b-1662-4773-9857-4f5576dbc072",
+      "date": "2025-09-14T08:47:22.400287Z",
+      "amount": 7.9,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "3a99a36d-8f81-4fd3-bd9d-9c2fb0b656a6",
+      "date": "2025-09-11T08:47:22.400287Z",
+      "amount": 9.57,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "06dfe69e-bb40-4b26-b2a0-69811bdfda30",
+      "date": "2025-09-16T08:47:22.400287Z",
+      "amount": 14.9,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "9889aa37-5174-4a12-9605-72b39b81672f",
+      "date": "2025-10-07T08:47:22.400287Z",
+      "amount": 7.36,
+      "location": "North Commons",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "f9acd780-b331-44ce-ba3d-af9f6acb573c",
+      "date": "2025-09-08T08:47:22.400287Z",
+      "amount": 13.06,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "1619030b-3dfb-44d9-a398-54ad63aa6bee",
+      "date": "2025-10-19T08:47:22.400287Z",
+      "amount": 14.59,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "005f6e7d-a3ba-48d3-a755-5f847e18f772",
+      "date": "2025-10-24T08:47:22.400287Z",
+      "amount": 12.55,
+      "location": "North Commons",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "a0795a26-7656-4947-ae4d-c45261c497b6",
+      "date": "2025-08-26T08:47:22.400287Z",
+      "amount": 9.66,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "b7356154-700b-4f3a-a903-182f127a059e",
+      "date": "2025-09-29T08:47:22.400287Z",
+      "amount": 11.39,
+      "location": "North Commons",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "b2daed0e-69b5-4f57-83da-37572b9aa796",
+      "date": "2025-10-23T08:47:22.400287Z",
+      "amount": 11.66,
+      "location": "North Commons",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "4804e109-6ad8-4967-b169-984fe609970c",
+      "date": "2025-09-23T08:47:22.400287Z",
+      "amount": 7.48,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "bd760770-cde3-46e5-a13a-edc3434041d0",
+      "date": "2025-10-19T08:47:22.400287Z",
+      "amount": 12.24,
+      "location": "North Commons",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "75ffaaef-679b-4c17-b228-479ec1ab4e1d",
+      "date": "2025-09-21T08:47:22.400287Z",
+      "amount": 13.91,
+      "location": "North Commons",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "e7287ebc-f964-46bc-8a92-fc4bca7873ac",
+      "date": "2025-09-26T08:47:22.400287Z",
+      "amount": 11.07,
+      "location": "North Commons",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "48794fd8-8002-43fe-90c9-9f9fdb361de4",
+      "date": "2025-08-24T08:47:22.400287Z",
+      "amount": 8.49,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "b6b584bd-6b78-4943-85d9-48a5f75a0029",
+      "date": "2025-10-23T08:47:22.400287Z",
+      "amount": 8.98,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "388ea304-558f-49c1-8d39-a99f93748fba",
+      "date": "2025-08-24T08:47:22.400287Z",
+      "amount": 12.96,
+      "location": "North Commons",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "78920830-8051-4415-93f1-9238674366c3",
+      "date": "2025-09-10T08:47:22.400287Z",
+      "amount": 8.89,
+      "location": "North Commons",
+      "type": "flex",
+      "category": "dinner"
+    }
+  ],
+  "DiningHalls": [
+    {
+      "id": "3b4949e3-95b0-4b24-ba6e-5f5ffbd65f28",
+      "name": "Central Dining",
+      "hours": {
+        "breakfast": "7-10am",
+        "lunch": "11-2pm",
+        "dinner": "5-8pm"
+      },
+      "currentMenu": [
+        "Pasta bar",
+        "Salad bar",
+        "Pizza"
+      ],
+      "distance": "2 min walk",
+      "crowdLevel": "medium",
+      "acceptsSwipes": true,
+      "vibe": "Lively, social spot"
+    },
+    {
+      "id": "2364e657-a6b7-486e-9b00-1742a7fb70a0",
+      "name": "North Commons",
+      "hours": {
+        "breakfast": "7-9am",
+        "lunch": "11-1:30pm",
+        "dinner": "5-7:30pm"
+      },
+      "currentMenu": [
+        "Grain bowls",
+        "Smoothie station",
+        "Soup corner"
+      ],
+      "distance": "5 min walk",
+      "crowdLevel": "low",
+      "acceptsSwipes": true,
+      "vibe": "Healthy, relaxed environment"
+    },
+    {
+      "id": "96bdb7a7-a191-4748-bfc2-79f6f3884093",
+      "name": "Campus Caf\u00e9",
+      "hours": {
+        "breakfast": "8-11am",
+        "lunch": "11:30-3pm"
+      },
+      "currentMenu": [
+        "Coffee",
+        "Bagels",
+        "Wraps"
+      ],
+      "distance": "1 min walk",
+      "crowdLevel": "high",
+      "acceptsSwipes": false,
+      "vibe": "Grab-and-go hustle"
+    }
+  ]
+}

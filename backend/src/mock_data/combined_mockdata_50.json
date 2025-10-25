@@ -1,0 +1,363 @@
+{
+  "UserData": {
+    "id": "fa0f7e30-0156-4318-8357-468a8de8924c",
+    "name": "User_50",
+    "user_type": "late_night_eater",
+    "totalPlan": 2375,
+    "totalSwipes": 167,
+    "currentSpent": 3326.84,
+    "currentSwipes": 133,
+    "flexDollars": 584,
+    "weeksIntoSemester": 8,
+    "preferences": {
+      "dietary": [
+        "none"
+      ],
+      "favorite_cuisines": [
+        "Mexican",
+        "Italian"
+      ],
+      "priorities": [
+        "quick",
+        "social"
+      ]
+    }
+  },
+  "Transactions": [
+    {
+      "id": "4806be0a-8887-4fac-b235-2fce6be9d70d",
+      "date": "2025-09-07T08:47:22.468238Z",
+      "amount": 11.45,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "35d3a5ce-20f2-4d8a-82d8-00ecdc5a5b2c",
+      "date": "2025-10-22T08:47:22.468238Z",
+      "amount": 8.19,
+      "location": "Taco Bell",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "53bd85c3-9caf-401a-a554-5840eb051312",
+      "date": "2025-09-25T08:47:22.468238Z",
+      "amount": 8.31,
+      "location": "Domino's",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "baef78c6-2ba8-4c27-9e60-599051789ad5",
+      "date": "2025-09-24T08:47:22.468238Z",
+      "amount": 10.53,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "8707a38b-2e1e-4ddf-b671-dc381969a430",
+      "date": "2025-09-26T08:47:22.468238Z",
+      "amount": 7.9,
+      "location": "Domino's",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "6802f6ea-6444-4886-ab00-939dbee5f28b",
+      "date": "2025-10-18T08:47:22.468238Z",
+      "amount": 7.75,
+      "location": "Domino's",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "c0844110-fe46-42d9-9858-00554094916a",
+      "date": "2025-10-15T08:47:22.468238Z",
+      "amount": 11.07,
+      "location": "Food Truck",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "d5067b80-bbc5-482f-84ce-db2e418fe76a",
+      "date": "2025-09-18T08:47:22.468238Z",
+      "amount": 11.21,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "b94785be-3c9e-46d3-8efb-3b7efa7343e2",
+      "date": "2025-10-21T08:47:22.468238Z",
+      "amount": 13.15,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "8c742208-b7f5-446f-85e6-86a97c977a37",
+      "date": "2025-10-24T08:47:22.468238Z",
+      "amount": 12.45,
+      "location": "Domino's",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "186643ba-4e52-4e1f-ae9d-a50cc31fc835",
+      "date": "2025-10-02T08:47:22.468238Z",
+      "amount": 14.43,
+      "location": "Food Truck",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "4f45cb5c-ff4f-436b-9b12-2f95858578cf",
+      "date": "2025-10-16T08:47:22.468238Z",
+      "amount": 7.65,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "104f7a6e-bbfd-4416-ac76-a3af3dd0fe63",
+      "date": "2025-09-26T08:47:22.468238Z",
+      "amount": 14.64,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "838863db-24ad-4056-a20f-7f779de98c11",
+      "date": "2025-10-04T08:47:22.468238Z",
+      "amount": 12.25,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "1d6c8b0f-d425-49ba-91f5-9a889a2635d5",
+      "date": "2025-09-09T08:47:22.468238Z",
+      "amount": 14.26,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "b3b0b4c8-0241-406a-b5ee-83bcfaf4a732",
+      "date": "2025-10-12T08:47:22.468238Z",
+      "amount": 13.41,
+      "location": "Taco Bell",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "7d82c338-0172-44ce-8e1f-8ab7d9104107",
+      "date": "2025-09-08T08:47:22.468238Z",
+      "amount": 11.38,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "1bf3e683-a39a-4a02-a62d-a44d5322ca4e",
+      "date": "2025-09-30T08:47:22.468238Z",
+      "amount": 8.42,
+      "location": "Domino's",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "642c60a2-7652-4deb-a455-7a944aff53cf",
+      "date": "2025-10-20T08:47:22.468238Z",
+      "amount": 13.82,
+      "location": "Taco Bell",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "58b14344-b174-480f-a3b9-2139a5c4bcd0",
+      "date": "2025-10-07T08:47:22.468238Z",
+      "amount": 13.02,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "60c1af32-d0db-4b18-b2dd-dc6c10706e27",
+      "date": "2025-10-06T08:47:22.468238Z",
+      "amount": 13.41,
+      "location": "Domino's",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "f2d21713-c23b-4175-9e31-4b1c1dd88751",
+      "date": "2025-09-12T08:47:22.468238Z",
+      "amount": 8.05,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "7b9fa025-7fa0-42dc-8eb0-2f008a5a824c",
+      "date": "2025-09-23T08:47:22.468238Z",
+      "amount": 10.92,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "8dc4e34d-2876-4f72-8657-550c478179e0",
+      "date": "2025-10-08T08:47:22.468238Z",
+      "amount": 11.8,
+      "location": "Food Truck",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "9de469cb-be53-4703-8898-6edb6fdc3d9b",
+      "date": "2025-10-02T08:47:22.468238Z",
+      "amount": 8.49,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "389e03b0-b7a4-4229-a4ac-7a259d1d2cc3",
+      "date": "2025-10-23T08:47:22.468238Z",
+      "amount": 9.73,
+      "location": "Food Truck",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "d3684718-daa1-44d6-b8e8-f8a8e663d3be",
+      "date": "2025-09-14T08:47:22.468238Z",
+      "amount": 12.71,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "8c3ac3ab-8fdb-4d0e-84da-e49827e6d34a",
+      "date": "2025-10-07T08:47:22.468238Z",
+      "amount": 10.5,
+      "location": "Domino's",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "7f54af01-42ff-4227-804b-1a5d4db77a20",
+      "date": "2025-10-06T08:47:22.468238Z",
+      "amount": 14.87,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "3c0f825d-5e95-487f-8e64-df8673d2bc2f",
+      "date": "2025-10-10T08:47:22.468238Z",
+      "amount": 10.42,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "276515a3-87f3-4758-9e22-7bf468fa2c0d",
+      "date": "2025-10-23T08:47:22.468238Z",
+      "amount": 7.86,
+      "location": "Food Truck",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "0ddcaee4-2989-4630-a430-8a25cc46b4da",
+      "date": "2025-09-26T08:47:22.468238Z",
+      "amount": 12.76,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "c839f68d-e16f-40d9-a63e-f0dadd7fedfe",
+      "date": "2025-10-09T08:47:22.468238Z",
+      "amount": 7.65,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "e64eceaf-0203-464e-9841-f3b49da4175f",
+      "date": "2025-09-08T08:47:22.468238Z",
+      "amount": 10.7,
+      "location": "Food Truck",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "47658194-220e-4fbd-9c1b-5ef84ce38678",
+      "date": "2025-10-23T08:47:22.468238Z",
+      "amount": 10.33,
+      "location": "Taco Bell",
+      "type": "flex",
+      "category": "dinner"
+    }
+  ],
+  "DiningHalls": [
+    {
+      "id": "3b4949e3-95b0-4b24-ba6e-5f5ffbd65f28",
+      "name": "Central Dining",
+      "hours": {
+        "breakfast": "7-10am",
+        "lunch": "11-2pm",
+        "dinner": "5-8pm"
+      },
+      "currentMenu": [
+        "Pasta bar",
+        "Salad bar",
+        "Pizza"
+      ],
+      "distance": "2 min walk",
+      "crowdLevel": "medium",
+      "acceptsSwipes": true,
+      "vibe": "Lively, social spot"
+    },
+    {
+      "id": "2364e657-a6b7-486e-9b00-1742a7fb70a0",
+      "name": "North Commons",
+      "hours": {
+        "breakfast": "7-9am",
+        "lunch": "11-1:30pm",
+        "dinner": "5-7:30pm"
+      },
+      "currentMenu": [
+        "Grain bowls",
+        "Smoothie station",
+        "Soup corner"
+      ],
+      "distance": "5 min walk",
+      "crowdLevel": "low",
+      "acceptsSwipes": true,
+      "vibe": "Healthy, relaxed environment"
+    },
+    {
+      "id": "96bdb7a7-a191-4748-bfc2-79f6f3884093",
+      "name": "Campus Caf\u00e9",
+      "hours": {
+        "breakfast": "8-11am",
+        "lunch": "11:30-3pm"
+      },
+      "currentMenu": [
+        "Coffee",
+        "Bagels",
+        "Wraps"
+      ],
+      "distance": "1 min walk",
+      "crowdLevel": "high",
+      "acceptsSwipes": false,
+      "vibe": "Grab-and-go hustle"
+    }
+  ]
+}

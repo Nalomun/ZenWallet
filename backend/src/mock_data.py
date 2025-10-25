@@ -3,7 +3,7 @@ Fallback mock data for when API calls fail
 These ensure the demo still works even if there are connection issues
 """
 
-from src.models import SpendingAnalysis, Recommendation
+from backend.src.models import SpendingAnalysis, Recommendation
 
 # Fallback spending analysis
 FALLBACK_ANALYSIS = SpendingAnalysis(

@@ -1,0 +1,275 @@
+{
+  "UserData": {
+    "id": "bffd7715-1693-4b54-826e-265f6b0e6bdf",
+    "name": "User_3",
+    "user_type": "luxury_diner",
+    "totalPlan": 3158,
+    "totalSwipes": 174,
+    "currentSpent": 2610.97,
+    "currentSwipes": 156,
+    "flexDollars": 463,
+    "weeksIntoSemester": 10,
+    "preferences": {
+      "dietary": [
+        "vegan"
+      ],
+      "favorite_cuisines": [
+        "American",
+        "Mexican"
+      ],
+      "priorities": [
+        "cheap",
+        "social"
+      ]
+    }
+  },
+  "Transactions": [
+    {
+      "id": "2152f17e-772b-4759-9475-b388689472ff",
+      "date": "2025-10-13T08:47:22.351308Z",
+      "amount": 18.65,
+      "location": "Urban Table",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "a47e8619-11ea-4015-999c-19f14d0da7a0",
+      "date": "2025-10-06T08:47:22.351308Z",
+      "amount": 17.48,
+      "location": "Urban Table",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "f5ef698d-c33b-448f-82d9-7a2c251e0b0a",
+      "date": "2025-10-12T08:47:22.351308Z",
+      "amount": 19.86,
+      "location": "Urban Table",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "984b1a62-c0fc-49ab-a37b-4a1b56dddbea",
+      "date": "2025-09-26T08:47:22.351308Z",
+      "amount": 16.42,
+      "location": "Urban Table",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "38653da9-63c0-4876-adc9-7fb3fe1e7316",
+      "date": "2025-10-15T08:47:22.351308Z",
+      "amount": 12.85,
+      "location": "Food Truck Friday",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "cde0762a-dcf0-41d4-b018-1997eb123478",
+      "date": "2025-10-20T08:47:22.351308Z",
+      "amount": 18.73,
+      "location": "The Bistro",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "dd38d536-66b9-454c-9e40-95645c2b96c0",
+      "date": "2025-10-16T08:47:22.351308Z",
+      "amount": 12.46,
+      "location": "The Bistro",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "2be98b81-2730-4397-8483-2539a32f7028",
+      "date": "2025-09-26T08:47:22.351308Z",
+      "amount": 20.86,
+      "location": "Urban Table",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "b0b9608e-84d4-4543-bc4a-0779f342a6b7",
+      "date": "2025-09-24T08:47:22.351308Z",
+      "amount": 14.44,
+      "location": "Urban Table",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "f8694465-867e-4fb1-be74-5f64a7c3d709",
+      "date": "2025-10-19T08:47:22.351308Z",
+      "amount": 14.19,
+      "location": "Urban Table",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "79b27170-5a79-4fd6-9827-bb7a192f272b",
+      "date": "2025-10-22T08:47:22.351308Z",
+      "amount": 14.49,
+      "location": "Food Truck Friday",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "da790ec7-6df8-4539-9c7e-15023aea4a21",
+      "date": "2025-10-17T08:47:22.351308Z",
+      "amount": 18.68,
+      "location": "Urban Table",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "7ad71132-4275-4014-ab3c-ff7e3425702e",
+      "date": "2025-09-27T08:47:22.351308Z",
+      "amount": 20.15,
+      "location": "Food Truck Friday",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "0830f542-4126-48db-bacf-133007bedcc0",
+      "date": "2025-09-20T08:47:22.351308Z",
+      "amount": 20.97,
+      "location": "Urban Table",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "4a924e91-dd61-49c4-a178-fbe16157ab57",
+      "date": "2025-09-27T08:47:22.351308Z",
+      "amount": 19.52,
+      "location": "Urban Table",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "7fa07290-4d8b-4d35-bd3d-bbedf4589ce2",
+      "date": "2025-09-22T08:47:22.351308Z",
+      "amount": 18.27,
+      "location": "Urban Table",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "79689f99-64bd-4339-ac91-f641d4acf26b",
+      "date": "2025-10-07T08:47:22.351308Z",
+      "amount": 14.72,
+      "location": "The Bistro",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "9fe6f91a-e10f-446e-a939-c659bf442a26",
+      "date": "2025-10-17T08:47:22.351308Z",
+      "amount": 14.31,
+      "location": "The Bistro",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "205edf2c-6add-4e0b-a013-be74057b0dfd",
+      "date": "2025-10-21T08:47:22.351308Z",
+      "amount": 16.08,
+      "location": "Urban Table",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "a68aa9bd-776f-445a-acba-d685489af564",
+      "date": "2025-10-22T08:47:22.351308Z",
+      "amount": 20.33,
+      "location": "The Bistro",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "5ad5aba8-dbb5-47ce-b49b-0b8539351584",
+      "date": "2025-10-01T08:47:22.351308Z",
+      "amount": 12.06,
+      "location": "Urban Table",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "d042442f-d7d4-40ea-9e3d-9b7ea74ca098",
+      "date": "2025-09-29T08:47:22.351308Z",
+      "amount": 19.48,
+      "location": "Food Truck Friday",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "aa90a0d2-7779-4f3d-ad57-746f42c276db",
+      "date": "2025-09-24T08:47:22.351308Z",
+      "amount": 14.73,
+      "location": "The Bistro",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "c4dab7e1-875a-4ed9-ad24-5d8951d0ea1c",
+      "date": "2025-10-04T08:47:22.351308Z",
+      "amount": 18.79,
+      "location": "Food Truck Friday",
+      "type": "swipe",
+      "category": "lunch"
+    }
+  ],
+  "DiningHalls": [
+    {
+      "id": "3b4949e3-95b0-4b24-ba6e-5f5ffbd65f28",
+      "name": "Central Dining",
+      "hours": {
+        "breakfast": "7-10am",
+        "lunch": "11-2pm",
+        "dinner": "5-8pm"
+      },
+      "currentMenu": [
+        "Pasta bar",
+        "Salad bar",
+        "Pizza"
+      ],
+      "distance": "2 min walk",
+      "crowdLevel": "medium",
+      "acceptsSwipes": true,
+      "vibe": "Lively, social spot"
+    },
+    {
+      "id": "2364e657-a6b7-486e-9b00-1742a7fb70a0",
+      "name": "North Commons",
+      "hours": {
+        "breakfast": "7-9am",
+        "lunch": "11-1:30pm",
+        "dinner": "5-7:30pm"
+      },
+      "currentMenu": [
+        "Grain bowls",
+        "Smoothie station",
+        "Soup corner"
+      ],
+      "distance": "5 min walk",
+      "crowdLevel": "low",
+      "acceptsSwipes": true,
+      "vibe": "Healthy, relaxed environment"
+    },
+    {
+      "id": "96bdb7a7-a191-4748-bfc2-79f6f3884093",
+      "name": "Campus Caf\u00e9",
+      "hours": {
+        "breakfast": "8-11am",
+        "lunch": "11:30-3pm"
+      },
+      "currentMenu": [
+        "Coffee",
+        "Bagels",
+        "Wraps"
+      ],
+      "distance": "1 min walk",
+      "crowdLevel": "high",
+      "acceptsSwipes": false,
+      "vibe": "Grab-and-go hustle"
+    }
+  ]
+}

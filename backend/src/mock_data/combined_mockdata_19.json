@@ -1,0 +1,307 @@
+{
+  "UserData": {
+    "id": "ab12d7da-823b-46e3-8430-6f217cb5a79b",
+    "name": "User_19",
+    "user_type": "health_conscious",
+    "totalPlan": 3184,
+    "totalSwipes": 145,
+    "currentSpent": 3685.44,
+    "currentSwipes": 113,
+    "flexDollars": 650,
+    "weeksIntoSemester": 6,
+    "preferences": {
+      "dietary": [
+        "vegan"
+      ],
+      "favorite_cuisines": [
+        "American",
+        "Asian"
+      ],
+      "priorities": [
+        "healthy",
+        "quick"
+      ]
+    }
+  },
+  "Transactions": [
+    {
+      "id": "3d6f9d2f-7b77-4f00-a4f7-7e17e14149bc",
+      "date": "2025-09-08T08:47:22.372818Z",
+      "amount": 8.75,
+      "location": "Green Bowl",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "b944facc-52ec-4b5e-b936-313e61402298",
+      "date": "2025-10-14T08:47:22.372818Z",
+      "amount": 8.86,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "1d60a388-117e-4e86-918b-6fb88d150400",
+      "date": "2025-10-17T08:47:22.372818Z",
+      "amount": 5.99,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "a4bf0114-a877-47e0-8ce5-79ac07b073f4",
+      "date": "2025-08-23T08:47:22.372818Z",
+      "amount": 5.61,
+      "location": "Green Bowl",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "c01b6276-12b0-45c2-b1de-3878dddbb883",
+      "date": "2025-08-24T08:47:22.372818Z",
+      "amount": 8.47,
+      "location": "Green Bowl",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "65edd2f0-f2a6-4830-8f5e-6af95fe0c635",
+      "date": "2025-10-13T08:47:22.372818Z",
+      "amount": 7.92,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "e028afe8-0a0e-40d0-8604-8d947ad2a78f",
+      "date": "2025-10-05T08:47:22.372818Z",
+      "amount": 6.28,
+      "location": "Green Bowl",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "a5f5ae74-7379-4890-914a-8b5e4ad33f1b",
+      "date": "2025-09-30T08:47:22.372818Z",
+      "amount": 8.55,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "2c2c48ea-e954-42a1-b7cb-b27ba4ffea25",
+      "date": "2025-10-05T08:47:22.372818Z",
+      "amount": 4.47,
+      "location": "Green Bowl",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "457ca729-b270-49db-a9b1-a1722cff114f",
+      "date": "2025-09-08T08:47:22.372818Z",
+      "amount": 8.52,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "6b207a7e-e713-44ce-ac58-5c4872652625",
+      "date": "2025-09-16T08:47:22.372818Z",
+      "amount": 7.5,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "1a78f101-b247-475a-b835-d6cc1a59809f",
+      "date": "2025-10-13T08:47:22.372818Z",
+      "amount": 5.07,
+      "location": "Salad Stop",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "b37c3064-448d-4b20-a00f-907e95d30cc4",
+      "date": "2025-08-30T08:47:22.372818Z",
+      "amount": 4.04,
+      "location": "Salad Stop",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "6d6393c7-7948-4778-b806-9d81e53e3aa1",
+      "date": "2025-09-01T08:47:22.372818Z",
+      "amount": 4.66,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "7566d013-a008-45c2-a994-5a9ea999c7dd",
+      "date": "2025-10-14T08:47:22.372818Z",
+      "amount": 8.03,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "db41dcd4-f3c9-448d-ae03-3580133c4c2b",
+      "date": "2025-09-17T08:47:22.372818Z",
+      "amount": 5.91,
+      "location": "Salad Stop",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "5a5491af-3cab-4cfc-854d-5759b23f6cf7",
+      "date": "2025-10-07T08:47:22.372818Z",
+      "amount": 6.65,
+      "location": "Salad Stop",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "fc705444-7f75-45d5-b42c-e386b10f29ed",
+      "date": "2025-08-30T08:47:22.372818Z",
+      "amount": 7.61,
+      "location": "Green Bowl",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "354d28fe-68f6-49f0-9c45-1937f6c4ba43",
+      "date": "2025-09-03T08:47:22.372818Z",
+      "amount": 7.43,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "8db7393e-a93f-4b5f-8cfc-27c228c65965",
+      "date": "2025-10-13T08:47:22.372818Z",
+      "amount": 7.76,
+      "location": "Salad Stop",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "f3ec1390-d75e-40de-a9b3-7599fa846381",
+      "date": "2025-09-11T08:47:22.372818Z",
+      "amount": 5.57,
+      "location": "Green Bowl",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "772cd049-61cf-4ee9-97b2-4d4e7b3caf4f",
+      "date": "2025-10-15T08:47:22.372818Z",
+      "amount": 6.77,
+      "location": "Salad Stop",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "7e136952-a52a-46c7-8648-d15752397566",
+      "date": "2025-10-22T08:47:22.372818Z",
+      "amount": 8.38,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "9b414aca-57cf-44d7-ab82-58e6ce1d9d3a",
+      "date": "2025-09-05T08:47:22.372818Z",
+      "amount": 7.23,
+      "location": "Green Bowl",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "a87e8f3c-3211-47e4-82d2-b18a547e61eb",
+      "date": "2025-08-23T08:47:22.372818Z",
+      "amount": 4.56,
+      "location": "Green Bowl",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "dbf5f92d-5359-4194-ab82-32731f27f716",
+      "date": "2025-10-24T08:47:22.372818Z",
+      "amount": 8.67,
+      "location": "Green Bowl",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "ac4adb08-fd1a-4814-bf5c-91fea72da244",
+      "date": "2025-09-09T08:47:22.372818Z",
+      "amount": 7.41,
+      "location": "Central Dining",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "2e489d39-79dc-4026-9b65-7a2c315ecec2",
+      "date": "2025-10-23T08:47:22.372818Z",
+      "amount": 4.34,
+      "location": "Central Dining",
+      "type": "swipe",
+      "category": "coffee"
+    }
+  ],
+  "DiningHalls": [
+    {
+      "id": "3b4949e3-95b0-4b24-ba6e-5f5ffbd65f28",
+      "name": "Central Dining",
+      "hours": {
+        "breakfast": "7-10am",
+        "lunch": "11-2pm",
+        "dinner": "5-8pm"
+      },
+      "currentMenu": [
+        "Pasta bar",
+        "Salad bar",
+        "Pizza"
+      ],
+      "distance": "2 min walk",
+      "crowdLevel": "medium",
+      "acceptsSwipes": true,
+      "vibe": "Lively, social spot"
+    },
+    {
+      "id": "2364e657-a6b7-486e-9b00-1742a7fb70a0",
+      "name": "North Commons",
+      "hours": {
+        "breakfast": "7-9am",
+        "lunch": "11-1:30pm",
+        "dinner": "5-7:30pm"
+      },
+      "currentMenu": [
+        "Grain bowls",
+        "Smoothie station",
+        "Soup corner"
+      ],
+      "distance": "5 min walk",
+      "crowdLevel": "low",
+      "acceptsSwipes": true,
+      "vibe": "Healthy, relaxed environment"
+    },
+    {
+      "id": "96bdb7a7-a191-4748-bfc2-79f6f3884093",
+      "name": "Campus Caf\u00e9",
+      "hours": {
+        "breakfast": "8-11am",
+        "lunch": "11:30-3pm"
+      },
+      "currentMenu": [
+        "Coffee",
+        "Bagels",
+        "Wraps"
+      ],
+      "distance": "1 min walk",
+      "crowdLevel": "high",
+      "acceptsSwipes": false,
+      "vibe": "Grab-and-go hustle"
+    }
+  ]
+}

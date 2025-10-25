@@ -1,0 +1,323 @@
+{
+  "UserData": {
+    "id": "2c0d6a47-cfc9-4585-a2db-9b41469dab3c",
+    "name": "User_22",
+    "user_type": "coffee_drainer",
+    "totalPlan": 2208,
+    "totalSwipes": 161,
+    "currentSpent": 3196.38,
+    "currentSwipes": 98,
+    "flexDollars": 852,
+    "weeksIntoSemester": 9,
+    "preferences": {
+      "dietary": [
+        "vegan"
+      ],
+      "favorite_cuisines": [
+        "Mexican",
+        "Italian"
+      ],
+      "priorities": [
+        "social",
+        "quick"
+      ]
+    }
+  },
+  "Transactions": [
+    {
+      "id": "f570b6f7-ef82-4420-89c1-db374b538943",
+      "date": "2025-10-01T08:47:22.376353Z",
+      "amount": 4.9,
+      "location": "Campus Caf\u00e9",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "13d2d566-a611-4783-9559-56a8f662aaad",
+      "date": "2025-10-24T08:47:22.376353Z",
+      "amount": 4.29,
+      "location": "Campus Caf\u00e9",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "a0032e57-0a63-42ef-b0f4-89b8ce022ae4",
+      "date": "2025-09-18T08:47:22.376353Z",
+      "amount": 8.87,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "0b82cd30-0e6e-4040-9dcb-4201a58bb1d7",
+      "date": "2025-10-08T08:47:22.376353Z",
+      "amount": 8.08,
+      "location": "Peet's Coffee",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "f170726c-19ad-4be9-acab-3d74ef3fbd23",
+      "date": "2025-10-11T08:47:22.376353Z",
+      "amount": 8.23,
+      "location": "Peet's Coffee",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "5980f54c-554a-4217-89eb-3c0c6e2cfdf4",
+      "date": "2025-10-14T08:47:22.376353Z",
+      "amount": 5.18,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "c482580f-630b-40a7-9e0f-2b38cba2a5c6",
+      "date": "2025-09-18T08:47:22.376353Z",
+      "amount": 7.52,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "c1f7d334-841c-461c-ac75-d44db8c048f5",
+      "date": "2025-09-19T08:47:22.376353Z",
+      "amount": 8.18,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "snack"
+    },
+    {
+      "id": "62f5e13c-7c2b-4969-8bd3-a2c29a95ac98",
+      "date": "2025-09-21T08:47:22.376353Z",
+      "amount": 4.88,
+      "location": "Campus Caf\u00e9",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "1a0dbff0-9a06-40fb-ad24-33f5446f9f1e",
+      "date": "2025-10-11T08:47:22.376353Z",
+      "amount": 5.09,
+      "location": "Peet's Coffee",
+      "type": "flex",
+      "category": "coffee"
+    },
+    {
+      "id": "bea36122-3be6-4ee2-abd5-476c4f0c154e",
+      "date": "2025-10-04T08:47:22.376353Z",
+      "amount": 5.01,
+      "location": "Peet's Coffee",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "9a41af44-818e-4ab4-9a6c-54edcd98d3a6",
+      "date": "2025-10-05T08:47:22.376353Z",
+      "amount": 4.11,
+      "location": "Starbucks",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "0fb5c57d-b22b-42ee-8d63-cd7ead2be14b",
+      "date": "2025-10-18T08:47:22.376353Z",
+      "amount": 8.3,
+      "location": "Peet's Coffee",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "219e81e4-9ae4-478f-b50b-a94616e99bff",
+      "date": "2025-09-13T08:47:22.376353Z",
+      "amount": 6.93,
+      "location": "Campus Caf\u00e9",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "d644ab16-3577-432a-a36a-56363c978a69",
+      "date": "2025-10-17T08:47:22.376353Z",
+      "amount": 7.66,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "90f3ce5b-4ee3-4163-8b3c-726085cd8a93",
+      "date": "2025-09-14T08:47:22.376353Z",
+      "amount": 4.87,
+      "location": "Campus Caf\u00e9",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "96cee474-d4a5-4a26-825b-7c09cfd5cb6a",
+      "date": "2025-10-11T08:47:22.376353Z",
+      "amount": 6.94,
+      "location": "Peet's Coffee",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "6da2dd73-3871-4426-86a0-e511a922e194",
+      "date": "2025-10-07T08:47:22.376353Z",
+      "amount": 4.89,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "3ced9227-5610-45e5-9c7c-c7971d1772de",
+      "date": "2025-09-19T08:47:22.376353Z",
+      "amount": 4.91,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "lunch"
+    },
+    {
+      "id": "cbca887d-4c72-4f21-acb3-c93db041e03a",
+      "date": "2025-09-15T08:47:22.376353Z",
+      "amount": 4.52,
+      "location": "Peet's Coffee",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "1f956b56-fc97-467c-963f-5c43ca40641f",
+      "date": "2025-10-21T08:47:22.376353Z",
+      "amount": 5.73,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "aded2c84-aed4-428f-94a7-35ed4f84f1c5",
+      "date": "2025-09-13T08:47:22.376353Z",
+      "amount": 7.65,
+      "location": "Peet's Coffee",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "fc6ce575-9447-411b-8b5c-abeff8d91326",
+      "date": "2025-10-09T08:47:22.376353Z",
+      "amount": 5.25,
+      "location": "Starbucks",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "f8477444-038e-4b9d-8258-a86aea1e9822",
+      "date": "2025-10-19T08:47:22.376353Z",
+      "amount": 4.01,
+      "location": "Peet's Coffee",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "c2f30737-019f-43dc-8d8a-4e18391a828a",
+      "date": "2025-10-15T08:47:22.376353Z",
+      "amount": 6.47,
+      "location": "Campus Caf\u00e9",
+      "type": "swipe",
+      "category": "snack"
+    },
+    {
+      "id": "1a9565a0-67fe-46f5-8450-00b8056e6731",
+      "date": "2025-10-19T08:47:22.376353Z",
+      "amount": 7.94,
+      "location": "Campus Caf\u00e9",
+      "type": "flex",
+      "category": "lunch"
+    },
+    {
+      "id": "a831a903-bef4-451e-8100-2e94cfb4e7ba",
+      "date": "2025-10-15T08:47:22.376353Z",
+      "amount": 4.37,
+      "location": "Campus Caf\u00e9",
+      "type": "flex",
+      "category": "dinner"
+    },
+    {
+      "id": "1861f987-09ec-4692-941c-018d23523ae0",
+      "date": "2025-10-24T08:47:22.376353Z",
+      "amount": 5.31,
+      "location": "Campus Caf\u00e9",
+      "type": "swipe",
+      "category": "dinner"
+    },
+    {
+      "id": "5224b619-85c6-4865-bfa3-0b7a0301d733",
+      "date": "2025-10-15T08:47:22.376353Z",
+      "amount": 4.8,
+      "location": "Campus Caf\u00e9",
+      "type": "swipe",
+      "category": "coffee"
+    },
+    {
+      "id": "f69af854-384e-42ae-8dac-f196eb2139f2",
+      "date": "2025-10-04T08:47:22.376353Z",
+      "amount": 8.93,
+      "location": "Peet's Coffee",
+      "type": "flex",
+      "category": "coffee"
+    }
+  ],
+  "DiningHalls": [
+    {
+      "id": "3b4949e3-95b0-4b24-ba6e-5f5ffbd65f28",
+      "name": "Central Dining",
+      "hours": {
+        "breakfast": "7-10am",
+        "lunch": "11-2pm",
+        "dinner": "5-8pm"
+      },
+      "currentMenu": [
+        "Pasta bar",
+        "Salad bar",
+        "Pizza"
+      ],
+      "distance": "2 min walk",
+      "crowdLevel": "medium",
+      "acceptsSwipes": true,
+      "vibe": "Lively, social spot"
+    },
+    {
+      "id": "2364e657-a6b7-486e-9b00-1742a7fb70a0",
+      "name": "North Commons",
+      "hours": {
+        "breakfast": "7-9am",
+        "lunch": "11-1:30pm",
+        "dinner": "5-7:30pm"
+      },
+      "currentMenu": [
+        "Grain bowls",
+        "Smoothie station",
+        "Soup corner"
+      ],
+      "distance": "5 min walk",
+      "crowdLevel": "low",
+      "acceptsSwipes": true,
+      "vibe": "Healthy, relaxed environment"
+    },
+    {
+      "id": "96bdb7a7-a191-4748-bfc2-79f6f3884093",
+      "name": "Campus Caf\u00e9",
+      "hours": {
+        "breakfast": "8-11am",
+        "lunch": "11:30-3pm"
+      },
+      "currentMenu": [
+        "Coffee",
+        "Bagels",
+        "Wraps"
+      ],
+      "distance": "1 min walk",
+      "crowdLevel": "high",
+      "acceptsSwipes": false,
+      "vibe": "Grab-and-go hustle"
+    }
+  ]
+}
