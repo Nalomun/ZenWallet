@@ -23,16 +23,22 @@ export default function Dashboard() {
       const { data: { user } } = await supabase.auth.getUser();
       
       let data = MOCK_USER;
+      let userPreferences = null;
       
       if (user) {
         const { data: profile } = await supabase
           .from('profiles')
-          .select('selected_profile')
+          .select('selected_profile, preferences')
           .eq('id', user.id)
           .single();
 
         const profileKey = profile?.selected_profile || 'swipe_ignorer';
         data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
+        
+        // NEW: Add preferences to user data
+        if (profile?.preferences) {
+          data.preferences = profile.preferences;
+        }
       }
       
       setUserData(data);
@@ -40,14 +46,12 @@ export default function Dashboard() {
       // Try backend first, fallback to mock
       try {
         const analysisResult = await analyzeSpending(data, MOCK_TRANSACTIONS);
-        // If backend returns error message, use mock instead
         if (analysisResult.main_insight === "Unable to analyze at this time") {
           setAnalysis(getMockAnalysis(data));
         } else {
           setAnalysis(analysisResult);
         }
       } catch (error) {
-        // Backend not available, use mock
         setAnalysis(getMockAnalysis(data));
       }
       

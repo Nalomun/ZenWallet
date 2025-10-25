@@ -1,13 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase/client';
 import { queryMealRecommendation } from '@/lib/api';
 import { MOCK_USER, MOCK_DINING_HALLS } from '@/lib/mockData';
+import { DEMO_PROFILES } from '@/lib/demoProfiles';
 
 export default function QueryBox() {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
+  const [userData, setUserData] = useState<any>(MOCK_USER);
+  const supabase = createClient();
+
+  useEffect(() => {
+    // Load user data with preferences
+    async function loadUserData() {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('selected_profile, preferences')
+          .eq('id', user.id)
+          .single();
+
+        const profileKey = profile?.selected_profile || 'swipe_ignorer';
+        let data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
+        
+        // Add preferences to user data
+        if (profile?.preferences) {
+          data = { ...data, preferences: profile.preferences };
+        }
+        
+        setUserData(data);
+      }
+    }
+    
+    loadUserData();
+  }, []);
 
   async function handleSubmit(e: any) {
     if (e) e.preventDefault();
@@ -16,7 +47,7 @@ export default function QueryBox() {
     setLoading(true);
     setResponse('');
     
-    const result = await queryMealRecommendation(query, MOCK_USER, MOCK_DINING_HALLS);
+    const result = await queryMealRecommendation(query, userData, MOCK_DINING_HALLS);
     setResponse(result);
     setLoading(false);
   }

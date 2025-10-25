@@ -105,10 +105,18 @@ async def recommendations(request: RecommendationsRequest):
         user_profile = UserProfile(**request.user_data)
         dining_halls = [DiningHall(**d) for d in request.dining_halls]
         
-        # Call Claude AI via Lava
-        recs = generate_recommendations(user_profile, dining_halls, request.current_time)
+        # Extract preferences from user_data if available
+        user_preferences = request.user_data.get('preferences', None)
         
-        print(f"✅ Generated {len(recs)} AI recommendations")
+        # Call Claude AI via Lava WITH PREFERENCES
+        recs = generate_recommendations(
+            user_profile, 
+            dining_halls, 
+            request.current_time,
+            user_preferences  # NEW: Pass preferences to AI
+        )
+        
+        print(f"✅ Generated {len(recs)} AI recommendations with preferences")
         
         # Return as list of dicts
         return [

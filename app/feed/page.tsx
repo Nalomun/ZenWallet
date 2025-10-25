@@ -23,12 +23,17 @@ export default function FeedPage() {
       if (user) {
         const { data: profile } = await supabase
           .from('profiles')
-          .select('selected_profile')
+          .select('selected_profile, preferences')
           .eq('id', user.id)
           .single();
 
         const profileKey = profile?.selected_profile || 'swipe_ignorer';
         data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
+        
+        // NEW: Add preferences to user data
+        if (profile?.preferences) {
+          data.preferences = profile.preferences;
+        }
       }
       
       setUserData(data);
