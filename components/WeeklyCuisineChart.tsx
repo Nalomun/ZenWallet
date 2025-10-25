@@ -1,87 +1,96 @@
-// components/WeeklyCuisineChart.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from 'recharts';
 
-interface CuisineData {
-  cuisine: string;
-  count: number;
-}
-
-// Example data: week-by-week cuisine visits
-const WEEKLY_DATA: CuisineData[][] = [
-  // Week 1
-  [
-    { cuisine: 'American', count: 5 },
-    { cuisine: 'Mexican', count: 5 },
-    { cuisine: 'Thai', count: 3 },
-    { cuisine: 'Korean', count: 2 },
-  ],
-  // Week 2 (Thai 4x more than American)
-  [
-    { cuisine: 'American', count: 2 },
-    { cuisine: 'Mexican', count: 3 },
-    { cuisine: 'Thai', count: 8 },
-    { cuisine: 'Korean', count: 1 },
-  ],
-  // Week 3 (example)
-  [
-    { cuisine: 'American', count: 4 },
-    { cuisine: 'Mexican', count: 2 },
-    { cuisine: 'Thai', count: 5 },
-    { cuisine: 'Korean', count: 3 },
-    { cuisine: 'Japanese', count: 2 },
-  ],
-  // Week 4 (example)
-  [
-    { cuisine: 'American', count: 3 },
-    { cuisine: 'Mexican', count: 4 },
-    { cuisine: 'Thai', count: 6 },
-    { cuisine: 'Korean', count: 2 },
-    { cuisine: 'Japanese', count: 3 },
-  ],
+// Example weekly data
+const WEEKLY_DATA = [
+  { cuisine: 'American', emoji: '🍔', week1: 5, week2: 2, week3: 3, week4: 4 },
+  { cuisine: 'Mexican', emoji: '🌮', week1: 5, week2: 3, week3: 2, week4: 1 },
+  { cuisine: 'Thai', emoji: '🍛', week1: 3, week2: 8, week3: 4, week4: 5 },
+  { cuisine: 'Korean', emoji: '🍙', week1: 2, week2: 1, week3: 3, week4: 2 },
 ];
 
-const WeeklyCuisineChart: React.FC = () => {
-  const [weekIndex, setWeekIndex] = useState(0);
-  const [chartData, setChartData] = useState<CuisineData[]>([]);
+// Color mapping per cuisine
+const CUISINE_COLORS: Record<string, string> = {
+  American: '#F87171', // Red
+  Mexican: '#FBBF24',  // Yellow
+  Thai: '#34D399',     // Green
+  Korean: '#60A5FA',   // Blue
+};
 
-  // Update chart data each week
+// Custom tooltip to bold cuisine name
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white p-3 rounded shadow-lg border border-gray-200">
+        <p className="font-bold text-gray-800">{payload[0].payload.cuisine}</p>
+        <p className="text-gray-600">Times: {payload[0].value}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+export default function WeeklyCuisineChart() {
+  const [week, setWeek] = useState(1);
+  const [data, setData] = useState(WEEKLY_DATA);
+
+  // Simulate week changing every 3 seconds
   useEffect(() => {
-    const updateData = () => {
-      setChartData(WEEKLY_DATA[weekIndex].sort((a, b) => b.count - a.count));
-      setWeekIndex(prev => (prev + 1) % WEEKLY_DATA.length);
-    };
-
-    // Initial render
-    updateData();
-
-    // Animate every 5 seconds to next week
-    const interval = setInterval(updateData, 5000);
+    const interval = setInterval(() => {
+      setWeek((prev) => (prev < 4 ? prev + 1 : 1));
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
+  // Map data for the current week
+  const chartData = data.map((cuisine) => ({
+    ...cuisine,
+    times: cuisine[`week${week}` as keyof typeof cuisine],
+  }));
+
   return (
-    <div className="p-4 bg-white rounded-xl shadow-lg w-full">
-      <h3 className="text-lg font-bold mb-4">Cuisines Ranked by Visits (Weekly)</h3>
-      <ResponsiveContainer width="100%" height={chartData.length * 60}>
+    <div style={{ width: '100%', height: 300 }}>
+      <ResponsiveContainer>
         <BarChart
-          layout="vertical"
           data={chartData}
-          margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
+          layout="vertical"
+          margin={{ top: 20, right: 20, left: 40, bottom: 20 }}
         >
           <XAxis type="number" />
-          <YAxis type="category" dataKey="cuisine" width={120} />
-          <Tooltip />
-          <Bar dataKey="count" fill="#9333ea" animationDuration={700}>
-            <LabelList dataKey="count" position="right" />
+          <YAxis
+            dataKey="emoji"
+            type="category"
+            width={50}
+            tick={{ fontSize: 20 }}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Bar
+            dataKey="times"
+            isAnimationActive={true}
+            animationDuration={800}
+          >
+            {chartData.map((entry) => (
+              <Cell
+                key={entry.cuisine}
+                fill={CUISINE_COLORS[entry.cuisine]}
+              />
+            ))}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <p className="mt-2 text-sm text-gray-500">Automatically updates to show next week's ranking every 5 seconds.</p>
+      <p className="mt-2 text-gray-600 text-sm">
+        Week {week} - Bars animate as counts change
+      </p>
     </div>
   );
-};
-
-export default WeeklyCuisineChart;
+}
