@@ -9,9 +9,10 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  LabelList,
 } from 'recharts';
 
-// Example weekly data
+// Weekly cuisine counts example
 const WEEKLY_DATA = [
   { cuisine: 'American', emoji: '🍔', week1: 5, week2: 2, week3: 3, week4: 4 },
   { cuisine: 'Mexican', emoji: '🌮', week1: 5, week2: 3, week3: 2, week4: 1 },
@@ -19,16 +20,16 @@ const WEEKLY_DATA = [
   { cuisine: 'Korean', emoji: '🍙', week1: 2, week2: 1, week3: 3, week4: 2 },
 ];
 
-// Color mapping per cuisine
+// Color mapping
 const CUISINE_COLORS: Record<string, string> = {
-  American: '#F87171', // Red
-  Mexican: '#FBBF24',  // Yellow
-  Thai: '#34D399',     // Green
-  Korean: '#60A5FA',   // Blue
+  American: '#F87171',
+  Mexican: '#FBBF24',
+  Thai: '#34D399',
+  Korean: '#60A5FA',
 };
 
-// Custom tooltip to bold cuisine name
-const CustomTooltip = ({ active, payload, label }: any) => {
+// Tooltip with cuisine name bolded
+const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 rounded shadow-lg border border-gray-200">
@@ -42,9 +43,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function WeeklyCuisineChart() {
   const [week, setWeek] = useState(1);
-  const [data, setData] = useState(WEEKLY_DATA);
 
-  // Simulate week changing every 3 seconds
+  // Cycle weeks every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setWeek((prev) => (prev < 4 ? prev + 1 : 1));
@@ -52,8 +52,8 @@ export default function WeeklyCuisineChart() {
     return () => clearInterval(interval);
   }, []);
 
-  // Map data for the current week
-  const chartData = data.map((cuisine) => ({
+  // Map data for current week
+  const chartData = WEEKLY_DATA.map((cuisine) => ({
     ...cuisine,
     times: cuisine[`week${week}` as keyof typeof cuisine],
   }));
@@ -64,14 +64,14 @@ export default function WeeklyCuisineChart() {
         <BarChart
           data={chartData}
           layout="vertical"
-          margin={{ top: 20, right: 20, left: 40, bottom: 20 }}
+          margin={{ top: 20, right: 20, left: 60, bottom: 20 }}
         >
           <XAxis type="number" />
           <YAxis
             dataKey="emoji"
             type="category"
             width={50}
-            tick={{ fontSize: 20 }}
+            tick={{ fontSize: 24 }}
           />
           <Tooltip content={<CustomTooltip />} />
           <Bar
@@ -85,6 +85,13 @@ export default function WeeklyCuisineChart() {
                 fill={CUISINE_COLORS[entry.cuisine]}
               />
             ))}
+            {/* Show cuisine names next to bars */}
+            <LabelList
+              dataKey="cuisine"
+              position="right"
+              offset={10}
+              style={{ fontWeight: 'bold', fill: '#374151' }}
+            />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
