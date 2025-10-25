@@ -2,7 +2,7 @@
 Production-ready expenditure forecasting using Facebook Prophet
 Fully type-annotated for maximum type safety and IDE support
 Author: AI Agent Team
-Python: >=3.9, Prophet: ==1.1
+Python: >=3.9, Prophet: >=1.1
 """
 
 import json

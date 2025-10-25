@@ -1,6 +1,6 @@
 """
 FastAPI server for ZenWallet AI Agent
-Exposes REST API endpoints for the frontend to call
+Exposes REsST API endpoints for the frontend to call
 """
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
