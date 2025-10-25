@@ -11,10 +11,10 @@ type SpendingTrendsProps = {
 export default function SpendingTrends({ view, user, transactions }: SpendingTrendsProps) {
   // Define all students and their budgets/spending
   const students = [
-    { name: 'Marcus Johnson', total_spent: 3980, total_budget: 3175 },
-    { name: 'Sarah Chen', total_spent: 4288.62, total_budget: 3175 },
-    { name: 'Emma Rodriguez', total_spent: 2100, total_budget: 3175 },
-    { name: 'Alex Kim', total_spent: 4850, total_budget: 3175 },
+    { name: 'Nafis', total_spent: 3980, total_budget: 3175 },
+    { name: 'Quinn', total_spent: 4288.62, total_budget: 3175 },
+    { name: 'Hyacinth', total_spent: 2100, total_budget: 3175 },
+    { name: 'THE BEAR', total_spent: 4850, total_budget: 3175 },
   ];
 
   // Get current user's data
