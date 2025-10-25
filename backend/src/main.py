@@ -1,12 +1,33 @@
-from fastapi import FastAPI
+"""
+FastAPI server for ZenWallet AI Agent
+Exposes REST API endpoints for the frontend to call
+"""
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict, Any, Optional, Literal, cast
 import os
 from dotenv import load_dotenv
-from typing import List, Any, Dict,Optional,Literal
-# Add these imports after your existing imports
-from typing import cast
+
+# AI Agent imports
+from src.agent import analyze_spending, generate_recommendations, handle_query
+from src.models import (
+    UserProfile, 
+    Transaction, 
+    DiningHall, 
+    SpendingAnalysis, 
+    Recommendation,
+    AnalysisRequest,
+    RecommendationRequest,
+    QueryRequest
+)
+from src.mock_data import (
+    FALLBACK_ANALYSIS,
+    FALLBACK_RECOMMENDATIONS,
+    FALLBACK_QUERY_RESPONSE
+)
+
+# Prophet forecasting imports
 from src.prediction import (
     forecast_from_json,
     InputDataDict,
@@ -15,16 +36,11 @@ from src.prediction import (
     FilterType
 )
 
-# Import your AI agent functions
-from src.agent import analyze_spending, generate_recommendations, handle_query
-from src.models import UserProfile, Transaction, DiningHall, SpendingAnalysis, Recommendation
-from src.mock_data import FALLBACK_ANALYSIS, FALLBACK_RECOMMENDATIONS, FALLBACK_QUERY_RESPONSE
-
 load_dotenv()
 
 app = FastAPI(
     title="ZenWallet API",
-    description="AI-powered meal plan optimizer",
+    description="AI-powered meal plan optimizer with ML forecasting",
     version="1.0.0"
 )
 
@@ -37,35 +53,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Request/Response Models (matching frontend)
-class AnalyzeRequest(BaseModel):
-    user_data: dict
-    transactions: List[dict]
-
-class RecommendationsRequest(BaseModel):
-    user_data: dict
-    dining_halls: List[dict]
-    current_time: str
-
-class QueryRequest(BaseModel):
-    query: str
-    user_data: dict
-    dining_halls: List[dict]
-    current_time: str
-
 # Routes
 @app.get("/")
-async def root():
+async def root() -> Dict[str, str]:
+    """Health check endpoint"""
     return {
-        "message": "ZenWallet API is running!", 
+        "message": "ZenWallet API is running!",
         "status": "healthy",
         "cors": "enabled",
-        "ai": "Claude Sonnet 4.5 via Lava Payments"
+        "ai": "Claude Sonnet 4.5 via Lava Payments",
+        "ml": "Prophet forecasting enabled"
     }
 
 @app.get("/health")
-async def health():
-    lava_configured = bool(os.getenv("LAVA_FORWARD_TOKEN"))
+async def health() -> Dict[str, Any]:
+    """Detailed health check"""
+    lava_configured: bool = bool(os.getenv("LAVA_FORWARD_TOKEN"))
+    
     return {
         "status": "healthy",
         "lava_configured": lava_configured,
@@ -78,19 +82,19 @@ async def health():
     }
 
 @app.post("/api/analyze")
-async def analyze(request: AnalyzeRequest):
+async def analyze(request: AnalysisRequest) -> Dict[str, Any]:
     """Analyze spending patterns using Claude AI via Lava"""
-    print(f"📊 Analyzing spending for {request.user_data['name']}")
+    print(f"\n{'='*60}")
+    print(f"📊 ANALYZE REQUEST")
+    print(f"User: {request.user_data.name}")
+    print(f"Transactions: {len(request.transactions)}")
+    print(f"{'='*60}")
     
     try:
-        # Convert dicts to Pydantic models
-        user_profile = UserProfile(**request.user_data)
-        transactions = [Transaction(**t) for t in request.transactions]
-        
         # Call Claude AI via Lava
-        analysis = analyze_spending(user_profile, transactions)
+        analysis: SpendingAnalysis = analyze_spending(request.user_data, request.transactions)
         
-        print(f"✅ AI Analysis complete: {analysis.main_insight}")
+        print(f"✅ Analysis complete: ${analysis.dollar_amount} waste identified")
         
         # Return as dict for JSON serialization
         return {
@@ -101,7 +105,8 @@ async def analyze(request: AnalyzeRequest):
         }
         
     except Exception as e:
-        print(f"❌ Error in analyze: {e}")
+        print(f"❌ Analysis failed: {e}")
+        print("⚠️  Using fallback analysis data")
         # Fallback to mock data if AI fails
         return {
             "main_insight": FALLBACK_ANALYSIS.main_insight,
@@ -111,27 +116,24 @@ async def analyze(request: AnalyzeRequest):
         }
 
 @app.post("/api/recommendations")
-async def recommendations(request: RecommendationsRequest):
+async def recommendations(request: RecommendationRequest) -> List[Dict[str, Any]]:
     """Generate meal recommendations using Claude AI via Lava"""
-    print(f"🍽️ Generating recommendations for {request.user_data['name']}")
+    print(f"\n{'='*60}")
+    print(f"🍽️ RECOMMENDATIONS REQUEST")
+    print(f"User: {request.user_data.name}")
+    print(f"Time: {request.current_time}")
+    print(f"Dining halls: {len(request.dining_halls)}")
+    print(f"{'='*60}")
     
     try:
-        # Convert dicts to Pydantic models
-        user_profile = UserProfile(**request.user_data)
-        dining_halls = [DiningHall(**d) for d in request.dining_halls]
-        
-        # Extract preferences from user_data if available
-        user_preferences = request.user_data.get('preferences', None)
-        
-        # Call Claude AI via Lava WITH PREFERENCES
-        recs = generate_recommendations(
-            user_profile, 
-            dining_halls, 
-            request.current_time,
-            user_preferences  # NEW: Pass preferences to AI
+        # Call Claude AI via Lava
+        recs: List[Recommendation] = generate_recommendations(
+            request.user_data,
+            request.dining_halls,
+            request.current_time
         )
         
-        print(f"✅ Generated {len(recs)} AI recommendations with preferences")
+        print(f"✅ Generated {len(recs)} recommendations")
         
         # Return as list of dicts
         return [
@@ -147,7 +149,8 @@ async def recommendations(request: RecommendationsRequest):
         ]
         
     except Exception as e:
-        print(f"❌ Error in recommendations: {e}")
+        print(f"❌ Recommendations failed: {e}")
+        print("⚠️  Using fallback recommendations")
         # Fallback to mock data if AI fails
         return [
             {
@@ -162,32 +165,34 @@ async def recommendations(request: RecommendationsRequest):
         ]
 
 @app.post("/api/query")
-async def query(request: QueryRequest):
+async def query(request: QueryRequest) -> Dict[str, str]:
     """Process natural language queries using Claude AI via Lava"""
-    print(f"💬 Processing query: '{request.query}'")
+    print(f"\n{'='*60}")
+    print(f"💬 QUERY REQUEST")
+    print(f"User: {request.user_data.name}")
+    print(f"Query: {request.query}")
+    print(f"{'='*60}")
     
     try:
-        # Convert dicts to Pydantic models
-        user_profile = UserProfile(**request.user_data)
-        dining_halls = [DiningHall(**d) for d in request.dining_halls]
-        
         # Call Claude AI via Lava - THIS IS THE WOW MOMENT
-        response = handle_query(
+        response: str = handle_query(
             request.query,
-            user_profile,
-            dining_halls,
+            request.user_data,
+            request.dining_halls,
             request.current_time
         )
         
-        print(f"✅ AI response: {response[:100]}...")
+        print(f"✅ Query handled successfully")
+        print(f"Response: {response[:100]}...")
         
         return {"response": response}
         
     except Exception as e:
-        print(f"❌ Error in query: {e}")
+        print(f"❌ Query failed: {e}")
+        print("⚠️  Using fallback query response")
         # Fallback to mock response if AI fails
         return {"response": FALLBACK_QUERY_RESPONSE}
-    
+
 @app.post("/api/spending-forecast")
 async def spending_forecast(request: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -203,9 +208,9 @@ async def spending_forecast(request: Dict[str, Any]) -> Dict[str, Any]:
     }
     """
     try:
-        print("\n" + "="*60)
+        print(f"\n{'='*60}")
         print("📈 SPENDING FORECAST REQUEST")
-        print("="*60)
+        print(f"{'='*60}")
         
         # Extract and cast parameters
         data: InputDataDict = cast(InputDataDict, {
@@ -251,7 +256,6 @@ async def spending_forecast(request: Dict[str, Any]) -> Dict[str, Any]:
 
 if __name__ == "__main__":
     import uvicorn
-    print("🚀 Starting ZenWallet API with Claude AI via Lava Payments...")
     print("\n" + "="*60)
     print("🚀 Starting ZenWallet AI Agent")
     print("="*60)
@@ -261,7 +265,7 @@ if __name__ == "__main__":
     print("  POST /api/analyze - Spending analysis")
     print("  POST /api/recommendations - Meal recommendations")
     print("  POST /api/query - Natural language query")
-    print(" POST /api/spending-forecast - ML spending forecast")
+    print("  POST /api/spending-forecast - ML spending forecast")
     print("\nDocs: http://localhost:8000/docs")
     print("="*60 + "\n")
     
