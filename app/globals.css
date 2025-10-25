@@ -1,70 +1,47 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  /* Fade in animation */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
+  to {
+    opacity: 1;
+  }
+}
 
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-in;
+/* Slide up animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  /* Slide up animation */
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
 
-  .animate-slide-up {
-    animation: slideUp 0.4s ease-out;
-  }
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
 
-  /* Smooth transitions for all interactive elements */
-  * {
-    @apply transition-colors duration-200;
-  }
+/* Fix cursor for all interactive elements */
+button,
+a,
+input[type="button"],
+input[type="submit"],
+input[type="range"],
+select,
+[role="button"],
+.cursor-pointer {
+  cursor: pointer !important;
 }
 
 /* Scrollbar styling */
