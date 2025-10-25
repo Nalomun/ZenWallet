@@ -125,7 +125,7 @@ export default function QueryBox() {
               <p className="text-gray-800 text-lg leading-relaxed font-medium">{response}</p>
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <p className="text-xs text-purple-600 font-semibold">
-                  💡 Ask another question or check the recommendations below
+                  💡 Ask another question? or check the recommendations below
                 </p>
               </div>
             </div>
