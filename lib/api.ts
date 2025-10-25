@@ -1,6 +1,5 @@
 // lib/api.ts
-const API_BASE_URL = 'http://localhost:8000';
-import { supabase } from './supabase';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';import { supabase } from './supabase';
 import { DEMO_PROFILES } from './demoProfiles';
 
 export async function analyzeSpending(userData: any, transactions: any[]) {
