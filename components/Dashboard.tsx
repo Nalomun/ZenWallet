@@ -3,30 +3,19 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { analyzeSpending } from '@/lib/api';
-import { MOCK_USER, MOCK_TRANSACTIONS, DEMO_PROFILES } from '@/lib/mockData';
+import { MOCK_USER, MOCK_TRANSACTIONS } from '@/lib/mockData';
+import { DEMO_PROFILES } from '@/lib/demoProfiles';
 import { getMockAnalysis } from '@/lib/mockApiResponses';
 import StatCard from './StatCard';
 import SpendingChart from './SpendingChart';
 import WeeklyCuisineChart from './WeeklyCuisineChart';
 import SpendingProgress from './SpendingProgress';
-import SpendingTrends from './SpendingTrends';
 import QuickStats from './QuickStats';
 
 export default function Dashboard() {
   const [userData, setUserData] = useState<any>(null);
   const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [trendView, setTrendView] = useState<'daily' | 'weekly' | 'monthly'>('daily');
-
-  const user = {
-    ...MOCK_USER ,
-    name: 'Sarah Chen',
-    total_budget: 1000,
-    total_spent: 860,
-    swipes_remaining: 12,
-    flex_remaining: 140,
-    weeks_remaining: 10,
-  };
   const supabase = createClient();
 
   useEffect(() => {
@@ -34,7 +23,6 @@ export default function Dashboard() {
       const { data: { user } } = await supabase.auth.getUser();
       
       let data = MOCK_USER;
-      let userPreferences = null;
       
       if (user) {
         const { data: profile } = await supabase
@@ -46,9 +34,9 @@ export default function Dashboard() {
         const profileKey = profile?.selected_profile || 'swipe_ignorer';
         data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
         
-        // NEW: Add preferences to user data
+        // Add preferences to user data
         if (profile?.preferences) {
-          data.preferences = profile.preferences;
+          data = { ...data, preferences: profile.preferences };
         }
       }
       
@@ -173,36 +161,6 @@ export default function Dashboard() {
             <WeeklyCuisineChart />
           </div>
 
-      {/* Spending Trends */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-4">Spending Trends</h2>
-
-        {/* Buttons to toggle daily/weekly/monthly */}
-        <div className="flex gap-3 mb-4">
-          <button
-            className={`px-4 py-2 rounded-lg ${trendView === 'daily' ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => setTrendView('daily')}
-          >
-            Daily
-          </button>
-          <button
-            className={`px-4 py-2 rounded-lg ${trendView === 'weekly' ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => setTrendView('weekly')}
-          >
-            Weekly
-          </button>
-          <button
-            className={`px-4 py-2 rounded-lg ${trendView === 'monthly' ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => setTrendView('monthly')}
-          >
-            Monthly
-          </button>
-        </div>
-
-        {/* Chart */}
-        <SpendingTrends view={trendView} user={user} transactions={MOCK_TRANSACTIONS} />
-      </div>
-
           {/* Spending Chart */}
           <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
             <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
@@ -246,13 +204,6 @@ export default function Dashboard() {
             </div>
           )}
         </div>
-      </div>
-        {!loading && analysis?.recommendation && (
-          <div className="bg-green-50 p-5 rounded-lg">
-            <h3 className="font-semibold text-green-900 mb-2">Recommendation</h3>
-            <p className="text-green-800">{analysis.recommendation}</p>
-          </div>
-        )}
       </div>
     </div>
   );
