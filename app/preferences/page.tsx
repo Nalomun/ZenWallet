@@ -190,11 +190,11 @@ export default function PreferencesPage() {
           
           <div className="grid md:grid-cols-2 gap-8">
             {[
-              { key: 'speed', icon: '⚡', label: 'Speed', desc: 'How quickly you want your food' },
-              { key: 'budget', icon: '💰', label: 'Budget', desc: 'Prefer cheaper options' },
-              { key: 'health', icon: '🥗', label: 'Health', desc: 'Nutritious over comfort food' },
-              { key: 'social', icon: '👥', label: 'Social', desc: 'Busy dining halls vs quiet spots' }
-            ].map(({ key, icon, label, desc }) => (
+              { key: 'speed', icon: '⚡', label: 'Speed', desc: 'How quickly you want your food', low: 'Patient', high: 'Quick!' },
+              { key: 'budget', icon: '💰', label: 'Budget', desc: 'Prefer cheaper options', low: 'Splurge OK', high: 'Save Money' },
+              { key: 'health', icon: '🥗', label: 'Health', desc: 'Nutritious over comfort food', low: 'Comfort Food', high: 'Healthy' },
+              { key: 'social', icon: '👥', label: 'Social', desc: 'Busy dining halls vs quiet spots', low: 'Quiet', high: 'Busy/Social' }
+            ].map(({ key, icon, label, desc, low, high }) => (
               <div key={key} className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -208,14 +208,20 @@ export default function PreferencesPage() {
                     {preferences.priorities[key as keyof typeof preferences.priorities]}%
                   </span>
                 </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={preferences.priorities[key as keyof typeof preferences.priorities]}
-                  onChange={(e) => updatePriority(key, parseInt(e.target.value))}
-                  className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                />
+                <div className="relative">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={preferences.priorities[key as keyof typeof preferences.priorities]}
+                    onChange={(e) => updatePriority(key, parseInt(e.target.value))}
+                    className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                  />
+                  <div className="flex justify-between mt-2">
+                    <span className="text-xs text-gray-500 font-semibold">{low}</span>
+                    <span className="text-xs text-gray-500 font-semibold">{high}</span>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -439,7 +445,10 @@ export default function PreferencesPage() {
                 <h3 className="text-lg font-bold text-green-900">Dietary Restrictions Active</h3>
               </div>
               <p className="text-green-800">
-                AI will NEVER suggest: {preferences.dietary_restrictions.join(', ')} options
+                AI will ONLY suggest: {preferences.dietary_restrictions.join(', ')} options
+              </p>
+              <p className="text-green-700 text-sm mt-1">
+                (Non-{preferences.dietary_restrictions.join(', non-')} options will be excluded)
               </p>
             </div>
           )}

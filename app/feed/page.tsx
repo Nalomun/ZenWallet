@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { MOCK_USER } from '@/lib/mockData';
+import { generateDailyFeed } from '@/lib/api';
+import { MOCK_USER, MOCK_DINING_HALLS } from '@/lib/mockData';
 import { DEMO_PROFILES } from '@/lib/demoProfiles';
 import { getMockRecommendations } from '@/lib/mockApiResponses';
 import FeedCard from '@/components/FeedCard';
@@ -30,15 +31,39 @@ export default function FeedPage() {
         const profileKey = profile?.selected_profile || 'swipe_ignorer';
         data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
         
-        // NEW: Add preferences to user data
+        // Add preferences to user data
         if (profile?.preferences) {
-          data.preferences = profile.preferences;
+          data = { ...data, preferences: profile.preferences };
         }
       }
       
       setUserData(data);
-      const mockRecs = getMockRecommendations(data);
-      setRecommendations(mockRecs);
+      
+      // Try to get AI recommendations with preferences
+      try {
+        const aiRecs = await generateDailyFeed(data, MOCK_DINING_HALLS, new Date());
+        if (aiRecs && aiRecs.length > 0) {
+          // Map AI response to FeedRecommendation format
+          const formattedRecs = aiRecs.map((rec: any) => ({
+            diningHall: rec.dining_hall || rec.diningHall,
+            dishRecommendation: rec.meal || rec.dishRecommendation,
+            reasoning: rec.reasoning,
+            urgency: 'high' as const,
+            paymentMethod: rec.use_swipe ? 'swipe' as const : 'flex' as const,
+            savingsImpact: `Save ${rec.savings_amount}`,
+            estimatedWait: '5-10 min',
+            matchScore: 95
+          }));
+          setRecommendations(formattedRecs);
+        } else {
+          // Fallback to mock
+          setRecommendations(getMockRecommendations(data));
+        }
+      } catch (error) {
+        console.log('Using mock recommendations:', error);
+        setRecommendations(getMockRecommendations(data));
+      }
+      
       setLoading(false);
     }
 
