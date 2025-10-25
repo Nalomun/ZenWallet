@@ -101,7 +101,7 @@ export default function Dashboard() {
 
       {/* Spending Chart */}
       <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-4">Spending Chart</h2>
+        <h2 className="text-2xl font-bold mb-4">Spending Chart </h2>
         <SpendingChart />
       </div>
     </div>
