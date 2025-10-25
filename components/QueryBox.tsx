@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
 import { queryMealRecommendation } from '@/lib/api';
+import { getSmartQueryResponse } from '@/lib/smartMockResponses';
 import { MOCK_USER, MOCK_DINING_HALLS } from '@/lib/mockData';
 import { DEMO_PROFILES } from '@/lib/demoProfiles';
 
@@ -11,34 +13,35 @@ export default function QueryBox() {
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<any>(MOCK_USER);
+  const router = useRouter();
   const supabase = createClient();
 
   useEffect(() => {
-    // Load user data with preferences
-    async function loadUserData() {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('selected_profile, preferences')
-          .eq('id', user.id)
-          .single();
-
-        const profileKey = profile?.selected_profile || 'swipe_ignorer';
-        let data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
-        
-        // Add preferences to user data
-        if (profile?.preferences) {
-          data = { ...data, preferences: profile.preferences };
-        }
-        
-        setUserData(data);
-      }
-    }
-    
     loadUserData();
-  }, []);
+  }, [router]); // Reload when route changes
+
+  async function loadUserData() {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('selected_profile, preferences')
+        .eq('id', user.id)
+        .single();
+
+      const profileKey = profile?.selected_profile || 'swipe_ignorer';
+      let data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
+      
+      // Add preferences to user data
+      if (profile?.preferences) {
+        data = { ...data, preferences: profile.preferences };
+        console.log('🤖 QueryBox loaded preferences:', profile.preferences);
+      }
+      
+      setUserData(data);
+    }
+  }
 
   async function handleSubmit(e: any) {
     if (e) e.preventDefault();
@@ -47,7 +50,27 @@ export default function QueryBox() {
     setLoading(true);
     setResponse('');
     
-    const result = await queryMealRecommendation(query, userData, MOCK_DINING_HALLS);
+    // Reload user data BEFORE each query to get latest preferences
+    const { data: { user } } = await supabase.auth.getUser();
+    let freshUserData = MOCK_USER;
+    
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('selected_profile, preferences')
+        .eq('id', user.id)
+        .single();
+
+      const profileKey = profile?.selected_profile || 'swipe_ignorer';
+      freshUserData = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
+      
+      if (profile?.preferences) {
+        freshUserData = { ...freshUserData, preferences: profile.preferences };
+        console.log('💬 Query using fresh preferences:', profile.preferences);
+      }
+    }
+    
+    const result = await queryMealRecommendation(query, freshUserData, MOCK_DINING_HALLS);
     setResponse(result);
     setLoading(false);
   }
