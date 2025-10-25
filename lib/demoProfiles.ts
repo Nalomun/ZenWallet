@@ -12,7 +12,15 @@ export const DEMO_PROFILES = {
       total_swipes: 161,
       swipes_used: 105,
       swipes_remaining: 56,
-      // ... rest of your existing MOCK_USER data
+      total_flex: 800.0,
+      flex_spent: 680.0,
+      flex_remaining: 120.0,
+      weeks_remaining: 8,
+      preferences: {
+        dietary: ["vegetarian"],
+        favorite_cuisines: ["American", "Mexican"],
+        priorities: ["healthy", "social"]
+      }
     }
   },
   
@@ -27,10 +35,10 @@ export const DEMO_PROFILES = {
       total_budget: 3175.0,
       total_spent: 3980.0,
       total_swipes: 161,
-      swipes_used: 145, // Uses swipes well
+      swipes_used: 145,
       swipes_remaining: 16,
       total_flex: 800.0,
-      flex_spent: 1600.0, // DOUBLE flex budget!
+      flex_spent: 1600.0,
       flex_remaining: 0,
       weeks_remaining: 8,
       preferences: {
@@ -50,7 +58,7 @@ export const DEMO_PROFILES = {
     data: {
       name: "Emma Rodriguez",
       total_budget: 3175.0,
-      total_spent: 2100.0, // UNDER budget!
+      total_spent: 2100.0,
       total_swipes: 161,
       swipes_used: 140,
       swipes_remaining: 21,
@@ -75,9 +83,9 @@ export const DEMO_PROFILES = {
     data: {
       name: "Alex Kim",
       total_budget: 3175.0,
-      total_spent: 4850.0, // WAY over
+      total_spent: 4850.0,
       total_swipes: 161,
-      swipes_used: 90, // Low usage
+      swipes_used: 90,
       swipes_remaining: 71,
       total_flex: 800.0,
       flex_spent: 800.0,
