@@ -14,7 +14,7 @@ export default function Dashboard() {
   const [trendView, setTrendView] = useState<'daily' | 'weekly' | 'monthly'>('daily');
 
   const user = {
-    ...MOCK_USER,
+    ...MOCK_USER ,
     name: 'Sarah Chen',
     total_budget: 1000,
     total_spent: 860,
