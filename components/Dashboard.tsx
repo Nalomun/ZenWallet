@@ -7,7 +7,6 @@ import { MOCK_USER, MOCK_TRANSACTIONS } from '@/lib/mockData';
 import { DEMO_PROFILES } from '@/lib/demoProfiles';
 import { getMockAnalysis } from '@/lib/mockApiResponses';
 import StatCard from './StatCard';
-import SpendingChart from './SpendingChart';
 import WeeklyCuisineChart from './WeeklyCuisineChart';
 import SpendingProgress from './SpendingProgress';
 import QuickStats from './QuickStats';

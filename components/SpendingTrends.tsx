@@ -1,6 +1,6 @@
 'use client';
 
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Area, AreaChart } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 type SpendingTrendsProps = {
   view: 'daily' | 'weekly' | 'monthly';
@@ -12,7 +12,7 @@ export default function SpendingTrends({ view, user, transactions }: SpendingTre
   let data = [];
   let total = 0;
 
-  // Mock data - you can replace with actual logic from transactions
+  // Mock data based on view - replace with actual transaction processing if needed
   const mockDailyData = [
     { date: '8am', amount: 12 },
     { date: '10am', amount: 8 },
@@ -34,10 +34,10 @@ export default function SpendingTrends({ view, user, transactions }: SpendingTre
   ];
 
   const mockMonthlyData = [
-    { date: 'Week 1', amount: 180 },
-    { date: 'Week 2', amount: 250 },
-    { date: 'Week 3', amount: 320 },
-    { date: 'Week 4', amount: 280 },
+    { date: 'Week 1', amount: 280 },
+    { date: 'Week 2', amount: 450 },
+    { date: 'Week 3', amount: 620 },
+    { date: 'Week 4', amount: 780 },
   ];
 
   switch (view) {
@@ -73,7 +73,7 @@ export default function SpendingTrends({ view, user, transactions }: SpendingTre
       <ResponsiveContainer width="100%" height={240}>
         <AreaChart data={data}>
           <defs>
-            <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#9333ea" stopOpacity={0.3}/>
               <stop offset="95%" stopColor="#9333ea" stopOpacity={0}/>
             </linearGradient>
@@ -87,6 +87,7 @@ export default function SpendingTrends({ view, user, transactions }: SpendingTre
           <YAxis 
             tick={{ fill: '#6b7280', fontSize: 12, fontWeight: 600 }}
             stroke="#9ca3af"
+            tickFormatter={(value) => `$${value}`}
           />
           <Tooltip 
             contentStyle={{
@@ -103,7 +104,7 @@ export default function SpendingTrends({ view, user, transactions }: SpendingTre
             dataKey="amount" 
             stroke="#9333ea" 
             strokeWidth={3}
-            fill="url(#colorAmount)"
+            fill="url(#colorTrend)"
           />
         </AreaChart>
       </ResponsiveContainer>
