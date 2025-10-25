@@ -1,78 +1,112 @@
 'use client';
 
-import React, { useState } from 'react';
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer
-} from 'recharts';
-import { mockUsers, mockSpendingData } from './mockUserData';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
-export default function SpendingTrends() {
-  // 👤 Step 1: choose which user
-  const [currentUser, setCurrentUser] = useState(mockUsers[0]);
-  // 📈 Step 2: choose view (daily / weekly / monthly)
-  const [view, setView] = useState<'daily' | 'weekly' | 'monthly'>('daily');
+type SpendingTrendsProps = {
+  view: 'daily' | 'weekly' | 'monthly';
+  user: any;
+  transactions: any[];
+};
 
-  const data = mockSpendingData[currentUser.id][view];
-  const total = data.reduce((sum, d) => sum + d.amount, 0);
+export default function SpendingTrends({ view, user, transactions }: SpendingTrendsProps) {
+  let data = [];
+  let total = 0;
+
+  // Mock data based on view - replace with actual transaction processing if needed
+  const mockDailyData = [
+    { date: '8am', amount: 12 },
+    { date: '10am', amount: 8 },
+    { date: '12pm', amount: 20 },
+    { date: '2pm', amount: 15 },
+    { date: '4pm', amount: 10 },
+    { date: '6pm', amount: 25 },
+    { date: '8pm', amount: 18 },
+  ];
+
+  const mockWeeklyData = [
+    { date: 'Mon', amount: 50 },
+    { date: 'Tue', amount: 70 },
+    { date: 'Wed', amount: 30 },
+    { date: 'Thu', amount: 90 },
+    { date: 'Fri', amount: 110 },
+    { date: 'Sat', amount: 60 },
+    { date: 'Sun', amount: 40 },
+  ];
+
+  const mockMonthlyData = [
+    { date: 'Week 1', amount: 280 },
+    { date: 'Week 2', amount: 450 },
+    { date: 'Week 3', amount: 620 },
+    { date: 'Week 4', amount: 780 },
+  ];
+
+  switch (view) {
+    case 'daily':
+      data = mockDailyData;
+      total = mockDailyData.reduce((sum, d) => sum + d.amount, 0);
+      break;
+    case 'weekly':
+      data = mockWeeklyData;
+      total = mockWeeklyData.reduce((sum, d) => sum + d.amount, 0);
+      break;
+    case 'monthly':
+      data = mockMonthlyData;
+      total = mockMonthlyData.reduce((sum, d) => sum + d.amount, 0);
+      break;
+  }
 
   return (
-    <div className="bg-white shadow-lg rounded-xl p-6 w-full">
-      {/* USER SELECTOR */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-gray-900">
-          {currentUser.name}’s {view.charAt(0).toUpperCase() + view.slice(1)} Spending
-        </h2>
-        <select
-          value={currentUser.id}
-          onChange={(e) =>
-            setCurrentUser(mockUsers.find((u) => u.id === e.target.value)!)
-          }
-          className="border rounded-lg p-2"
-        >
-          {mockUsers.map((u) => (
-            <option key={u.id} value={u.id}>
-              {u.name}
-            </option>
-          ))}
-        </select>
+    <div>
+      {/* Total Display */}
+      <div className="mb-6 p-4 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border border-purple-200">
+        <p className="text-sm text-gray-600 font-medium mb-1">
+          {view === 'daily' && 'Total Spent Today'}
+          {view === 'weekly' && 'Total Spent This Week'}
+          {view === 'monthly' && 'Total Spent This Month'}
+        </p>
+        <p className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+          ${total}
+        </p>
       </div>
 
-      {/* VIEW SELECTOR */}
-      <div className="flex gap-2 mb-4">
-        {(['daily', 'weekly', 'monthly'] as const).map((v) => (
-          <button
-            key={v}
-            onClick={() => setView(v)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              view === v ? 'bg-purple-600 text-white' : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-          >
-            {v.charAt(0).toUpperCase() + v.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      {/* TOTAL SPENDING */}
-      <p className="text-lg font-semibold mb-4">
-        Total Spent: ${total}
-      </p>
-
-      {/* LINE CHART */}
-      <ResponsiveContainer width="100%" height={350}>
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis tickFormatter={(v) => `$${v}`} />
-          <Tooltip formatter={(v: number) => `$${v}`} />
-          <Line
-            type="monotone"
-            dataKey="amount"
-            stroke="#8B5CF6"
-            strokeWidth={3}
-            activeDot={{ r: 6 }}
+      {/* Chart */}
+      <ResponsiveContainer width="100%" height={240}>
+        <AreaChart data={data}>
+          <defs>
+            <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#9333ea" stopOpacity={0.3}/>
+              <stop offset="95%" stopColor="#9333ea" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <XAxis 
+            dataKey="date" 
+            tick={{ fill: '#6b7280', fontSize: 12, fontWeight: 600 }}
+            stroke="#9ca3af"
           />
-        </LineChart>
+          <YAxis 
+            tick={{ fill: '#6b7280', fontSize: 12, fontWeight: 600 }}
+            stroke="#9ca3af"
+            tickFormatter={(value) => `$${value}`}
+          />
+          <Tooltip 
+            contentStyle={{
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              border: '2px solid #9333ea',
+              borderRadius: '12px',
+              padding: '8px 12px',
+              fontWeight: 600
+            }}
+            formatter={(value: number) => [`$${value}`, 'Spent']}
+          />
+          <Area 
+            type="monotone" 
+            dataKey="amount" 
+            stroke="#9333ea" 
+            strokeWidth={3}
+            fill="url(#colorTrend)"
+          />
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   );
