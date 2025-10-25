@@ -16,13 +16,13 @@ import {
 function generateRandomWeeklyData() {
   const cuisines = [
     'American', 'Mexican', 'Thai', 'Korean', 'Italian',
-    'Spanish', 'French', 'Chinese', 'Vietnamese', 'Japanese'
+    'Spanish', 'French', 'Chinese', 'Vietnamese', 'Japanese', 'Vegetarian'
   ];
 
   return cuisines.map(cuisine => {
     const base = Math.floor(Math.random() * 6) + 2; // 2–7 as baseline
     const weekData: any = { cuisine };
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 4; i++) {  // 4 weeks
       weekData[`week${i}`] = Math.max(1, base + Math.floor(Math.random() * 5 - 2));
     }
     return weekData;
@@ -54,6 +54,7 @@ export default function WeeklyCuisineChart() {
     { cuisine: 'Chinese', emoji: '🥡', color: '#EF4444' },
     { cuisine: 'Vietnamese', emoji: '🍜', color: '#10B981' },
     { cuisine: 'Japanese', emoji: '🍣', color: '#3B82F6' },
+    { cuisine: 'Vegetarian', emoji: '🥗', color: '#22C55E' }, // Added Vegetarian
   ]);
 
   // Prepare data for chart
@@ -68,7 +69,7 @@ export default function WeeklyCuisineChart() {
     };
   }).sort((a, b) => b.times - a.times);
 
-  // Only show top 5 if not expandede
+  // Only show top 5 if not expanded
   const chartData = showAll ? sortedData : sortedData.slice(0, 5);
 
   return (
@@ -79,7 +80,7 @@ export default function WeeklyCuisineChart() {
 
       {/* Week Selector */}
       <div className="flex flex-wrap gap-2 mb-6">
-        {[1, 2, 3, 4, 5, 6].map((w) => (
+        {[1, 2, 3, 4].map((w) => (
           <button
             key={w}
             onClick={() => setWeek(w)}
