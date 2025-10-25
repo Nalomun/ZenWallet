@@ -14,7 +14,7 @@ export default function Dashboard() {
 
   const user = {
     ...MOCK_USER,
-    name: 'Sarah Chen',
+    name: 'Sarah Chen' ,
     total_budget: 1000,
     total_spent: 860,
     swipes_remaining: 12,
