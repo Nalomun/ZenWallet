@@ -1,12 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Dict, Any
+from typing import List
 import os
 from dotenv import load_dotenv
 
-# Don't import agent functions - we're using mock responses
-# from src.agent import analyze_spending_with_ai, generate_recommendations, process_natural_query
+# Import your AI agent functions
+from src.agent import analyze_spending, generate_recommendations, handle_query
+from src.models import UserProfile, Transaction, DiningHall, SpendingAnalysis, Recommendation
+from src.mock_data import FALLBACK_ANALYSIS, FALLBACK_RECOMMENDATIONS, FALLBACK_QUERY_RESPONSE
 
 load_dotenv()
 
@@ -16,7 +18,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS Configuration - MUST be before routes
+# CORS Configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allow all origins for development
@@ -25,52 +27,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Pydantic Models
-class UserPreferences(BaseModel):
-    dietary: List[str]
-    favorite_cuisines: List[str]
-    priorities: List[str]
-
-class UserData(BaseModel):
-    name: str
-    total_budget: float
-    total_spent: float
-    total_swipes: int
-    swipes_used: int
-    swipes_remaining: int
-    total_flex: float
-    flex_spent: float
-    flex_remaining: float
-    weeks_remaining: int
-    preferences: UserPreferences
-
-class Transaction(BaseModel):
-    merchant: str
-    amount: float
-    type: str
-    timestamp: str
-
-class DiningHall(BaseModel):
-    name: str
-    current_menu: List[str]
-    wait_time: int
-    crowd_level: str
-    accepts_swipes: bool
-    distance: str
-
+# Request/Response Models (matching frontend)
 class AnalyzeRequest(BaseModel):
-    user_data: UserData
-    transactions: List[Transaction]
+    user_data: dict
+    transactions: List[dict]
 
 class RecommendationsRequest(BaseModel):
-    user_data: UserData
-    dining_halls: List[DiningHall]
+    user_data: dict
+    dining_halls: List[dict]
     current_time: str
 
 class QueryRequest(BaseModel):
     query: str
-    user_data: UserData
-    dining_halls: List[DiningHall]
+    user_data: dict
+    dining_halls: List[dict]
     current_time: str
 
 # Routes
@@ -79,87 +49,131 @@ async def root():
     return {
         "message": "ZenWallet API is running!", 
         "status": "healthy",
-        "cors": "enabled"
+        "cors": "enabled",
+        "ai": "Claude Sonnet 4.5 via Lava Payments"
     }
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy", "version": "1.0.0"}
+    lava_configured = bool(os.getenv("LAVA_FORWARD_TOKEN"))
+    return {
+        "status": "healthy", 
+        "version": "1.0.0",
+        "lava_configured": lava_configured
+    }
 
 @app.post("/api/analyze")
 async def analyze(request: AnalyzeRequest):
-    """Analyze spending patterns and identify waste"""
-    print(f"📊 Analyzing spending for {request.user_data.name}")
+    """Analyze spending patterns using Claude AI via Lava"""
+    print(f"📊 Analyzing spending for {request.user_data['name']}")
     
     try:
-        # Mock response for now (replace with your AI agent when ready)
-        wastedSwipes = request.user_data.swipes_remaining * 12
-        overBudget = request.user_data.total_spent - request.user_data.total_budget
+        # Convert dicts to Pydantic models
+        user_profile = UserProfile(**request.user_data)
+        transactions = [Transaction(**t) for t in request.transactions]
         
+        # Call Claude AI via Lava
+        analysis = analyze_spending(user_profile, transactions)
+        
+        print(f"✅ AI Analysis complete: {analysis.main_insight}")
+        
+        # Return as dict for JSON serialization
         return {
-            "main_insight": f"You're wasting ${wastedSwipes:.0f} by letting {request.user_data.swipes_remaining} meal swipes expire unused",
-            "dollar_amount": wastedSwipes,
-            "patterns": [
-                f"Buying food off-campus while {request.user_data.swipes_remaining} swipes remain unused",
-                f"Each unused swipe is worth $12 - that's ${wastedSwipes:.0f} going to waste",
-                f"You've spent ${request.user_data.total_spent:.2f} ({(request.user_data.total_spent / request.user_data.total_budget * 100):.0f}% of budget)",
-                f"At this rate, you'll be ${abs(overBudget):.0f} over budget by semester end"
-            ],
-            "recommendation": f"Start using meal swipes for breakfast and lunch - you could save ${(wastedSwipes * 0.7):.0f} by using them instead of buying off-campus"
+            "main_insight": analysis.main_insight,
+            "dollar_amount": analysis.dollar_amount,
+            "patterns": analysis.patterns,
+            "recommendation": analysis.recommendation
         }
+        
     except Exception as e:
         print(f"❌ Error in analyze: {e}")
+        # Fallback to mock data if AI fails
         return {
-            "main_insight": "Unable to analyze at this time",
-            "dollar_amount": 0,
-            "patterns": [str(e)],
-            "recommendation": "Please try again later"
+            "main_insight": FALLBACK_ANALYSIS.main_insight,
+            "dollar_amount": FALLBACK_ANALYSIS.dollar_amount,
+            "patterns": FALLBACK_ANALYSIS.patterns,
+            "recommendation": FALLBACK_ANALYSIS.recommendation
         }
 
 @app.post("/api/recommendations")
 async def recommendations(request: RecommendationsRequest):
-    """Generate personalized meal recommendations"""
-    print(f"🍽️ Generating recommendations for {request.user_data.name}")
+    """Generate meal recommendations using Claude AI via Lava"""
+    print(f"🍽️ Generating recommendations for {request.user_data['name']}")
     
     try:
-        # Mock recommendations (replace with your AI agent when ready)
+        # Convert dicts to Pydantic models
+        user_profile = UserProfile(**request.user_data)
+        dining_halls = [DiningHall(**d) for d in request.dining_halls]
+        
+        # Call Claude AI via Lava
+        recs = generate_recommendations(user_profile, dining_halls, request.current_time)
+        
+        print(f"✅ Generated {len(recs)} AI recommendations")
+        
+        # Return as list of dicts
         return [
             {
-                "dining_hall": "Central Dining",
-                "meal": "Pasta bar with marinara sauce",
-                "reasoning": f"Use your meal swipe here - you have {request.user_data.swipes_remaining} expiring. Saves $12 vs going off-campus.",
-                "emoji": "🍝",
-                "savings_amount": 12.0,
-                "use_swipe": True
-            },
-            {
-                "dining_hall": "North Commons",
-                "meal": "Build-your-own grain bowl",
-                "reasoning": "Perfect for healthy eating. Fresh ingredients, customizable, and uses a meal swipe.",
-                "emoji": "🥗",
-                "savings_amount": 11.0,
-                "use_swipe": True
+                "dining_hall": rec.dining_hall,
+                "meal": rec.meal,
+                "reasoning": rec.reasoning,
+                "emoji": rec.emoji,
+                "savings_amount": rec.savings_amount,
+                "use_swipe": rec.use_swipe
             }
+            for rec in recs
         ]
+        
     except Exception as e:
         print(f"❌ Error in recommendations: {e}")
-        return []
+        # Fallback to mock data if AI fails
+        return [
+            {
+                "dining_hall": rec.dining_hall,
+                "meal": rec.meal,
+                "reasoning": rec.reasoning,
+                "emoji": rec.emoji,
+                "savings_amount": rec.savings_amount,
+                "use_swipe": rec.use_swipe
+            }
+            for rec in FALLBACK_RECOMMENDATIONS
+        ]
 
 @app.post("/api/query")
 async def query(request: QueryRequest):
-    """Process natural language queries"""
-    print(f"💬 Processing query: {request.query}")
+    """Process natural language queries using Claude AI via Lava"""
+    print(f"💬 Processing query: '{request.query}'")
     
     try:
-        # Mock response (replace with your AI agent when ready)
-        return {
-            "response": f"Based on your preferences and {request.user_data.swipes_remaining} remaining swipes, I recommend using Central Dining's pasta bar. It saves you $12 vs eating off-campus!"
-        }
+        # Convert dicts to Pydantic models
+        user_profile = UserProfile(**request.user_data)
+        dining_halls = [DiningHall(**d) for d in request.dining_halls]
+        
+        # Call Claude AI via Lava - THIS IS THE WOW MOMENT
+        response = handle_query(
+            request.query,
+            user_profile,
+            dining_halls,
+            request.current_time
+        )
+        
+        print(f"✅ AI response: {response[:100]}...")
+        
+        return {"response": response}
+        
     except Exception as e:
         print(f"❌ Error in query: {e}")
-        return {"response": "Sorry, I couldn't process that request right now."}
+        # Fallback to mock response if AI fails
+        return {"response": FALLBACK_QUERY_RESPONSE}
 
 if __name__ == "__main__":
     import uvicorn
-    print("🚀 Starting ZenWallet API with CORS enabled...")
+    print("🚀 Starting ZenWallet API with Claude AI via Lava Payments...")
+    
+    # Check if Lava is configured
+    if os.getenv("LAVA_FORWARD_TOKEN"):
+        print("✅ Lava API configured - using real Claude AI")
+    else:
+        print("⚠️  Lava API not configured - will use fallback responses")
+        print("   Add LAVA_FORWARD_TOKEN to .env to enable AI")
+    
     uvicorn.run("src.main:app", host="0.0.0.0", port=8000, reload=True)

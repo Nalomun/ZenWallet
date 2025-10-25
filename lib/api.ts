@@ -9,8 +9,8 @@ export async function analyzeSpending(userData: any, transactions: any[]) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        user_data: userData,  // ALREADY IN CORRECT FORMAT
-        transactions: transactions  // ALREADY IN CORRECT FORMAT
+        user_data: userData,
+        transactions: transactions
       })
     });
 
@@ -38,8 +38,8 @@ export async function generateDailyFeed(userData: any, diningHalls: any[], curre
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        user_data: userData,  // ALREADY IN CORRECT FORMAT
-        dining_halls: diningHalls,  // ALREADY IN CORRECT FORMAT
+        user_data: userData,
+        dining_halls: diningHalls,
         current_time: currentTime.toISOString()
       })
     });
@@ -59,14 +59,21 @@ export async function generateDailyFeed(userData: any, diningHalls: any[], curre
 
 export async function queryMealRecommendation(query: string, userData: any, diningHalls: any[]) {
   try {
+    // Get user's local time
+    const now = new Date();
+    
+    // Format in ISO 8601 with local timezone offset
+    // This preserves the user's actual local time
+    const localISOTime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString();
+    
     const response = await fetch(`${API_BASE_URL}/api/query`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         query: query,
-        user_data: userData,  // ALREADY IN CORRECT FORMAT
-        dining_halls: diningHalls,  // ALREADY IN CORRECT FORMAT
-        current_time: new Date().toISOString()
+        user_data: userData,
+        dining_halls: diningHalls,
+        current_time: localISOTime
       })
     });
 
