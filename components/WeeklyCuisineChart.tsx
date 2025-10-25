@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   BarChart,
   Bar,
@@ -12,12 +12,23 @@ import {
   LabelList,
 } from 'recharts';
 
-const WEEKLY_DATA = [
-  { cuisine: 'American', week1: 5, week2: 2, week3: 3, week4: 1, week5: 4, week6: 3 },
-  { cuisine: 'Mexican', week1: 5, week2: 3, week3: 4, week4: 2, week5: 5, week6: 4 },
-  { cuisine: 'Thai', week1: 3, week2: 8, week3: 6, week4: 5, week5: 2, week6: 1 },
-  { cuisine: 'Korean', week1: 2, week2: 1, week3: 3, week4: 4, week5: 6, week6: 9 },
-];
+// Helper: generate realistic random weekly data for each cuisine
+function generateRandomWeeklyData() {
+  const cuisines = [
+    'American', 'Mexican', 'Thai', 'Korean', 'Italian',
+    'Spanish', 'French', 'Chinese', 'Vietnamese', 'Japanese'
+  ];
+
+  return cuisines.map(cuisine => {
+    const base = Math.floor(Math.random() * 6) + 2; // 2–7 as baseline
+    const weekData: any = { cuisine };
+    for (let i = 1; i <= 6; i++) {
+      // vary slightly week to week
+      weekData[`week${i}`] = Math.max(1, base + Math.floor(Math.random() * 5 - 2));
+    }
+    return weekData;
+  });
+}
 
 interface CuisineConfig {
   cuisine: string;
@@ -27,13 +38,25 @@ interface CuisineConfig {
 
 export default function WeeklyCuisineChart() {
   const [week, setWeek] = useState(1);
+
+  // Create weekly data once per component mount
+  const WEEKLY_DATA = useMemo(() => generateRandomWeeklyData(), []);
+
+  // Config for emoji and colors
   const [cuisineConfig, setCuisineConfig] = useState<CuisineConfig[]>([
     { cuisine: 'American', emoji: '🍔', color: '#F87171' },
     { cuisine: 'Mexican', emoji: '🌮', color: '#FBBF24' },
     { cuisine: 'Thai', emoji: '🛕', color: '#34D399' },
     { cuisine: 'Korean', emoji: '🍙', color: '#60A5FA' },
+    { cuisine: 'Italian', emoji: '🍝', color: '#FB923C' },
+    { cuisine: 'Spanish', emoji: '🥘', color: '#F59E0B' },
+    { cuisine: 'French', emoji: '🥐', color: '#A78BFA' },
+    { cuisine: 'Chinese', emoji: '🥡', color: '#EF4444' },
+    { cuisine: 'Vietnamese', emoji: '🍜', color: '#10B981' },
+    { cuisine: 'Japanese', emoji: '🍣', color: '#3B82F6' },
   ]);
 
+  // Prepare data for chart
   const chartData = WEEKLY_DATA.map((c) => {
     const cfg = cuisineConfig.find((x) => x.cuisine === c.cuisine)!;
     return {
@@ -101,7 +124,7 @@ export default function WeeklyCuisineChart() {
       </div>
 
       {/* Chart */}
-      <ResponsiveContainer width="100%" height={280}>
+      <ResponsiveContainer width="100%" height={320}>
         <BarChart
           layout="vertical"
           data={chartData}
@@ -111,7 +134,7 @@ export default function WeeklyCuisineChart() {
           <YAxis
             dataKey="label"
             type="category"
-            width={130}
+            width={150}
             tick={{ fontSize: 14, fontWeight: 'bold' }}
           />
           <Tooltip
@@ -121,7 +144,7 @@ export default function WeeklyCuisineChart() {
               backgroundColor: 'rgba(255, 255, 255, 0.95)',
               border: '2px solid #9333ea',
               borderRadius: '12px',
-              padding: '8px 12px'
+              padding: '8px 12px',
             }}
           />
           <Bar dataKey="times" radius={[8, 8, 8, 8]}>
