@@ -14,7 +14,7 @@ export default function SpendingProgress({ userData }: SpendingProgressProps) {
   const overBudget = totalSpent > totalBudget;
 
   const color = overBudget
-    ? '#EF4444'
+    ? '#f13b3bff'
     : percent > 90
     ? '#F59E0B'
     : '#10B981';

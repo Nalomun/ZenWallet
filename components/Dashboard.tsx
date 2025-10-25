@@ -11,11 +11,13 @@ import SpendingChart from './SpendingChart';
 import WeeklyCuisineChart from './WeeklyCuisineChart';
 import SpendingProgress from './SpendingProgress';
 import QuickStats from './QuickStats';
+import SpendingTrends from './SpendingTrends';
 
 export default function Dashboard() {
   const [userData, setUserData] = useState<any>(null);
   const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [trendView, setTrendView] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
   const supabase = createClient();
 
   useEffect(() => {
@@ -23,7 +25,6 @@ export default function Dashboard() {
       const { data: { user } } = await supabase.auth.getUser();
       
       let data = MOCK_USER;
-      let userPreferences = null;
       
       if (user) {
         const { data: profile } = await supabase
@@ -35,9 +36,9 @@ export default function Dashboard() {
         const profileKey = profile?.selected_profile || 'swipe_ignorer';
         data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
         
-        // NEW: Add preferences to user data
+        // Add preferences to user data
         if (profile?.preferences) {
-          data.preferences = profile.preferences;
+          data = { ...data, preferences: profile.preferences };
         }
       }
       
@@ -162,12 +163,46 @@ export default function Dashboard() {
             <WeeklyCuisineChart />
           </div>
 
-          {/* Spending Chart */}
+          {/* Spending Trends - With View Selector */}
           <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
-            <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Spending Over Time
-            </h2>
-            <SpendingChart />
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                Spending Trends
+              </h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setTrendView('daily')}
+                  className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
+                    trendView === 'daily'
+                      ? 'bg-purple-600 text-white shadow-md'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  Daily
+                </button>
+                <button
+                  onClick={() => setTrendView('weekly')}
+                  className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
+                    trendView === 'weekly'
+                      ? 'bg-purple-600 text-white shadow-md'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  Weekly
+                </button>
+                <button
+                  onClick={() => setTrendView('monthly')}
+                  className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
+                    trendView === 'monthly'
+                      ? 'bg-purple-600 text-white shadow-md'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  Monthly
+                </button>
+              </div>
+            </div>
+            <SpendingTrends view={trendView} user={userData} transactions={MOCK_TRANSACTIONS} />
           </div>
         </div>
 
