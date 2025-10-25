@@ -25,6 +25,13 @@ export default function Navbar() {
               <span>Feed</span>
             </Link>
             <Link 
+              href="/transactions" 
+              className="text-gray-700 hover:text-purple-600 font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50 flex items-center gap-2"
+            >
+              <span>💳</span>
+              <span>History</span>
+            </Link>
+            <Link 
               href="/forecast" 
               className="text-gray-700 hover:text-purple-600 font-semibold transition-all duration-300 hover:scale-105 px-3 py-2 rounded-lg hover:bg-purple-50 flex items-center gap-2"
             >
