@@ -42,14 +42,17 @@ Consider:
   - Avoid cuisines with 1-2 stars unless no other options
 - **Ingredients to avoid:** Never suggest meals with these ingredients
 
-**CRITICAL RULES:**
-1. If speed priority > 70: Only suggest options with wait time < 10 min
-2. If budget priority > 70: Strongly emphasize savings and swipe usage
-3. If health priority > 70: Focus on salads, grain bowls, lean proteins
-4. If social priority < 30: Recommend quieter dining halls
-5. Match cuisine preferences - suggest 4-5 star cuisines first
-6. NEVER suggest foods with restricted ingredients
-7. Dietary restrictions are NON-NEGOTIABLE
+**CRITICAL DIETARY RULES:**
+1. PESCATARIAN means: Fish and seafood ARE allowed, but NO beef, pork, or chicken
+   - Suggest: Salmon, tuna, shrimp, fish tacos, poke bowls
+   - DO NOT suggest: Just vegetarian options without fish
+2. VEGETARIAN means: NO meat or fish at all (dairy and eggs OK)
+3. VEGAN means: NO animal products whatsoever
+4. If speed priority > 70: Only suggest options with wait time < 10 min
+5. If budget priority > 70: Strongly emphasize savings and swipe usage
+6. If health priority > 70: Focus on salads, grain bowls, lean proteins
+7. Match cuisine preferences - suggest 4-5 star cuisines first
+8. NEVER suggest foods with restricted ingredients
 
 Format each recommendation as JSON array of 3 recommendations:
 [
@@ -220,6 +223,21 @@ def generate_recommendations(
         dietary_restrictions = user_preferences.get('dietary_restrictions', [])
         avoid_ingredients = user_preferences.get('avoid_ingredients', [])
         
+        # Format dietary restrictions with clear definitions
+        dietary_definitions = {
+            'Vegetarian': 'No meat (beef, pork, chicken, fish, seafood) - dairy and eggs OK',
+            'Vegan': 'No animal products at all (no meat, dairy, eggs, honey)',
+            'Pescatarian': 'Fish and seafood OK - but NO other meat (no beef, pork, chicken)',
+            'Gluten-Free': 'No wheat, barley, rye, or gluten-containing grains',
+            'Dairy-Free': 'No milk, cheese, yogurt, butter, or dairy products',
+            'Nut Allergy': 'AVOID all nuts and nut products (life-threatening)'
+        }
+        
+        dietary_explanations = []
+        for restriction in dietary_restrictions:
+            if restriction in dietary_definitions:
+                dietary_explanations.append(f"{restriction}: {dietary_definitions[restriction]}")
+        
         # Format priorities
         pref_section = f"""
 USER PREFERENCES (IMPORTANT - MATCH THESE!):
@@ -233,11 +251,16 @@ Priorities (0-100 scale):
 Cuisine Preferences (1-5 stars):
 {chr(10).join([f"- {cuisine}: {'★' * rating}{'☆' * (5-rating)} ({rating}/5)" + (" - HIGHLY PREFERRED" if rating >= 4 else " - AVOID" if rating <= 2 else "") for cuisine, rating in cuisine_ratings.items()])}
 
-Dietary Restrictions (STRICT):
-{', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+Dietary Restrictions (STRICT - MUST FOLLOW):
+{chr(10).join(dietary_explanations) if dietary_explanations else 'None'}
 
 Ingredients to AVOID:
 {', '.join(avoid_ingredients) if avoid_ingredients else 'None'}
+
+CRITICAL RULES:
+- If user is Pescatarian: Suggest fish/seafood dishes, NOT just vegetarian options
+- If user is Vegetarian: NO meat or fish at all
+- If user is Vegan: NO animal products whatsoever
 """
     
     user_prompt = f"""
@@ -315,6 +338,15 @@ Menu: {', '.join(hall.current_menu[:3])}
         
         top_cuisines = sorted(cuisine_ratings.items(), key=lambda x: x[1], reverse=True)[:3]
         
+        # Add dietary explanations
+        dietary_info = []
+        if 'Pescatarian' in dietary_restrictions:
+            dietary_info.append("Pescatarian (fish/seafood OK, no other meat)")
+        if 'Vegetarian' in dietary_restrictions:
+            dietary_info.append("Vegetarian (no meat or fish)")
+        if 'Vegan' in dietary_restrictions:
+            dietary_info.append("Vegan (no animal products)")
+        
         pref_context = f"""
 User Priorities:
 - Speed importance: {priorities.get('speed', 50)}/100
@@ -322,7 +354,9 @@ User Priorities:
 - Health importance: {priorities.get('health', 50)}/100
 
 Top Cuisine Preferences: {', '.join([f"{c} ({r}★)" for c, r in top_cuisines])}
-Dietary Restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+Dietary Restrictions: {', '.join(dietary_info) if dietary_info else 'None'}
+
+IMPORTANT: If user is Pescatarian, suggest fish/seafood dishes, not just vegetarian!
 """
     
     user_prompt = f"""

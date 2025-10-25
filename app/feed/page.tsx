@@ -15,58 +15,59 @@ export default function FeedPage() {
   const [userData, setUserData] = useState<any>(null);
   const supabase = createClient();
 
-  useEffect(() => {
-    async function loadData() {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      let data = MOCK_USER;
-      
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('selected_profile, preferences')
-          .eq('id', user.id)
-          .single();
+  async function loadData() {
+    setLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    let data = MOCK_USER;
+    
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('selected_profile, preferences')
+        .eq('id', user.id)
+        .single();
 
-        const profileKey = profile?.selected_profile || 'swipe_ignorer';
-        data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
-        
-        // Add preferences to user data
-        if (profile?.preferences) {
-          data = { ...data, preferences: profile.preferences };
-        }
+      const profileKey = profile?.selected_profile || 'swipe_ignorer';
+      data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
+      
+      // Add preferences to user data
+      if (profile?.preferences) {
+        data = { ...data, preferences: profile.preferences };
       }
-      
-      setUserData(data);
-      
-      // Try to get AI recommendations with preferences
-      try {
-        const aiRecs = await generateDailyFeed(data, MOCK_DINING_HALLS, new Date());
-        if (aiRecs && aiRecs.length > 0) {
-          // Map AI response to FeedRecommendation format
-          const formattedRecs = aiRecs.map((rec: any) => ({
-            diningHall: rec.dining_hall || rec.diningHall,
-            dishRecommendation: rec.meal || rec.dishRecommendation,
-            reasoning: rec.reasoning,
-            urgency: 'high' as const,
-            paymentMethod: rec.use_swipe ? 'swipe' as const : 'flex' as const,
-            savingsImpact: `Save ${rec.savings_amount}`,
-            estimatedWait: '5-10 min',
-            matchScore: 95
-          }));
-          setRecommendations(formattedRecs);
-        } else {
-          // Fallback to mock
-          setRecommendations(getMockRecommendations(data));
-        }
-      } catch (error) {
-        console.log('Using mock recommendations:', error);
+    }
+    
+    setUserData(data);
+    
+    // Try to get AI recommendations with preferences
+    try {
+      const aiRecs = await generateDailyFeed(data, MOCK_DINING_HALLS, new Date());
+      if (aiRecs && aiRecs.length > 0) {
+        // Map AI response to FeedRecommendation format
+        const formattedRecs = aiRecs.map((rec: any) => ({
+          diningHall: rec.dining_hall || rec.diningHall,
+          dishRecommendation: rec.meal || rec.dishRecommendation,
+          reasoning: rec.reasoning,
+          urgency: 'high' as const,
+          paymentMethod: rec.use_swipe ? 'swipe' as const : 'flex' as const,
+          savingsImpact: `Save ${rec.savings_amount}`,
+          estimatedWait: '5-10 min',
+          matchScore: 95
+        }));
+        setRecommendations(formattedRecs);
+      } else {
+        // Fallback to mock
         setRecommendations(getMockRecommendations(data));
       }
-      
-      setLoading(false);
+    } catch (error) {
+      console.log('Using mock recommendations:', error);
+      setRecommendations(getMockRecommendations(data));
     }
+    
+    setLoading(false);
+  }
 
+  useEffect(() => {
     loadData();
   }, []);
 
@@ -85,12 +86,23 @@ export default function FeedPage() {
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="bg-white/60 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/20">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            🍽️ Your Personalized Feed
-          </h1>
-          <p className="text-gray-600 font-medium">
-            AI-powered meal recommendations based on your preferences and budget
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                🍽️ Your Personalized Feed
+              </h1>
+              <p className="text-gray-600 font-medium">
+                AI-powered meal recommendations based on your preferences and budget
+              </p>
+            </div>
+            <button
+              onClick={loadData}
+              disabled={loading}
+              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50"
+            >
+              {loading ? '🔄 Loading...' : '🔄 Refresh'}
+            </button>
+          </div>
         </div>
 
         {/* Query Box */}

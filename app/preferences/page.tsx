@@ -80,7 +80,12 @@ export default function PreferencesPage() {
 
     if (!error) {
       setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
+      // Force a full page reload after redirect to ensure fresh data
+      setTimeout(() => {
+        window.location.href = '/feed';
+      }, 1000);
+    } else {
+      console.error('Error saving preferences:', error);
     }
 
     setSaving(false);
