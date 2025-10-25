@@ -23,7 +23,6 @@ function generateRandomWeeklyData() {
     const base = Math.floor(Math.random() * 6) + 2; // 2–7 as baseline
     const weekData: any = { cuisine };
     for (let i = 1; i <= 6; i++) {
-      // vary slightly week to week
       weekData[`week${i}`] = Math.max(1, base + Math.floor(Math.random() * 5 - 2));
     }
     return weekData;
@@ -38,6 +37,7 @@ interface CuisineConfig {
 
 export default function WeeklyCuisineChart() {
   const [week, setWeek] = useState(1);
+  const [showAll, setShowAll] = useState(false);
 
   // Create weekly data once per component mount
   const WEEKLY_DATA = useMemo(() => generateRandomWeeklyData(), []);
@@ -57,7 +57,7 @@ export default function WeeklyCuisineChart() {
   ]);
 
   // Prepare data for chart
-  const chartData = WEEKLY_DATA.map((c) => {
+  const sortedData = WEEKLY_DATA.map((c) => {
     const cfg = cuisineConfig.find((x) => x.cuisine === c.cuisine)!;
     return {
       cuisine: c.cuisine,
@@ -67,6 +67,9 @@ export default function WeeklyCuisineChart() {
       times: c[`week${week}` as keyof typeof c] as number,
     };
   }).sort((a, b) => b.times - a.times);
+
+  // Only show top 5 if not expanded
+  const chartData = showAll ? sortedData : sortedData.slice(0, 5);
 
   return (
     <div>
@@ -159,6 +162,17 @@ export default function WeeklyCuisineChart() {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+
+      {/* Show More / Less Button */}
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all"
+        >
+          {showAll ? 'Show Less' : 'Show More'}
+        </button>
+      </div>
     </div>
   );
 }
+
