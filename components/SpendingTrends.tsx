@@ -1,7 +1,7 @@
 // components/SpendingTrends.tsx
 import { useState } from 'react';
 import {
-  LineChart ,
+  LineChart,
   Line,
   XAxis,
   YAxis,
