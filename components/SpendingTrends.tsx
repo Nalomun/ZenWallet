@@ -18,7 +18,7 @@ export default function SpendingTrends({ view, user, transactions }: SpendingTre
   ];
 
   // Get current user's data
-  const currentUser = students.find(s => s.name === user?.name);
+  const currentUser = students.find(s=> s.name === user?.name);
 
   if (!currentUser) {
     return (
