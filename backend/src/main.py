@@ -1,11 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-<<<<<<< Updated upstream
 from pydantic import BaseModel
 from typing import List
 import os
 from dotenv import load_dotenv
-=======
 from typing import List, Any, Dict,Optional,Literal
 # Add these imports after your existing imports
 from typing import cast
@@ -16,7 +14,6 @@ from src.prediction import (
     ForecastMode,
     FilterType
 )
->>>>>>> Stashed changes
 
 # Import your AI agent functions
 from src.agent import analyze_spending, generate_recommendations, handle_query
@@ -70,11 +67,6 @@ async def root():
 async def health():
     lava_configured = bool(os.getenv("LAVA_FORWARD_TOKEN"))
     return {
-<<<<<<< Updated upstream
-        "status": "healthy", 
-        "version": "1.0.0",
-        "lava_configured": lava_configured
-=======
         "status": "healthy",
         "lava_configured": lava_configured,
         "endpoints": {
@@ -83,7 +75,6 @@ async def health():
             "query": "/api/query",
             "forecast": "/api/spending-forecast"
         }
->>>>>>> Stashed changes
     }
 
 @app.post("/api/analyze")
@@ -260,9 +251,7 @@ async def spending_forecast(request: Dict[str, Any]) -> Dict[str, Any]:
 
 if __name__ == "__main__":
     import uvicorn
-<<<<<<< Updated upstream
     print("🚀 Starting ZenWallet API with Claude AI via Lava Payments...")
-=======
     print("\n" + "="*60)
     print("🚀 Starting ZenWallet AI Agent")
     print("="*60)
@@ -275,7 +264,6 @@ if __name__ == "__main__":
     print(" POST /api/spending-forecast - ML spending forecast")
     print("\nDocs: http://localhost:8000/docs")
     print("="*60 + "\n")
->>>>>>> Stashed changes
     
     # Check if Lava is configured
     if os.getenv("LAVA_FORWARD_TOKEN"):
