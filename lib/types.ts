@@ -1,73 +1,69 @@
-// USER & MEAL PLAN DATA
+// User Data Types
 export interface UserData {
-  id: string;
   name: string;
-  totalPlan: number;
-  totalSwipes: number;
-  currentSpent: number;
-  currentSwipes: number;
-  flexDollars: number;
-  weeksIntoSemester: number;
-  preferences: UserPreferences;
-}
-
-export interface UserPreferences {
-  dietaryRestrictions: string[];
-  favoriteCuisines: string[];
-  dislikes: string[];
-  priorities: string[];
-  favoriteDiningHalls: string[];
-}
-
-// TRANSACTION DATA
-export interface Transaction {
-  id: string;
-  date: string;
-  amount: number;
-  location: string;
-  type: "swipe" | "flex" | "external";
-  category?: string;
-}
-
-// DINING HALL DATA
-export interface DiningHall {
-  id: string;
-  name: string;
-  hours: {
-    breakfast?: string;
-    lunch?: string;
-    dinner?: string;
+  total_budget: number;
+  total_spent: number;
+  total_swipes: number;
+  swipes_used: number;
+  swipes_remaining: number;
+  total_flex: number;
+  flex_spent: number;
+  flex_remaining: number;
+  weeks_remaining: number;
+  preferences: {
+    dietary: string[];
+    favorite_cuisines: string[];
+    priorities: string[];
   };
-  currentMenu: MenuItem[];
-  distance: string;
-  crowdLevel: "low" | "medium" | "high";
-  acceptsSwipes: boolean;
-  vibe: string;
 }
 
-export interface MenuItem {
+// Transaction Types
+export interface Transaction {
+  merchant: string;
+  amount: number;
+  type: 'flex' | 'swipe' | 'external';
+  timestamp: string;
+}
+
+// Dining Hall Types
+export interface DiningHall {
   name: string;
-  category: string;
-  dietaryTags: string[];
+  current_menu: string[];
+  wait_time: number;
+  crowd_level: 'low' | 'medium' | 'high';
+  accepts_swipes: boolean;
+  distance: string;
 }
 
-// AI RESPONSE TYPES
+// AI Response Types
 export interface SpendingAnalysis {
-  assessment: string;
-  biggestWaste: string;
-  projectedSavings: string;
-  weeklyBurnRate: number;
-  recommendations: string[];
+  main_insight: string;
+  dollar_amount: number;
+  patterns: string[];
+  recommendation: string;
 }
 
 export interface FeedRecommendation {
-  id: string;
   diningHall: string;
   dishRecommendation: string;
   reasoning: string;
-  paymentMethod: "swipe" | "flex" | "external";
+  urgency: 'high' | 'medium' | 'low';
+  paymentMethod: 'swipe' | 'flex' | 'external';
   savingsImpact: string;
-  urgency: "low" | "medium" | "high";
   estimatedWait: string;
   matchScore: number;
+}
+
+export interface QueryResponse {
+  response: string;
+}
+
+// Demo Profile Types
+export interface DemoProfile {
+  id: string;
+  name: string;
+  emoji: string;
+  description: string;
+  problem: string;
+  data: UserData;
 }
