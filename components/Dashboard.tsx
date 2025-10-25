@@ -4,18 +4,17 @@ import { useState, useEffect } from 'react';
 import { analyzeSpending } from '@/lib/api';
 import { MOCK_USER, MOCK_TRANSACTIONS } from '@/lib/mockData';
 import StatCard from './StatCard';
-import SpendingChart from './SpendingChart';
 import WeeklyCuisineChart from './WeeklyCuisineChart';
-import SpendingProgress from './SpendingProgress'; // 👈 Import your new overspending chart
+import SpendingProgress from './SpendingProgress';
+import SpendingTrends from './SpendingTrends'; // New daily/weekly/monthly line chart
 
 export default function Dashboard() {
   const [analysis, setAnalysis] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // 👤 Mock user adjustment for Sarah Chen
   const user = {
     ...MOCK_USER,
-    name: 'Sarah Chen' ,
+    name: 'Sarah Chen',
     total_budget: 1000,
     total_spent: 860,
     swipes_remaining: 12,
@@ -79,50 +78,4 @@ export default function Dashboard() {
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-4">Weekly Cuisine Ranking</h2>
         <WeeklyCuisineChart />
-      </div>
-
-      {/* AI Insights */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-4">AI Insights</h2>
-
-        {loading && (
-          <div className="bg-gray-100 p-4 rounded-lg animate-pulse">
-            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-          </div>
-        )}
-
-        {!loading && analysis?.main_insight && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg mb-4">
-            <p className="text-lg font-bold text-red-900">{analysis.main_insight}</p>
-            <p className="text-red-700 text-xl">Wasting ${analysis.dollar_amount}</p>
-          </div>
-        )}
-
-        {!loading && analysis?.patterns && (
-          <div className="bg-purple-50 p-5 rounded-lg mb-4">
-            <h3 className="font-semibold text-purple-900 mb-3">Patterns</h3>
-            <ul className="space-y-2">
-              {analysis.patterns.map((pattern: string, idx: number) => (
-                <li key={idx} className="text-purple-800">{pattern}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {!loading && analysis?.recommendation && (
-          <div className="bg-green-50 p-5 rounded-lg">
-            <h3 className="font-semibold text-green-900 mb-2">Recommendation</h3>
-            <p className="text-green-800">{analysis.recommendation}</p>
-          </div>
-        )}
-      </div>
-
-      {/* Spending Chart */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-4">Spending Chart</h2>
-        <SpendingChart />
-      </div>
-    </div>
-  );
-}
 
