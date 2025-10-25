@@ -37,6 +37,9 @@ export default function AuthButton() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     router.push('/');
+    router.refresh();
+    // Force reload to clear all state
+    window.location.href = '/';
   };
 
   if (loading) {

@@ -22,26 +22,35 @@ export default function Dashboard() {
     async function loadData() {
       const { data: { user } } = await supabase.auth.getUser();
       
-      if (!user) {
-        setUserData(MOCK_USER);
-        const analysisResult = await analyzeSpending(MOCK_USER, MOCK_TRANSACTIONS);
-        setAnalysis(analysisResult);
-        setLoading(false);
-        return;
+      let data = MOCK_USER;
+      
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('selected_profile')
+          .eq('id', user.id)
+          .single();
+
+        const profileKey = profile?.selected_profile || 'swipe_ignorer';
+        data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
       }
-
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('selected_profile')
-        .eq('id', user.id)
-        .single();
-
-      const profileKey = profile?.selected_profile || 'swipe_ignorer';
-      const data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
       
       setUserData(data);
-      const analysisResult = await analyzeSpending(data, MOCK_TRANSACTIONS);
-      setAnalysis(analysisResult);
+      
+      // Try backend first, fallback to mock
+      try {
+        const analysisResult = await analyzeSpending(data, MOCK_TRANSACTIONS);
+        // If backend returns error message, use mock instead
+        if (analysisResult.main_insight === "Unable to analyze at this time") {
+          setAnalysis(getMockAnalysis(data));
+        } else {
+          setAnalysis(analysisResult);
+        }
+      } catch (error) {
+        // Backend not available, use mock
+        setAnalysis(getMockAnalysis(data));
+      }
+      
       setLoading(false);
     }
 
@@ -79,18 +88,17 @@ export default function Dashboard() {
           <p className="text-gray-600 mt-2 font-medium">Week {weeksIntoSemester} of 16 • {userData.weeks_remaining} weeks remaining</p>
         </div>
 
-        {/* AI Alert */}
-        {analysis?.main_insight && (
-          <div className="bg-gradient-to-r from-red-500 to-orange-500 p-[2px] rounded-2xl shadow-xl animate-pulse">
-            <div className="bg-white rounded-2xl p-6">
-              <div className="flex items-start gap-4">
-                <span className="text-4xl">⚠️</span>
-                <div className="flex-1">
-                  <p className="text-lg font-bold text-gray-900 mb-1">{analysis.main_insight}</p>
-                  <p className="text-2xl font-extrabold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-                    Wasting ${analysis.dollar_amount}
-                  </p>
-                </div>
+        {/* AI Alert - Softer styling */}
+        {analysis?.main_insight && analysis.dollar_amount > 100 && (
+          <div className="bg-gradient-to-r from-orange-100 to-amber-100 border-l-4 border-orange-400 rounded-xl p-6 shadow-md">
+            <div className="flex items-start gap-4">
+              <span className="text-3xl">💡</span>
+              <div className="flex-1">
+                <h3 className="font-bold text-gray-900 text-lg mb-2">Savings Opportunity</h3>
+                <p className="text-gray-800 mb-1">{analysis.main_insight}</p>
+                <p className="text-sm text-gray-600 mt-2">
+                  We found ways you could save money this semester!
+                </p>
               </div>
             </div>
           </div>
