@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 class UserProfile(BaseModel):
@@ -14,7 +14,7 @@ class UserProfile(BaseModel):
     flex_spent: float
     flex_remaining: float
     weeks_remaining: int
-    preferences: Dict[str, List[str]]  # {dietary: [], favorite_cuisines: [], priorities: []}
+    preferences: Dict[str, Any]  # Changed from Dict[str, List[str]] to Dict[str, Any]
 
 class Transaction(BaseModel):
     """Individual transaction record"""
