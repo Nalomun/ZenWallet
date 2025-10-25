@@ -1,11 +1,11 @@
 """
-FastAPI server for MealPrep IQ AI Agent
+FastAPI server for ZenWallet AI Agent
 Exposes REST API endpoints for the frontend to call
 """
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List,Any
+from typing import List, Any, Dict
 
 from src.models import (
     AnalysisRequest,
@@ -22,7 +22,7 @@ from src.mock_data import (
 )
 
 app = FastAPI(
-    title="MealPrep IQ AI Agent",
+    title="ZenWallet AI Agent",
     description="AI-powered meal plan optimization for college students",
     version="1.0.0"
 )
@@ -41,17 +41,17 @@ app.add_middleware(
 )
 
 @app.get("/")
-def read_root() -> dict[str,str]:
+def read_root() -> Dict[str, str]:
     """Health check endpoint"""
     return {
         "status": "online",
-        "service": "MealPrep IQ AI Agent",
+        "service": "ZenWallet AI Agent",
         "version": "1.0.0",
         "message": "AI agent is ready to optimize meal plans! 🍽️"
     }
 
 @app.get("/health")
-def health_check()  -> dict[str,Any]:
+def health_check() -> Dict[str, Any]:
     """Detailed health check"""
     import os
     
@@ -96,7 +96,7 @@ async def recommendations(request: RecommendationRequest):
     """
     Generate personalized meal recommendations
     
-    Returns 3 AI-generated recommendations based on context
+    Returns 3-5 AI-generated recommendations based on context
     """
     try:
         print("\n" + "="*60)
@@ -121,7 +121,7 @@ async def recommendations(request: RecommendationRequest):
         return FALLBACK_RECOMMENDATIONS
 
 @app.post("/api/query")
-async def query(request: QueryRequest):
+async def query(request: QueryRequest) -> Dict[str, str]:
     """
     Handle natural language queries
     
@@ -150,11 +150,11 @@ async def query(request: QueryRequest):
         print("⚠️  Using fallback query response")
         return {"response": FALLBACK_QUERY_RESPONSE}
 
-# For running directly with: python src/main.py
+# For running directly with: python -m src.main
 if __name__ == "__main__":
     import uvicorn
     print("\n" + "="*60)
-    print("🚀 Starting MealPrep IQ AI Agent")
+    print("🚀 Starting ZenWallet AI Agent")
     print("="*60)
     print("\nEndpoints:")
     print("  GET  /          - Health check")

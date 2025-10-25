@@ -21,7 +21,7 @@ class Transaction(BaseModel):
     merchant: str
     amount: float
     type: str  # 'swipe' or 'flex'
-    timestamp: datetime
+    timestamp: str  # Changed from datetime to str for easier JSON handling
 
 class DiningHall(BaseModel):
     """Dining hall information"""

@@ -1,5 +1,7 @@
 // lib/api.ts
 const API_BASE_URL = 'http://localhost:8000';
+import { supabase } from './supabase';
+import { DEMO_PROFILES } from './demoProfiles';
 
 export async function analyzeSpending(userData: any, transactions: any[]) {
   try {
@@ -80,4 +82,18 @@ export async function queryMealRecommendation(query: string, userData: any, dini
     console.error('Failed to process query:', error);
     return "Sorry, I couldn't process that request right now.";
   }
+}
+
+export async function getCurrentUserData(userEmail: string) {
+  const { data: user } = await supabase
+    .from('users')
+    .select('selected_profile')
+    .eq('email', userEmail)
+    .single();
+
+  if (!user || !user.selected_profile) {
+    return DEMO_PROFILES.swipe_ignorer.data; // Default
+  }
+
+  return DEMO_PROFILES[user.selected_profile as keyof typeof DEMO_PROFILES].data;
 }

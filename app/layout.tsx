@@ -18,12 +18,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
-          <Navbar />
-          <main className="container mx-auto px-4 py-8">
-            {children}
-          </main>
-        </div>
+        <Navbar />
+        {children}
       </body>
     </html>
   );
