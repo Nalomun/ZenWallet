@@ -1,128 +1,242 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
-import { analyzeSpending } from '@/lib/api';
-import { MOCK_USER, MOCK_TRANSACTIONS } from '@/lib/mockData';
-import { DEMO_PROFILES } from '@/lib/demoProfiles';
-import { getMockAnalysis } from '@/lib/mockApiResponses';
-import StatCard from './StatCard';
-import WeeklyCuisineChart from './WeeklyCuisineChart';
-import SpendingProgress from './SpendingProgress';
-import QuickStats from './QuickStats';
-import SpendingTrends from './SpendingTrends';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 
-export default function Dashboard() {
-  const [userData, setUserData] = useState<any>(null);
-  const [analysis, setAnalysis] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [trendView, setTrendView] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
-  const [showSavingsModal, setShowSavingsModal] = useState(false);
-  const supabase = createClient();
+// Mock components for demo
+const StatCard = ({ title, value, subtitle, icon, trend }: any) => (
+  <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 group hover:scale-[1.02]">
+    <div className="flex items-start justify-between mb-4">
+      <div className="p-3 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
+        <span className="text-3xl">{icon}</span>
+      </div>
+      {trend && (
+        <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
+          trend === 'up' ? 'bg-green-500/20 text-green-400' : 
+          trend === 'down' ? 'bg-red-500/20 text-red-400' : 
+          'bg-slate-500/20 text-slate-400'
+        }`}>
+          {trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'}
+        </div>
+      )}
+    </div>
+    <h3 className="text-slate-400 text-sm font-medium mb-2">{title}</h3>
+    <p className="text-3xl font-bold text-white mb-1">{value}</p>
+    <p className="text-slate-500 text-sm">{subtitle}</p>
+  </div>
+);
 
-  useEffect(() => {
-    async function loadData() {
-      const { data: { user } } = await supabase.auth.getUser();
+const SpendingProgress = ({ userData }: any) => {
+  const percent = Math.min((userData.total_spent / userData.total_budget) * 100, 150);
+  const overBudget = userData.total_spent > userData.total_budget;
+  
+  return (
+    <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-8 border border-slate-700/50">
+      <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+        <span className="text-3xl">💸</span>
+        Spending Progress
+      </h2>
       
-      let data = MOCK_USER;
-      
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('selected_profile, preferences')
-          .eq('id', user.id)
-          .single();
+      <div className="flex flex-col items-center">
+        <div className="relative w-48 h-48 mb-8">
+          <svg className="transform -rotate-90" width="192" height="192" viewBox="0 0 192 192">
+            <circle
+              cx="96"
+              cy="96"
+              r="80"
+              stroke="rgb(51 65 85)"
+              strokeWidth="16"
+              fill="none"
+            />
+            <circle
+              cx="96"
+              cy="96"
+              r="80"
+              stroke={overBudget ? "rgb(239 68 68)" : "url(#gradient)"}
+              strokeWidth="16"
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray={2 * Math.PI * 80}
+              strokeDashoffset={2 * Math.PI * 80 * (1 - Math.min(percent, 100) / 100)}
+              style={{ transition: 'stroke-dashoffset 1s ease-out' }}
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="rgb(168 85 247)" />
+                <stop offset="100%" stopColor="rgb(59 130 246)" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <p className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              {Math.round(percent)}%
+            </p>
+            <p className="text-slate-500 text-sm mt-1">of budget</p>
+          </div>
+        </div>
 
-        const profileKey = profile?.selected_profile || 'swipe_ignorer';
-        data = DEMO_PROFILES[profileKey as keyof typeof DEMO_PROFILES].data;
-        
-        // Add preferences to user data
-        if (profile?.preferences) {
-          data = { ...data, preferences: profile.preferences };
-        }
-      }
-      
-      setUserData(data);
-      
-      // Try backend first, fallback to mock
-      try {
-        const analysisResult = await analyzeSpending(data, MOCK_TRANSACTIONS);
-        if (analysisResult.main_insight === "Unable to analyze at this time") {
-          setAnalysis(getMockAnalysis(data));
-        } else {
-          setAnalysis(analysisResult);
-        }
-      } catch (error) {
-        setAnalysis(getMockAnalysis(data));
-      }
-      
-      setLoading(false);
-    }
-
-    loadData();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-purple-100 py-12 px-4 flex items-center justify-center">
-        <div className="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent animate-pulse">
-          Loading your insights...
+        <div className="w-full space-y-3">
+          <div className="flex justify-between items-center p-4 bg-slate-900/50 rounded-xl">
+            <span className="text-slate-400">Spent</span>
+            <span className="text-white font-bold text-lg">${userData.total_spent.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between items-center p-4 bg-slate-900/50 rounded-xl">
+            <span className="text-slate-400">Budget</span>
+            <span className="text-white font-bold text-lg">${userData.total_budget.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between items-center p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-500/20">
+            <span className="text-slate-300 font-medium">
+              {overBudget ? 'Over by' : 'Remaining'}
+            </span>
+            <span className={`font-bold text-xl ${
+              overBudget ? 'text-red-400' : 'text-green-400'
+            }`}>
+              ${Math.abs(userData.total_budget - userData.total_spent).toFixed(2)}
+            </span>
+          </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+};
 
-  if (!userData) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-purple-100 py-12 px-4 flex items-center justify-center">
-        <div className="text-2xl font-semibold">Please sign in</div>
+const QuickStats = ({ userData }: any) => {
+  const avgPerWeek = userData.total_spent / 8;
+  const projectedTotal = avgPerWeek * 16;
+  const swipeValue = userData.swipes_remaining * 12;
+  
+  return (
+    <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-8 border border-slate-700/50">
+      <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+        <span className="text-3xl">📊</span>
+        Quick Stats
+      </h2>
+
+      <div className="space-y-4">
+        <div className="p-5 bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 cursor-pointer group">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-slate-400 text-sm mb-1">Avg per Week</p>
+              <p className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                ${avgPerWeek.toFixed(2)}
+              </p>
+            </div>
+            <span className="text-4xl group-hover:scale-110 transition-transform">📅</span>
+          </div>
+        </div>
+
+        <div className="p-5 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-xl border border-orange-500/20 hover:border-orange-500/40 transition-all duration-300 cursor-pointer group">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-slate-400 text-sm mb-1">Projected Total</p>
+              <p className="text-3xl font-bold text-orange-400">
+                ${projectedTotal.toFixed(2)}
+              </p>
+            </div>
+            <span className="text-4xl group-hover:scale-110 transition-transform">📈</span>
+          </div>
+          <p className="text-xs text-slate-500 mt-2">
+            {projectedTotal > userData.total_budget 
+              ? `$${(projectedTotal - userData.total_budget).toFixed(2)} over budget` 
+              : `Within budget!`}
+          </p>
+        </div>
+
+        <div className="p-5 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl border border-green-500/20 hover:border-green-500/40 transition-all duration-300 cursor-pointer group">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-slate-400 text-sm mb-1">Unused Swipe Value</p>
+              <p className="text-3xl font-bold text-green-400">
+                ${swipeValue.toFixed(2)}
+              </p>
+            </div>
+            <span className="text-4xl group-hover:scale-110 transition-transform">🎫</span>
+          </div>
+          <p className="text-xs text-slate-500 mt-2">
+            {userData.swipes_remaining} swipes × $12 each
+          </p>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
+};
 
-  const weeksIntoSemester = 8;
+export default function ModernDashboard() {
+  const [trendView, setTrendView] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
+  
+  const userData = {
+    name: 'Sarah',
+    total_spent: 2540,
+    total_budget: 3175,
+    swipes_remaining: 45,
+    swipes_used: 35,
+    total_swipes: 80,
+    flex_remaining: 285,
+    flex_spent: 315,
+    total_flex: 600,
+    weeks_remaining: 8
+  };
+
+  const weeklyData = [
+    { week: 'Week 1', spent: 280, budget: 198 },
+    { week: 'Week 2', spent: 590, budget: 397 },
+    { week: 'Week 3', spent: 920, budget: 595 },
+    { week: 'Week 4', spent: 1240, budget: 794 },
+    { week: 'Week 5', spent: 1550, budget: 992 },
+    { week: 'Week 6', spent: 1820, budget: 1191 },
+    { week: 'Week 7', spent: 2180, budget: 1389 },
+    { week: 'Week 8', spent: 2540, budget: 1588 },
+  ];
+
+  const cuisineData = [
+    { name: 'Mexican', value: 35 },
+    { name: 'Asian', value: 25 },
+    { name: 'American', value: 20 },
+    { name: 'Italian', value: 12 },
+    { name: 'Other', value: 8 },
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-purple-100 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 py-8 px-4">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="bg-white/60 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/20">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Welcome back, {userData.name} 👋
-          </h1>
-          <p className="text-gray-600 mt-2 font-medium">Week {weeksIntoSemester} of 16 • {userData.weeks_remaining} weeks remaining</p>
-        </div>
-
-        {/* AI Alert - Now Clickable */}
-        {analysis?.main_insight && analysis.dollar_amount > 100 && (
-          <div 
-            onClick={() => setShowSavingsModal(true)}
-            className="bg-gradient-to-r from-orange-100 to-amber-100 border-l-4 border-orange-400 rounded-xl p-6 shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer group"
-          >
-            <div className="flex items-start gap-4">
-              <span className="text-3xl group-hover:scale-110 transition-transform">💡</span>
-              <div className="flex-1">
-                <h3 className="font-bold text-gray-900 text-lg mb-2">Savings Opportunity</h3>
-                <p className="text-gray-800 mb-1">{analysis.main_insight}</p>
-                <p className="text-sm text-gray-600 mt-2">
-                  We found ways you could save money this semester!
-                </p>
-                <p className="text-xs text-orange-600 font-semibold mt-3 flex items-center gap-1 group-hover:gap-2 transition-all">
-                  <span>Click for detailed breakdown</span>
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </p>
-              </div>
+        <div className="bg-slate-800/30 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-slate-700/50">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
+                Welcome back, {userData.name} 👋
+              </h1>
+              <p className="text-slate-400 text-lg">Week 8 of 16 • {userData.weeks_remaining} weeks remaining</p>
+            </div>
+            <div className="hidden md:block p-4 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl border border-purple-500/30">
+              <p className="text-slate-300 text-sm font-medium">Total Budget</p>
+              <p className="text-3xl font-bold text-white">${userData.total_budget}</p>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* Spending Progress + Quick Stats Side by Side */}
+        {/* AI Alert */}
+        <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-6 backdrop-blur-xl hover:border-amber-500/50 transition-all duration-300 cursor-pointer group">
+          <div className="flex items-start gap-4">
+            <span className="text-4xl group-hover:scale-110 transition-transform">💡</span>
+            <div className="flex-1">
+              <h3 className="font-bold text-amber-400 text-xl mb-2">Savings Opportunity</h3>
+              <p className="text-slate-300 mb-2">You could save $450 this semester by using more meal swipes instead of flex dollars for dinner.</p>
+              <p className="text-sm text-slate-400 mt-3 flex items-center gap-2 group-hover:gap-3 transition-all">
+                <span>Click for detailed breakdown</span>
+                <span>→</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress & Stats Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <SpendingProgress userData={userData} />
           <QuickStats userData={userData} />
         </div>
 
-        {/* Stat Cards - Compact and Interactive */}
+        {/* Stat Cards Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard
             title="Total Spent"
@@ -130,213 +244,147 @@ export default function Dashboard() {
             subtitle={`${Math.round((userData.total_spent / userData.total_budget) * 100)}% of budget`}
             trend="up"
             icon="💰"
-            details={{
-              budget: userData.total_budget,
-              spent: userData.total_spent,
-              remaining: userData.total_budget - userData.total_spent
-            }}
           />
           <StatCard
             title="Meal Swipes"
             value={userData.swipes_remaining}
             subtitle={`${userData.swipes_used} used of ${userData.total_swipes}`}
-            trend={userData.swipes_remaining > 30 ? "neutral" : "down"}
+            trend="down"
             icon="🎫"
-            details={{
-              total: userData.total_swipes,
-              used: userData.swipes_used,
-              remaining: userData.swipes_remaining,
-              valuePerSwipe: 12
-            }}
           />
           <StatCard
             title="Flex Dollars"
             value={`$${userData.flex_remaining.toFixed(2)}`}
             subtitle={`$${userData.flex_spent.toFixed(2)} spent`}
-            trend={userData.flex_remaining > 200 ? "neutral" : "down"}
+            trend="down"
             icon="💳"
-            details={{
-              total: userData.total_flex,
-              spent: userData.flex_spent,
-              remaining: userData.flex_remaining
-            }}
           />
         </div>
 
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Weekly Cuisine Chart */}
-          <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
-            <WeeklyCuisineChart />
-          </div>
-
-          {/* Spending Trends - With View Selector */}
-          <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+          {/* Spending Trends */}
+          <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                <span className="text-3xl">📈</span>
                 Spending Trends
               </h2>
               <div className="flex gap-2">
-                <button
-                  onClick={() => setTrendView('daily')}
-                  className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
-                    trendView === 'daily'
-                      ? 'bg-purple-600 text-white shadow-md'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  Daily
-                </button>
-                <button
-                  onClick={() => setTrendView('weekly')}
-                  className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
-                    trendView === 'weekly'
-                      ? 'bg-purple-600 text-white shadow-md'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  Weekly
-                </button>
-                <button
-                  onClick={() => setTrendView('monthly')}
-                  className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
-                    trendView === 'monthly'
-                      ? 'bg-purple-600 text-white shadow-md'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  Monthly
-                </button>
+                {['daily', 'weekly', 'monthly'].map((view) => (
+                  <button
+                    key={view}
+                    onClick={() => setTrendView(view as any)}
+                    className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                      trendView === view
+                        ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white'
+                        : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
+                    }`}
+                  >
+                    {view.charAt(0).toUpperCase() + view.slice(1)}
+                  </button>
+                ))}
               </div>
             </div>
-            <SpendingTrends view={trendView} user={userData} transactions={MOCK_TRANSACTIONS} />
+            
+            <ResponsiveContainer width="100%" height={280}>
+              <AreaChart data={weeklyData}>
+                <defs>
+                  <linearGradient id="colorSpent" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#a855f7" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#a855f7" stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="colorBudget" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <XAxis 
+                  dataKey="week" 
+                  tick={{ fill: '#94a3b8', fontSize: 12 }}
+                  stroke="#475569"
+                />
+                <YAxis 
+                  tick={{ fill: '#94a3b8', fontSize: 12 }}
+                  stroke="#475569"
+                />
+                <Tooltip 
+                  contentStyle={{
+                    backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                    border: '1px solid rgb(71 85 105)',
+                    borderRadius: '12px',
+                    color: '#fff'
+                  }}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="budget" 
+                  stroke="#10b981" 
+                  strokeWidth={2}
+                  fill="url(#colorBudget)"
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="spent" 
+                  stroke="#a855f7" 
+                  strokeWidth={3}
+                  fill="url(#colorSpent)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Cuisine Preferences */}
+          <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <span className="text-3xl">🍽️</span>
+              Top Cuisines
+            </h2>
+            
+            <div className="space-y-4">
+              {cuisineData.map((item, idx) => (
+                <div key={item.name} className="group">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-slate-300 font-medium">{item.name}</span>
+                    <span className="text-slate-400 text-sm">{item.value}%</span>
+                  </div>
+                  <div className="h-3 bg-slate-700/50 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-1000 ease-out group-hover:scale-105"
+                      style={{ width: `${item.value}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* AI Insights */}
-        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/20">
+        <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-8 border border-slate-700/50">
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-3xl">🤖</span>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              AI Insights
-            </h2>
+            <span className="text-4xl">🤖</span>
+            <h2 className="text-2xl font-bold text-white">AI Insights</h2>
           </div>
 
-          {analysis?.patterns && (
-            <div className="bg-gradient-to-br from-purple-100 to-blue-100 p-5 rounded-xl mb-4 border border-purple-200 hover:shadow-md transition-all duration-300">
-              <h3 className="font-bold text-purple-900 mb-3 flex items-center gap-2">
-                <span>📊</span> Spending Patterns
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 p-6 rounded-xl border border-purple-500/20">
+              <h3 className="font-bold text-purple-400 mb-3 flex items-center gap-2">
+                <span>📊</span> Spending Pattern
               </h3>
-              <ul className="space-y-2">
-                {analysis.patterns.map((pattern: string, idx: number) => (
-                  <li key={idx} className="text-purple-800 flex items-start gap-2">
-                    <span className="text-purple-500 font-bold mt-0.5">•</span>
-                    <span>{pattern}</span>
-                  </li>
-                ))}
-              </ul>
+              <p className="text-slate-300">You spend 40% more on weekends compared to weekdays. Consider meal prep to reduce weekend costs.</p>
             </div>
-          )}
-
-          {analysis?.recommendation && (
-            <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-5 rounded-xl border border-green-200 hover:shadow-md transition-all duration-300">
-              <h3 className="font-bold text-green-900 mb-2 flex items-center gap-2">
-                <span>💡</span> Smart Recommendation
+            
+            <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-6 rounded-xl border border-green-500/20">
+              <h3 className="font-bold text-green-400 mb-3 flex items-center gap-2">
+                <span>💡</span> Smart Tip
               </h3>
-              <p className="text-green-800 font-medium">{analysis.recommendation}</p>
+              <p className="text-slate-300">You have 45 unused swipes worth $540. Use them for dinner this week to stay on budget!</p>
             </div>
-          )}
+          </div>
         </div>
       </div>
-
-      {/* Savings Modal */}
-      {showSavingsModal && analysis && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in overflow-y-auto"
-          onClick={() => setShowSavingsModal(false)}
-        >
-          <div 
-            className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full my-8 p-8 animate-slide-up max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <span className="text-5xl">💰</span>
-                <div>
-                  <h3 className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
-                    Savings Breakdown
-                  </h3>
-                  <p className="text-gray-600 mt-1">How you can save ${analysis.dollar_amount.toFixed(0)} this semester</p>
-                </div>
-              </div>
-              <button 
-                onClick={() => setShowSavingsModal(false)}
-                className="text-gray-400 hover:text-gray-600 text-3xl hover:rotate-90 transition-all duration-300"
-              >
-                ×
-              </button>
-            </div>
-
-            {/* Main Insight */}
-            <div className="bg-gradient-to-r from-orange-50 to-amber-50 p-6 rounded-xl border-2 border-orange-300 mb-6">
-              <p className="text-xl font-bold text-gray-900 mb-2">{analysis.main_insight}</p>
-              <div className="flex items-center gap-3 mt-4">
-                <div className="flex-1 bg-white rounded-lg p-4">
-                  <p className="text-sm text-gray-600 mb-1">Potential Savings</p>
-                  <p className="text-3xl font-bold text-orange-600">${analysis.dollar_amount.toFixed(0)}</p>
-                </div>
-                <div className="flex-1 bg-white rounded-lg p-4">
-                  <p className="text-sm text-gray-600 mb-1">Per Week</p>
-                  <p className="text-3xl font-bold text-orange-600">${(analysis.dollar_amount / userData.weeks_remaining).toFixed(0)}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Patterns */}
-            {analysis.patterns && (
-              <div className="mb-6">
-                <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                  <span>📊</span> What We Found
-                </h4>
-                <div className="space-y-2">
-                  {analysis.patterns.map((pattern: string, idx: number) => (
-                    <div key={idx} className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                      <p className="text-purple-900 font-medium">{pattern}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Action Plan */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border-2 border-green-300">
-              <h4 className="font-bold text-green-900 mb-3 flex items-center gap-2">
-                <span>✅</span> Action Plan
-              </h4>
-              <p className="text-green-800 font-medium mb-4">{analysis.recommendation}</p>
-              
-              <div className="flex gap-3">
-                <button
-                  onClick={() => {
-                    setShowSavingsModal(false);
-                    window.location.href = '/feed';
-                  }}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-bold hover:scale-105 transition-all duration-300"
-                >
-                  See Meal Recommendations
-                </button>
-                <button
-                  onClick={() => setShowSavingsModal(false)}
-                  className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition-all"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
