@@ -3,16 +3,26 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { parseTransaction } from '@/lib/transactionApi';
+import { searchMerchant } from '@/lib/visaApi';
 import { MOCK_TRANSACTIONS } from '@/lib/mockData';
 import { DEMO_PROFILES } from '@/lib/demoProfiles';
 
+interface EnrichedTransaction {
+  merchant: string;
+  amount: number;
+  type: string;
+  timestamp: string;
+  merchantData?: any;
+}
+
 export default function TransactionsPage() {
-  const [transactions, setTransactions] = useState<any[]>([]);
-  const [filteredTransactions, setFilteredTransactions] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<EnrichedTransaction[]>([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<EnrichedTransaction[]>([]);
   const [filter, setFilter] = useState<'all' | 'swipe' | 'flex' | 'external'>('all');
   const [newTransaction, setNewTransaction] = useState('');
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
+  const [selectedTransaction, setSelectedTransaction] = useState<EnrichedTransaction | null>(null);
   const supabase = createClient();
 
   useEffect(() => {
@@ -53,24 +63,30 @@ export default function TransactionsPage() {
     
     setLoading(true);
     
-    // Simulate AI parsing (in real version, would call Claude to parse)
-    // For demo, just add a manual entry
-    const parsed = parseTransactionNaturally(newTransaction);
+    // Use AI to parse the transaction
+    const parsed = await parseTransaction(newTransaction);
     
-    const newTx = {
-      merchant: parsed.merchant,
-      amount: parsed.amount,
-      type: parsed.type,
-      timestamp: new Date().toISOString()
-    };
+    if (parsed) {
+      // Enrich with Visa Merchant Search
+      const merchantData = await searchMerchant(parsed.merchant);
+      
+      const newTx: EnrichedTransaction = {
+        merchant: parsed.merchant,
+        amount: parsed.amount,
+        type: parsed.type,
+        timestamp: new Date().toISOString(),
+        merchantData: merchantData
+      };
+      
+      setTransactions([newTx, ...transactions]);
+      setNewTransaction('');
+    }
     
-    setTransactions([newTx, ...transactions]);
-    setNewTransaction('');
     setLoading(false);
   }
 
   function parseTransactionNaturally(text: string): any {
-    // Simple parsing for demo - in production would use Claude
+    // This is now just a fallback - not used if API works
     const amountMatch = text.match(/\$?(\d+\.?\d*)/);
     const amount = amountMatch ? parseFloat(amountMatch[1]) : 10;
     
@@ -81,7 +97,6 @@ export default function TransactionsPage() {
       type = 'swipe';
     }
     
-    // Extract merchant (simple approach)
     const words = text.split(' ');
     const merchant = words.find(w => 
       w.length > 3 && 
@@ -218,25 +233,42 @@ export default function TransactionsPage() {
               filteredTransactions.map((transaction, idx) => (
                 <div
                   key={idx}
-                  className="bg-white p-5 rounded-xl border-2 border-gray-100 hover:border-purple-300 hover:shadow-md transition-all duration-300"
+                  onClick={() => setSelectedTransaction(transaction)}
+                  className="bg-white p-5 rounded-xl border-2 border-gray-100 hover:border-purple-300 hover:shadow-md transition-all duration-300 cursor-pointer group"
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h3 className="font-bold text-gray-900 text-lg">{transaction.merchant}</h3>
-                      <p className="text-sm text-gray-500">
-                        {new Date(transaction.timestamp).toLocaleString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: '2-digit'
-                        })}
-                      </p>
+                    <div className="flex items-center gap-3">
+                      {transaction.merchantData?.logo_url && (
+                        <img 
+                          src={transaction.merchantData.logo_url} 
+                          alt={transaction.merchant}
+                          className="w-12 h-12 rounded-lg object-cover border border-gray-200"
+                        />
+                      )}
+                      <div>
+                        <h3 className="font-bold text-gray-900 text-lg group-hover:text-purple-600 transition-colors">
+                          {transaction.merchant}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {new Date(transaction.timestamp).toLocaleString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                          })}
+                        </p>
+                        {transaction.merchantData?.address && (
+                          <p className="text-xs text-gray-400 mt-1">
+                            📍 {transaction.merchantData.address}
+                          </p>
+                        )}
+                      </div>
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-gray-900">
                         ${transaction.amount.toFixed(2)}
                       </p>
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mt-1 ${
                         transaction.type === 'swipe' 
                           ? 'bg-purple-100 text-purple-700'
                           : transaction.type === 'flex'
@@ -247,11 +279,146 @@ export default function TransactionsPage() {
                       </span>
                     </div>
                   </div>
+                  <p className="text-xs text-purple-600 font-semibold mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    Click for merchant details →
+                  </p>
                 </div>
               ))
             )}
           </div>
         </div>
+
+        {/* Transaction Detail Modal (Visa Enriched) */}
+        {selectedTransaction && (
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in overflow-y-auto"
+            onClick={() => setSelectedTransaction(null)}
+          >
+            <div 
+              className="bg-white rounded-2xl shadow-2xl max-w-lg w-full my-8 p-8 animate-slide-up max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  {selectedTransaction.merchantData?.logo_url && (
+                    <img 
+                      src={selectedTransaction.merchantData.logo_url} 
+                      alt={selectedTransaction.merchant}
+                      className="w-16 h-16 rounded-xl object-cover border-2 border-purple-200"
+                    />
+                  )}
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      {selectedTransaction.merchant}
+                    </h3>
+                    <p className="text-purple-600 font-semibold">
+                      ${selectedTransaction.amount.toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedTransaction(null)}
+                  className="text-gray-400 hover:text-gray-600 text-3xl hover:rotate-90 transition-all duration-300"
+                >
+                  ×
+                </button>
+              </div>
+
+              {/* Visa Enriched Data */}
+              {selectedTransaction.merchantData && (
+                <div className="space-y-4 mb-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-4 rounded-xl border border-blue-200">
+                    <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                      <span>🏪</span> Business Information
+                      <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">Powered by Visa</span>
+                    </h4>
+                    
+                    {selectedTransaction.merchantData.address && (
+                      <div className="mb-2">
+                        <p className="text-sm text-gray-600">Address</p>
+                        <p className="font-semibold text-gray-800">
+                          {selectedTransaction.merchantData.address}
+                        </p>
+                        <p className="text-sm text-gray-700">
+                          {selectedTransaction.merchantData.city}, {selectedTransaction.merchantData.state} {selectedTransaction.merchantData.zip}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {selectedTransaction.merchantData.phone && selectedTransaction.merchantData.phone !== 'N/A' && (
+                      <div>
+                        <p className="text-sm text-gray-600">Phone</p>
+                        <p className="font-semibold text-gray-800">
+                          {selectedTransaction.merchantData.phone}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Transaction Details */}
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
+                  <span className="font-semibold text-gray-700">Amount</span>
+                  <span className="text-2xl font-bold text-gray-900">
+                    ${selectedTransaction.amount.toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
+                  <span className="font-semibold text-gray-700">Payment Type</span>
+                  <span className={`px-4 py-2 rounded-full text-sm font-bold ${
+                    selectedTransaction.type === 'swipe'
+                      ? 'bg-purple-600 text-white'
+                      : selectedTransaction.type === 'flex'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-orange-600 text-white'
+                  }`}>
+                    {selectedTransaction.type === 'swipe' ? '🎫 Meal Swipe' : selectedTransaction.type === 'flex' ? '💳 Flex Dollars' : '💵 External'}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
+                  <span className="font-semibold text-gray-700">Date & Time</span>
+                  <span className="font-medium text-gray-800">
+                    {new Date(selectedTransaction.timestamp).toLocaleString('en-US', {
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit'
+                    })}
+                  </span>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="mt-6 flex gap-3">
+                {selectedTransaction.merchantData?.latitude && (
+                  <button
+                    onClick={() => {
+                      window.open(
+                        `https://maps.google.com/?q=${selectedTransaction.merchantData.latitude},${selectedTransaction.merchantData.longitude}`,
+                        '_blank'
+                      );
+                    }}
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-bold hover:scale-105 transition-all duration-300"
+                  >
+                    📍 View on Map
+                  </button>
+                )}
+                <button
+                  onClick={() => setSelectedTransaction(null)}
+                  className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition-all"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

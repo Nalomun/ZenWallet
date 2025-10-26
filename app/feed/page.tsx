@@ -8,6 +8,7 @@ import { DEMO_PROFILES } from '@/lib/demoProfiles';
 import { getMockRecommendations } from '@/lib/mockApiResponses';
 import FeedCard from '@/components/FeedCard';
 import QueryBox from '@/components/QueryBox';
+import VisaOffers from '@/components/VisaOffers';
 
 export default function FeedPage() {
   const [recommendations, setRecommendations] = useState<any[]>([]);
@@ -15,7 +16,7 @@ export default function FeedPage() {
   const [userData, setUserData] = useState<any>(null);
   const supabase = createClient();
 
-  async function loadData() {
+    async function loadData() {
     setLoading(true);
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -109,6 +110,9 @@ export default function FeedPage() {
         <div className="transform hover:scale-[1.02] transition-all duration-300">
           <QueryBox />
         </div>
+
+        {/* Visa Offers */}
+        <VisaOffers />
 
         {/* Recommendations */}
         <div>

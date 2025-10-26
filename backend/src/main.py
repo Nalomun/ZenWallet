@@ -24,6 +24,13 @@ from src.prediction import (
     FilterType
 )
 
+# Visa API integration
+from src.visa_service import (
+    search_merchant,
+    get_merchant_offers,
+    get_transaction_controls
+)
+
 load_dotenv()
 
 app = FastAPI(
@@ -60,6 +67,16 @@ class QueryRequest(BaseModel):
 class ParseTransactionRequest(BaseModel):
     text: str
 
+class MerchantSearchRequest(BaseModel):
+    merchant_name: str
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+
+class OffersRequest(BaseModel):
+    latitude: float = 37.8044  # Oakland, CA
+    longitude: float = -122.2712
+    radius: int = 5
+
 # Routes
 @app.get("/")
 async def root():
@@ -74,11 +91,13 @@ async def root():
 @app.get("/health")
 async def health():
     lava_configured = bool(os.getenv("LAVA_FORWARD_TOKEN"))
+    visa_configured = bool(os.getenv("VISA_USER_ID"))
     return {
         "status": "healthy", 
         "version": "2.0.0",
         "lava_configured": lava_configured,
-        "features": ["AI Analysis", "AI Recommendations", "Natural Language Query", "ML Forecasting"]
+        "visa_configured": visa_configured,
+        "features": ["AI Analysis", "AI Recommendations", "Natural Language Query", "ML Forecasting", "Visa Integration"]
     }
 
 @app.post("/api/analyze")
@@ -195,6 +214,73 @@ async def query(request: QueryRequest):
         print(f"❌ Error in query: {e}")
         return {"response": FALLBACK_QUERY_RESPONSE}
 
+@app.post("/api/parse-transaction")
+async def parse_transaction(request: ParseTransactionRequest):
+    """Parse natural language transaction description using Claude AI"""
+    print(f"💳 Parsing transaction: '{request.text}'")
+    
+    try:
+        # Use Claude to parse the transaction
+        from src.agent import call_claude_via_lava
+        
+        prompt = f"""Parse this transaction description into structured data:
+
+"{request.text}"
+
+Extract:
+1. Merchant name (e.g., "Starbucks", "Chipotle", "Costco")
+2. Amount in dollars (convert cents to dollars if needed: 150 cents = $1.50)
+3. Payment type: "swipe" (dining hall meal swipe), "flex" (flex dollars), or "external" (off-campus cash/card)
+
+Return ONLY a JSON object:
+{{
+  "merchant": "Merchant Name",
+  "amount": 1.50,
+  "type": "swipe|flex|external"
+}}
+
+Rules:
+- If they mention cents, divide by 100 to get dollars
+- If they mention a dining hall or swipe, type is "swipe"
+- If they mention flex, type is "flex"  
+- Otherwise type is "external"
+- Merchant should be properly capitalized
+- Amount should be a number (float)"""
+
+        response = call_claude_via_lava("You are a transaction parser. Extract structured data from natural language.", prompt, temperature=0.3)
+        
+        # Parse Claude's response
+        import json
+        import re
+        
+        # Remove markdown code blocks if present
+        cleaned = response.strip()
+        if cleaned.startswith('```json'):
+            cleaned = cleaned[7:]
+        elif cleaned.startswith('```'):
+            cleaned = cleaned[3:]
+        if cleaned.endswith('```'):
+            cleaned = cleaned[:-3]
+        cleaned = cleaned.strip()
+        
+        parsed = json.loads(cleaned)
+        
+        print(f"✅ Parsed: {parsed['merchant']} - ${parsed['amount']} ({parsed['type']})")
+        
+        return parsed
+        
+    except Exception as e:
+        print(f"❌ Parse failed: {e}")
+        # Fallback to simple parsing
+        import traceback
+        traceback.print_exc()
+        
+        return {
+            "merchant": "Restaurant",
+            "amount": 10.0,
+            "type": "external"
+        }
+
 # 🆕 ML FORECASTING ENDPOINT
 @app.post("/api/spending-forecast")
 async def spending_forecast(request: Dict[str, Any]) -> ResultDict:
@@ -260,6 +346,76 @@ async def spending_forecast(request: Dict[str, Any]) -> ResultDict:
                 "message": "Forecast unavailable - not enough transaction data"
             }
         )
+
+# 🏦 VISA API ENDPOINTS
+
+@app.post("/api/merchant-search")
+async def merchant_search(request: MerchantSearchRequest):
+    """
+    Enrich merchant data using Visa Merchant Search API
+    Returns business details, logo, location, hours
+    """
+    try:
+        print(f"🔍 Searching merchant: {request.merchant_name}")
+        
+        merchant_data = search_merchant(
+            request.merchant_name,
+            request.latitude,
+            request.longitude
+        )
+        
+        if merchant_data:
+            print(f"✅ Found merchant data for {merchant_data.get('name')}")
+            return merchant_data
+        else:
+            print(f"⚠️ No data found for {request.merchant_name}")
+            return {"error": "Merchant not found"}
+            
+    except Exception as e:
+        print(f"❌ Merchant search failed: {e}")
+        return {"error": str(e)}
+
+@app.post("/api/visa-offers")
+async def visa_offers(request: OffersRequest):
+    """
+    Get card-linked merchant offers using Visa VMORC API
+    Returns available discounts and promotions near user
+    """
+    try:
+        print(f"🎁 Fetching Visa offers near ({request.latitude}, {request.longitude})")
+        
+        offers = get_merchant_offers(
+            request.latitude,
+            request.longitude,
+            request.radius
+        )
+        
+        print(f"✅ Found {len(offers)} Visa offers")
+        
+        return {"offers": offers}
+        
+    except Exception as e:
+        print(f"❌ Offers fetch failed: {e}")
+        return {"offers": []}
+
+@app.get("/api/transaction-controls/{user_id}")
+async def transaction_controls(user_id: str):
+    """
+    Get spending controls and category limits
+    Uses Visa Transaction Controls concepts
+    """
+    try:
+        print(f"🔒 Fetching transaction controls for user {user_id}")
+        
+        controls = get_transaction_controls(user_id)
+        
+        print(f"✅ Retrieved {len(controls['controls'])} spending controls")
+        
+        return controls
+        
+    except Exception as e:
+        print(f"❌ Controls fetch failed: {e}")
+        return {"controls": []}
 
 if __name__ == "__main__":
     import uvicorn
