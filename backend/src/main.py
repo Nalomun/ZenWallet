@@ -57,6 +57,9 @@ class QueryRequest(BaseModel):
     dining_halls: List[dict]
     current_time: str
 
+class ParseTransactionRequest(BaseModel):
+    text: str
+
 # Routes
 @app.get("/")
 async def root():

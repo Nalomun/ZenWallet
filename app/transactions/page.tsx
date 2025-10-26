@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { parseTransaction } from '@/lib/transactionApi';
 import { MOCK_TRANSACTIONS } from '@/lib/mockData';
 import { DEMO_PROFILES } from '@/lib/demoProfiles';
 
